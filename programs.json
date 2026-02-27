@@ -1,0 +1,508 @@
+{
+    "program": {
+        "name": "Water Confidence",
+        "slug": "water-confidence-beginner",
+        "description": "Master the fundamentals of water safety and comfort in a supportive learning environment. This 12-week program transforms water anxiety into confidence through progressive skill-building, breath control mastery, and proven techniques. Ideal for adults who are new to swimming or returning after years away. You'll understand the physics of buoyancy, develop autonomous water skills, and build the foundation for future stroke development.",
+        "level": "beginner_1",
+        "duration_weeks": 12,
+        "default_capacity": 10,
+        "currency": "NGN",
+        "price_amount": 150000,
+        "billing_type": "one_time",
+        "prep_materials": {
+            "required_equipment": [
+                "Swim goggles (anti-fog recommended)",
+                "Swimsuit (form-fitting preferred)",
+                "Swim cap (optional but recommended)"
+            ],
+            "optional_equipment": [
+                "Fins (provided by academy, personal pair welcome)",
+                "Pull buoy (for later weeks)",
+                "Kickboard (provided)"
+            ],
+            "pre_program_reading": [
+                {
+                    "title": "Why Humans Float",
+                    "description": "Learn the simple science behind floating before your first session",
+                    "url": null
+                },
+                {
+                    "title": "Breathing Basics for Swimming",
+                    "description": "How your breathing changes in water",
+                    "url": null
+                }
+            ],
+            "safety_briefing": "All students complete a safety orientation covering pool rules, emergency procedures, and hand signals (thumbs up/down for comfort level) before Week 1."
+        }
+    },
+    "curriculum": [
+        {
+            "week_number": 1,
+            "theme": "Getting Comfortable in Water & Learning to Breathe",
+            "objectives": "Learn why you float, practice controlled breathing with your face in the water, and master safe entry and exit. Goal: Feel comfortable putting your face underwater for 5+ seconds while breathing out slowly.",
+            "lessons": [
+                {
+                    "title": "Introduction to Floating & Breathing",
+                    "description": "Discover why your body naturally floats (you're lighter than water!). Learn to stay calm when your face goes underwater by practicing slow breathing - breathe in above water, breathe out underwater. This is the most important skill in swimming. We'll also practice safe ways to get in and out of the pool, and how to stand up from any position (your safety anchor). Start with simple exercises: blow bubbles at the surface, then put your face in the water and hum (this makes sure you're breathing out), then practice slow exhales through your nose. If you feel nervous, we'll use a pool noodle for extra support.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Breath Control",
+                        "Buoyancy Awareness",
+                        "Safe Entry/Exit",
+                        "Rhythmic Breathing",
+                        "Submerged Exhalation"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 2,
+            "theme": "Learning to Float Face-Down & Stand Back Up",
+            "objectives": "Float comfortably on your front and learn the critical skill of returning to a standing position safely.",
+            "lessons": [
+                {
+                    "title": "Front Float & Recovery",
+                    "description": "Learn to float face-down by understanding how your body naturally wants to float. Your lungs are like a life jacket - when they're full of air, you float better. Practice keeping your head in a natural position (not lifted up). Most importantly, learn the 'tuck and twist' recovery: pull your knees to your chest, turn your body, and push down with your hands to stand. This skill lets you always return to safety. We'll practice this many times until it feels automatic.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Front Float",
+                        "Recovery to Standing",
+                        "Head Position Control"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 3,
+            "theme": "Floating on Your Back",
+            "objectives": "Learn to float on your back while managing the dizzy feeling that can come from looking up at the ceiling.",
+            "lessons": [
+                {
+                    "title": "Back Float & Body Awareness",
+                    "description": "Master floating on your back by keeping your chest lifted and head back. If you look at your toes, your hips will drop - so look at the ceiling instead. Your chest (where your lungs are) helps you float, so keep it up. Practice two positions: 'starfish' with arms and legs spread wide for stability, and 'pencil' with body straight and streamlined. Use ceiling tiles or lights as visual reference points if you feel dizzy. This position is your rest position - you can breathe freely while floating on your back.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Back Float",
+                        "Spatial Orientation",
+                        "Core Stability"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 4,
+            "theme": "Gliding Through Water",
+            "objectives": "Learn to push off the wall and glide smoothly through the water. Goal: Glide 5 meters from wall push-off.",
+            "lessons": [
+                {
+                    "title": "Streamline Position & Push-Off",
+                    "description": "Learn why streamlined swimmers move faster and farther - it's all about reducing resistance in the water. Stack your hands overhead, squeeze your ears with your arms, and point your toes. Push off the wall horizontally (not upward) and feel yourself glide. The better your body position, the farther you'll glide. This 'streamline' shape is the foundation of efficient swimming - you'll use it in every stroke you learn.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Streamline Body Position",
+                        "Wall Push-Off",
+                        "Gliding"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 5,
+            "theme": "Kicking for Movement",
+            "objectives": "Develop steady leg kicks from your hips while staying horizontal in the water.",
+            "lessons": [
+                {
+                    "title": "Flutter Kick Basics",
+                    "description": "Your kick helps you move forward and keeps your body level in the water. The key: kick from your hips, not your knees. Keep your ankles relaxed and 'floppy' like flippers - stiff ankles won't move you forward. Practice with a kickboard first, then with your hands extended in front, then on your back. Aim for a steady rhythm with small, quick kicks. Don't worry about speed - focus on keeping your legs moving smoothly from the hips with loose ankles.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Flutter Kick",
+                        "Hip-Driven Movement",
+                        "Body Position Maintenance"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 6,
+            "theme": "Using Your Arms to Pull Through Water",
+            "objectives": "Learn how to use your arms to move forward efficiently. Goal: Swim 5 meters using arm pulls with a kickboard.",
+            "lessons": [
+                {
+                    "title": "Freestyle Arm Motion Introduction",
+                    "description": "Your hand acts like a paddle to move you forward. Enter your hand in the water thumb-first at shoulder width, reach forward, then bend your elbow (about 90 degrees) and pull the water toward your hips. Think of it like climbing a ladder in the water. The pull should go along the center of your body - not out wide. We'll practice with one arm at a time using a kickboard, so you can really feel how the pull works. The key is bending your elbow (keeping it higher than your hand) to get a strong pull.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Freestyle Catch",
+                        "High Elbow Pull",
+                        "Underwater Pull Path"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 7,
+            "theme": "Breathing While Swimming",
+            "objectives": "Learn to breathe to the side without stopping your movement, using body rotation instead of lifting your head.",
+            "lessons": [
+                {
+                    "title": "Side Breathing Technique",
+                    "description": "The secret to breathing while swimming: rotate your whole body like a log, don't lift your head. When you lift your head forward, your hips drop and you slow down. Instead, roll to your side and breathe in the 'trough' created by your head moving through water. Breathe out slowly underwater (like humming) so your lungs are empty when it's time to breathe in. Practice breathing on both sides (left and right) every 3 strokes to keep your body balanced. Use the pattern: breathe out underwater, breathe out underwater, turn and breathe in.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Bilateral Breathing",
+                        "Body Rotation",
+                        "Rhythmic Breathing Pattern"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 8,
+            "theme": "Putting It All Together: Complete Freestyle Stroke",
+            "objectives": "Combine kicking, arm pulls, and breathing into smooth, coordinated freestyle swimming.",
+            "lessons": [
+                {
+                    "title": "Full Freestyle Coordination",
+                    "description": "Now we bring together everything you've learned: kick, arm pulls, and breathing. We'll use a 'catch-up' drill where one hand waits at the front until the other hand finishes its pull - this helps you practice the timing. Then progress to continuous swimming where your arms alternate smoothly. Keep a steady kick going, pull along your centerline, and breathe every 3-5 strokes. Focus on swimming smoothly and efficiently - it's not about speed, it's about making it look and feel easy. Long, smooth strokes are better than fast, splashy ones.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Freestyle Stroke",
+                        "Stroke Timing",
+                        "Arm-Leg-Breath Coordination"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 9,
+            "theme": "Building Distance & Confidence",
+            "objectives": "Swim farther with improved technique and build stamina. Goal: Swim 50 meters (2 lengths) with rests between lengths.",
+            "lessons": [
+                {
+                    "title": "Swimming Longer Distances",
+                    "description": "This week focuses on swimming farther by improving efficiency and building stamina. We'll work on reducing extra movements that waste energy. Practice swimming 25 meters (1 length), rest for 30 seconds, then repeat. Pay attention to how many arm strokes it takes you to complete a length - fewer strokes means you're moving more efficiently. The goal is to keep your stroke count consistent across multiple lengths. By the end of the session, try swimming 50 meters (2 lengths) with a short rest in between. Remember: swimming is like meditation - find your rhythm and maintain it.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Distance Swimming",
+                        "Stroke Efficiency",
+                        "Energy Management"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 10,
+            "theme": "Swimming Continuously Without Stopping",
+            "objectives": "Build endurance by swimming multiple lengths with minimal rest. Goal: Swim 50 meters without stopping.",
+            "lessons": [
+                {
+                    "title": "Endurance & Pacing",
+                    "description": "Learn to pace yourself for longer swims. Swimming at a steady, comfortable pace lets you go much farther than swimming fast and getting tired. We'll practice swimming sets: 4 x 25 meters with 20 seconds rest between each. Focus on maintaining the same speed and stroke quality throughout. If you find yourself getting tired, slow down your stroke rate (take your time with each stroke) rather than rushing. By the end of this week, you should be able to swim 50 meters without stopping - that's twice the distance you started with! The key is finding a pace you can maintain.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Pacing Strategy",
+                        "Continuous Swimming",
+                        "Fatigue Management"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 11,
+            "theme": "Refinement & Problem-Solving",
+            "objectives": "Address individual challenges, refine technique through video feedback, and build confidence in deeper water.",
+            "lessons": [
+                {
+                    "title": "Technique Refinement & Personal Challenges",
+                    "description": "This week is all about YOU. We'll identify any specific areas where you're struggling and work on solutions. Using video feedback (recorded on a phone or tablet), you'll see your own swimming and understand what to improve. Common challenges include: head position, breathing timing, kick efficiency, or arm entry. We'll also practice swimming in deeper water to build confidence - remember, the depth doesn't change how you swim, and you already know how to float and recover to standing. This is your chance to ask questions and get personalized coaching on whatever feels hardest.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "Self-Assessment",
+                        "Video Analysis",
+                        "Deep Water Confidence"
+                    ]
+                }
+            ]
+        },
+        {
+            "week_number": 12,
+            "theme": "Final Assessment & Celebration",
+            "objectives": "Demonstrate all learned skills and complete a 50-meter continuous swim. Celebrate your transformation from beginner to confident swimmer.",
+            "lessons": [
+                {
+                    "title": "Graduation Challenge",
+                    "description": "Today you demonstrate everything you've learned over 12 weeks. The challenge: swim 50 meters (2 lengths) continuously using freestyle with proper breathing. There's no time limit - this is about confidence and technique, not speed. Before your swim, we'll do a skills showcase: floating (front and back), controlled breathing, streamline glide, and steady kicking. After your swim, we'll watch your Week 1 video compared to today - you'll see incredible progress! You've transformed from someone learning to put their face in the water to someone who can confidently swim 50 meters. Celebrate this achievement - you are now a swimmer! Next steps: continue practicing, join open swim sessions, or move on to the Intermediate Stroke Development program.",
+                    "duration_minutes": 60,
+                    "video_url": null,
+                    "skills": [
+                        "50m Continuous Swim",
+                        "Skills Demonstration",
+                        "Goal Setting for Next Level"
+                    ]
+                }
+            ]
+        }
+    ],
+    "milestones": [
+        {
+            "name": "Confident Pool Entry & Exit",
+            "criteria": "Can independently enter the pool using ladder or steps and exit without help. Shows controlled movements and no visible anxiety.",
+            "order_index": 1,
+            "milestone_type": "skill",
+            "required_evidence": "none"
+        },
+        {
+            "name": "Comfortable Face Submersion",
+            "criteria": "Completes 10 breath cycles with face fully underwater (breathe in above water, breathe out below water). No gasping or panic.",
+            "order_index": 2,
+            "milestone_type": "skill",
+            "required_evidence": "none"
+        },
+        {
+            "name": "Back Float (20 seconds)",
+            "criteria": "Floats on back for 20 seconds with minimal coach support. Maintains position with chest up and head back.",
+            "order_index": 3,
+            "milestone_type": "skill",
+            "required_evidence": "video"
+        },
+        {
+            "name": "Front Float with Recovery",
+            "criteria": "Floats face-down for 15 seconds, then recovers to standing using tuck-press-rotate sequence without panic.",
+            "order_index": 4,
+            "milestone_type": "skill",
+            "required_evidence": "none"
+        },
+        {
+            "name": "Kickboard Flutter Kick (10 meters)",
+            "criteria": "Swims 10 meters using flutter kick with kickboard. Shows proper form: kicking from hips, relaxed ankles, small kicks.",
+            "order_index": 5,
+            "milestone_type": "technique",
+            "required_evidence": "video"
+        },
+        {
+            "name": "Streamline Glide (5 meters)",
+            "criteria": "Glides 5 meters from wall push-off while holding streamline position (arms extended overhead, head neutral, legs together).",
+            "order_index": 6,
+            "milestone_type": "technique",
+            "required_evidence": "video"
+        },
+        {
+            "name": "One-Arm Freestyle Drill (10 meters)",
+            "criteria": "Swims 10 meters using one-arm freestyle with kickboard, demonstrating proper arm pull with high elbow.",
+            "order_index": 7,
+            "milestone_type": "technique",
+            "required_evidence": "video"
+        },
+        {
+            "name": "Freestyle with Side Breathing (25 meters)",
+            "criteria": "Swims 25 meters continuous freestyle with breathing every 3-5 strokes. Uses body rotation for breathing, not head lift.",
+            "order_index": 8,
+            "milestone_type": "technique",
+            "required_evidence": "video"
+        },
+        {
+            "name": "50 Meters with Rest",
+            "criteria": "Swims 50 meters (2 lengths) freestyle with one rest break. Maintains consistent stroke and breathing pattern.",
+            "order_index": 9,
+            "milestone_type": "endurance",
+            "required_evidence": "time_trial"
+        },
+        {
+            "name": "Final Assessment: 50m Continuous Swim",
+            "criteria": "Completes 50 meters (2 lengths) continuously in freestyle with proper breathing at a comfortable pace. Shows confidence and efficient technique throughout.",
+            "order_index": 10,
+            "milestone_type": "assessment",
+            "required_evidence": "time_trial",
+            "rubric_json": {
+                "categories": [
+                    {
+                        "name": "Stroke Technique",
+                        "weight": 30,
+                        "criteria": "Good body position, streamline shape, efficient arm pulls and kicks"
+                    },
+                    {
+                        "name": "Breathing Control",
+                        "weight": 25,
+                        "criteria": "Steady breathing rhythm, no gasping, proper timing with strokes"
+                    },
+                    {
+                        "name": "Endurance & Pacing",
+                        "weight": 25,
+                        "criteria": "Maintains steady pace throughout, completes full distance without stopping"
+                    },
+                    {
+                        "name": "Confidence & Independence",
+                        "weight": 20,
+                        "criteria": "Shows comfort in water, able to self-correct, problem-solves during swim"
+                    }
+                ],
+                "passing_score": 70,
+                "notes": "Assessment focuses on water confidence and safe swimming ability, not speed. Students should demonstrate they can swim independently and safely."
+            }
+        }
+    ],
+    "skills_library": [
+        {
+            "name": "Pool Entry/Exit",
+            "category": "safety",
+            "description": "Safe techniques for getting in and out of the pool using ladder, steps, or pool edge."
+        },
+        {
+            "name": "Stand-Up Reflex",
+            "category": "safety",
+            "description": "The most important safety skill: recovering to standing position from any position in water."
+        },
+        {
+            "name": "Emergency Signaling",
+            "category": "safety",
+            "description": "Hand signals (thumbs up/down) to tell your coach your comfort level during lessons."
+        },
+        {
+            "name": "Rhythmic Breathing",
+            "category": "water_confidence",
+            "description": "Controlled breathing pattern: breathe in above water, breathe out below water with face submerged."
+        },
+        {
+            "name": "Submerged Exhalation",
+            "category": "water_confidence",
+            "description": "Breathing out slowly and completely underwater to stay calm and prevent holding your breath."
+        },
+        {
+            "name": "Back Float",
+            "category": "water_confidence",
+            "description": "Floating on your back using your lungs for buoyancy with proper head and hip position."
+        },
+        {
+            "name": "Front Float",
+            "category": "water_confidence",
+            "description": "Floating face-down showing that your body naturally floats when relaxed."
+        },
+        {
+            "name": "Recovery to Standing",
+            "category": "safety",
+            "description": "Tuck-press-rotate movement to go from floating to standing position safely."
+        },
+        {
+            "name": "Flutter Kick",
+            "category": "stroke",
+            "description": "Alternating up-down leg movement starting from hips with relaxed ankles (used in freestyle)."
+        },
+        {
+            "name": "Streamline Position",
+            "category": "stroke",
+            "description": "Body position that reduces water resistance: arms extended overhead, head neutral, core tight, legs together."
+        },
+        {
+            "name": "Wall Push-Off",
+            "category": "stroke",
+            "description": "Pushing off the wall to create forward momentum while maintaining streamline position."
+        },
+        {
+            "name": "Gliding",
+            "category": "stroke",
+            "description": "Moving through water using momentum from push-off without kicking or pulling."
+        },
+        {
+            "name": "Freestyle Catch",
+            "category": "stroke",
+            "description": "The beginning of the arm pull in freestyle where you 'grab' the water with high elbow position."
+        },
+        {
+            "name": "High Elbow Pull",
+            "category": "stroke",
+            "description": "Keeping your elbow higher than your hand during the underwater pull for better propulsion."
+        },
+        {
+            "name": "Underwater Pull Path",
+            "category": "stroke",
+            "description": "The path your hand takes underwater during freestyle - along the centerline of your body for efficiency."
+        },
+        {
+            "name": "Side Breathing",
+            "category": "stroke",
+            "description": "Turning to the side to breathe during freestyle by rotating your body, not lifting your head."
+        },
+        {
+            "name": "Bilateral Breathing",
+            "category": "stroke",
+            "description": "Breathing on both sides (alternating left and right) every 3 strokes for balanced swimming."
+        },
+        {
+            "name": "Body Rotation",
+            "category": "stroke",
+            "description": "Rolling your body from side to side during freestyle for efficient breathing and propulsion."
+        },
+        {
+            "name": "Freestyle Stroke",
+            "category": "stroke",
+            "description": "The complete front crawl swimming motion combining arm pulls, flutter kick, and side breathing."
+        },
+        {
+            "name": "Stroke Timing",
+            "category": "technique",
+            "description": "Coordinating when your arms pull, legs kick, and when you breathe for smooth swimming."
+        },
+        {
+            "name": "Arm-Leg-Breath Coordination",
+            "category": "technique",
+            "description": "Putting together arm pulls, leg kicks, and breathing into one smooth, continuous motion."
+        },
+        {
+            "name": "Distance Swimming",
+            "category": "endurance",
+            "description": "Swimming multiple lengths while maintaining good technique and steady pace."
+        },
+        {
+            "name": "Stroke Efficiency",
+            "category": "technique",
+            "description": "Swimming with fewer strokes per length by making each stroke more effective."
+        },
+        {
+            "name": "Energy Management",
+            "category": "endurance",
+            "description": "Knowing how to conserve energy and avoid getting tired too quickly while swimming."
+        },
+        {
+            "name": "Pacing Strategy",
+            "category": "endurance",
+            "description": "Maintaining the same speed and effort level throughout your swim for longer distances."
+        },
+        {
+            "name": "Continuous Swimming",
+            "category": "endurance",
+            "description": "Swimming without stopping or resting at the wall, maintaining movement throughout."
+        },
+        {
+            "name": "Fatigue Management",
+            "category": "endurance",
+            "description": "Recognizing when you're getting tired and adjusting your pace to keep swimming."
+        },
+        {
+            "name": "Self-Assessment",
+            "category": "technique",
+            "description": "Ability to recognize what you're doing well and what needs improvement in your swimming."
+        },
+        {
+            "name": "Video Analysis",
+            "category": "technique",
+            "description": "Watching video recordings of your swimming to understand and improve your technique."
+        },
+        {
+            "name": "Deep Water Confidence",
+            "category": "water_confidence",
+            "description": "Feeling comfortable swimming in water deeper than your height, knowing you can float and swim."
+        }
+    ]
+}

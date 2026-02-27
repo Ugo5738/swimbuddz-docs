@@ -1,0 +1,25 @@
+# Separate git repos — tracked independently on GitHub
+swimbuddz-backend/
+swimbuddz-frontend/
+
+# Binary / large files
+ngrok
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python (for merge_md_files.py)
+__pycache__/
+*.pyc
+*.pyo
+
+# Supabase local CLI state (machine-specific, not project config)
+supabase/

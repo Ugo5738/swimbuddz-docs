@@ -1,0 +1,215 @@
+Context
+SwimBuddz needs a closed-loop credit system called "Bubbles" (₦100 = 1 Bubble) to unify payments across all services (sessions, academy, store, events, transport). The full design is at docs/design/WALLET_SERVICE_DESIGN.md. This plan implements Phase 1 (Core Wallet MVP) — all 13 tables are created as models, but only Phase 1 business logic is active.
+Port note: The design doc says 8011, but that's taken by ai-service. Next available port is 8013.
+
+Files to Create (New Service)
+Step 1: Service Skeleton & Config
+Create directory structure and boilerplate files:
+services/wallet_service/
+├── __init__.py
+├── Dockerfile
+├── alembic.ini
+├── alembic/
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions/.keep
+├── app/
+│   ├── __init__.py
+│   └── main.py
+├── models.py
+├── schemas.py
+├── router.py
+├── admin_router.py
+├── internal_router.py
+├── services/
+│   ├── __init__.py
+│   ├── wallet_ops.py
+│   ├── topup_service.py
+│   └── promotional_service.py
+├── events/__init__.py          # Phase 3 stub
+├── rewards/__init__.py         # Phase 3 stub
+├── referrals/__init__.py       # Phase 3 stub
+└── tasks/__init__.py           # Background jobs stub
+Modify existing files:
+
+libs/common/config.py — add WALLET_SERVICE_URL: str = "http://wallet-service:8013"
+services/gateway_service/app/clients.py — add wallet_client = ServiceClient(settings.WALLET_SERVICE_URL)
+services/gateway_service/app/main.py — add wallet + admin wallet proxy routes
+docker-compose.yml — add wallet-service container block + gateway depends_on
+libs/common/service_client.py — add wallet helper functions
+
+
+Step 2: Models (models.py)
+All 13 tables defined. Follow existing patterns exactly:
+
+Mapped[type] annotations, UUID(as_uuid=True) PKs, utc_now timestamps
+SAEnum(MyEnum, name="enum_name") for enums
+Cross-service refs as plain UUID columns (no FK constraints)
+__repr__ on every model
+
+Enums (match design doc Section 4 exactly):
+WalletStatus, WalletTier, TransactionType, TransactionDirection, TransactionStatus, TopupStatus, PaymentMethod, GrantType, ReferralStatus, AuditAction
+Phase 1 Active Tables:
+
+wallets — core account (balance as int, CHECK >= 0, member_id + member_auth_id unique)
+wallet_transactions — immutable ledger (idempotency_key unique, composite index on wallet_id + created_at DESC)
+wallet_topups — Paystack topup lifecycle (reference unique, bubbles 25–5000 CHECK)
+promotional_bubble_grants — promo/bonus tracking (bubbles_remaining tracking)
+wallet_audit_logs — admin action audit trail
+
+Phase 3–5 Stub Tables (models only, no business logic):
+6. referral_records, 7. referral_codes, 8. reward_rules, 9. wallet_events, 10. member_reward_history, 11. family_wallet_links, 12. corporate_wallets, 13. corporate_wallet_members
+Key: balance stored as int (Bubbles, not Naira). All fields match design doc Section 3.
+
+Step 3: Schemas (schemas.py)
+Pydantic request/response models with model_config = ConfigDict(from_attributes=True):
+Member schemas: WalletResponse, TransactionResponse, TransactionListResponse, TopupInitiateRequest (bubbles_amount: 25–5000 validation), TopupResponse, TopupListResponse
+Internal schemas: DebitRequest, CreditRequest, BalanceResponse, CheckBalanceRequest/Response, ConfirmTopupRequest
+Admin schemas: AdminWalletListResponse, FreezeWalletRequest, AdjustBalanceRequest, GrantPromotionalRequest, GrantResponse, AdminStatsResponse, AuditLogResponse
+Fields and types match the design doc. DebitRequest/CreditRequest include idempotency_key, service_source, reference_type, reference_id per Section 6.1.
+
+Step 4: Core Business Logic (services/wallet_ops.py)
+create_wallet(db, member_id, member_auth_id)
+
+Check if wallet exists (return existing if so)
+Create wallet with balance=0
+Auto-grant 10 Bubbles welcome bonus: create PromotionalBubbleGrant + WalletTransaction (type=welcome_bonus, direction=credit)
+Update balance to 10, update lifetime_bubbles_received
+
+debit_wallet(db, wallet_id, amount, idempotency_key, ...)
+
+Per design Section 7.1 exactly:
+
+Check idempotency — return existing transaction if key exists
+SELECT FOR UPDATE on wallet row
+Validate status=active, balance >= amount
+Create WalletTransaction record with balance_before/after snapshots
+Update wallet.balance and wallet.lifetime_bubbles_spent
+Commit atomically
+
+
+
+credit_wallet(db, wallet_id, amount, idempotency_key, ...)
+
+Same pattern as debit but adds to balance
+Frozen wallets can still receive credits (refunds)
+Updates lifetime_bubbles_purchased or lifetime_bubbles_received based on transaction_type
+
+check_balance(db, member_auth_id, required_amount)
+
+Read-only check, returns (sufficient: bool, balance: int)
+
+Error classes: InsufficientBalanceError, WalletFrozenError, WalletNotFoundError — raised as HTTPException with appropriate status codes and user-friendly messages from design Section 17.
+
+Step 5: Topup Service (services/topup_service.py)
+initiate_topup(db, member_auth_id, bubbles_amount)
+
+Per design Section 6.2 flow:
+
+Validate wallet exists and is active
+Calculate naira = bubbles × 100
+Create WalletTopup record (status=pending)
+Call payments service: POST /internal/payments/intents with purpose="wallet_topup", amount in kobo
+Store paystack_authorization_url and access_code on topup record
+Return topup with redirect URL
+
+
+
+confirm_topup(db, topup_reference, payment_reference, status)
+
+Called by payments service webhook
+Idempotent: skip if already completed
+Credit wallet using credit_wallet() with idempotency_key topup-{topup_id}
+Update topup status to completed
+
+
+Step 6: Promotional Service (services/promotional_service.py)
+grant_promotional_bubbles(db, wallet_id, amount, grant_type, reason, admin_auth_id, expires_in_days)
+
+Create PromotionalBubbleGrant record
+Credit wallet via credit_wallet()
+Link transaction_id back to grant
+
+
+Step 7: Member Router (router.py)
+Prefix: /wallet, tags: ["wallet"], auth: get_current_user
+MethodPathHandlerGET/wallet/meGet my walletPOST/wallet/createCreate my wallet (also auto on registration)POST/wallet/topupInitiate Bubble purchase → returns Paystack URLGET/wallet/topup/{topup_id}Check topup statusGET/wallet/topupsList my topups (paginated)GET/wallet/transactionsList my transactions (paginated, filterable by type/date)GET/wallet/transactions/{id}Get transaction detailsPOST/wallet/debitDeduct Bubbles (idempotent)POST/wallet/creditAdd Bubbles (idempotent)POST/wallet/check-balanceCheck sufficient Bubbles
+
+Step 8: Admin Router (admin_router.py)
+Prefix: /admin/wallet, tags: ["admin-wallet"], auth: require_admin
+MethodPathHandlerGET/admin/wallet/walletsList all wallets (paginated, filterable)GET/admin/wallet/wallets/{id}Wallet details with transaction summaryPOST/admin/wallet/wallets/{id}/freezeFreeze wallet + audit logPOST/admin/wallet/wallets/{id}/unfreezeUnfreeze + audit logPOST/admin/wallet/wallets/{id}/adjustManual credit/debit + audit logPOST/admin/wallet/grantsIssue promotional BubblesGET/admin/wallet/grantsList all grantsGET/admin/wallet/statsSystem-wide stats (total wallets, active Bubbles, monthly spend/topup)GET/admin/wallet/transactionsAll transactions (filterable)GET/admin/wallet/audit-logAdmin action audit trail
+All admin write operations create WalletAuditLog entries with IP address.
+
+Step 9: Internal Router (internal_router.py)
+Prefix: /internal/wallet, tags: ["internal-wallet"], auth: require_service_role
+MethodPathHandlerPOST/internal/wallet/debitService-to-service debitPOST/internal/wallet/creditService-to-service creditGET/internal/wallet/balance/{auth_id}Check balancePOST/internal/wallet/check-balanceVerify sufficient BubblesPOST/internal/wallet/confirm-topupPayments service confirms topupPOST/internal/wallet/createMembers service creates wallet on registration
+
+Step 10: App Factory (app/main.py)
+Follow payments_service/app/main.py pattern exactly:
+
+create_app() function returning FastAPI instance
+Health check at /health returning {"status": "ok", "service": "wallet"}
+Include routers: wallet_router, admin_router (prefix /wallet to match gateway strip), internal_router
+app = create_app()
+
+Router mounting strategy (matching gateway proxy):
+
+Gateway proxies /api/v1/wallet/{path} → wallet service /wallet/{path}
+Gateway proxies /api/v1/admin/wallet/{path} → wallet service /admin/wallet/{path}
+Internal routes at /internal/wallet/... (not proxied, direct service-to-service)
+
+
+Step 11: Alembic Setup
+alembic.ini — copy from payments_service, change script_location = services/wallet_service/alembic
+alembic/env.py — follow academy_service pattern (the most complete):
+
+Import all 13 models explicitly
+SERVICE_TABLES set with all 13 table names
+version_table="alembic_version_wallet"
+include_object filters to service tables
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+
+alembic/script.py.mako — copy verbatim from any existing service
+
+Step 12: Dockerfile
+Follow payments_service exactly:
+Stage 1 (builder): Copy pyproject.toml, libs/, services/wallet_service/ → pip install
+Stage 2 (runtime): Copy from builder, copy libs/, service, alembic → EXPOSE 8013 → uvicorn
+
+Step 13: Integration Points (Existing Files to Modify)
+
+libs/common/config.py (line ~49) — add WALLET_SERVICE_URL: str = "http://wallet-service:8013"
+services/gateway_service/app/clients.py (line ~117) — add wallet_client = ServiceClient(settings.WALLET_SERVICE_URL)
+services/gateway_service/app/main.py (after store proxy, before AI proxy ~line 356) — add:
+
+/api/v1/wallet/{path:path} → f"/wallet/{path}"
+/api/v1/admin/wallet/{path:path} → f"/admin/wallet/{path}"
+
+
+docker-compose.yml (after volunteer-service, before gateway) — add wallet-service block with port 8013, same pattern as other services. Add to gateway depends_on.
+libs/common/service_client.py (end of file) — add wallet helper functions:
+
+get_wallet_balance(auth_id, *, calling_service)
+debit_member_wallet(auth_id, amount, idempotency_key, ..., *, calling_service)
+credit_member_wallet(auth_id, amount, idempotency_key, ..., *, calling_service)
+check_wallet_balance(auth_id, required_amount, *, calling_service)
+
+
+
+
+Step 14: Generate Migration & Verify
+bashcd swimbuddz-backend
+./scripts/db/migrate.sh wallet_service "initial wallet service - all phase tables"
+# Review generated migration for all 13 tables
+./scripts/db/reset.sh dev
+
+Verification
+
+Service starts: docker compose up wallet-service → health check at localhost:8013/health
+Gateway proxy works: curl localhost:8000/api/v1/wallet/me (with auth header) → returns wallet or 404
+DB tables exist: All 13 tables + alembic_version_wallet created
+Wallet creation: POST to create → wallet with 10 Bubble welcome bonus
+Debit/credit: Internal debit → balance decreases; credit → balance increases
+Idempotency: Replay same idempotency_key → returns existing transaction, no double-charge
+Admin freeze: Freeze wallet → debits fail with "Wallet temporarily suspended"
+Topup initiation: POST topup → returns Paystack URL (or mock in dev)

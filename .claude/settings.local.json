@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(done)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(npx tsc:*)",
+      "Bash(wc:*)",
+      "Bash(python3:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(npm test:*)",
+      "Bash(git push:*)",
+      "Bash(ruff check:*)",
+      "Bash(git add services/academy_service/router.py services/academy_service/tasks.py services/attendance_service/router.py services/communications_service/messaging_router.py services/gateway_service/app/clients.py services/members_service/routers/internal.py services/payments_service/app/main.py tests/contract/test_academy_contract.py tests/factories.py tests/integration/test_academy_public.py tests/integration/test_attendance_internal.py tests/integration/test_members_public.py tests/integration/test_payments.py tests/integration/test_payments_public.py tests/integration/test_sessions_public.py)",
+      "Bash(grep:*)"
+    ]
+  }
+}
