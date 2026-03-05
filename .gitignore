@@ -20,6 +20,3 @@ ngrok
 __pycache__/
 *.pyc
 *.pyo
-
-# Supabase local CLI state (machine-specific, not project config)
-supabase/

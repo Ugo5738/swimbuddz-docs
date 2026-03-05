@@ -118,6 +118,40 @@ This document tracks planned features, improvements, and technical debt for the 
   - **Why**: Automates financial operations
   - **Estimated effort**: 4-5 days
 
+### Store Service
+
+- [ ] **Supplier Model & Marketplace Readiness (Phase 1)**
+  - Add `Supplier` model to store service (`store_suppliers` table)
+  - Add `supplier_id` FK and `cost_price_ngn` to Product model
+  - Add `dropship` and `consignment` to `SourcingType` enum
+  - Seed SwimBuddz as Supplier #001
+  - Generate and run Alembic migration
+  - **Why**: Future-proofs for multi-vendor marketplace without rewrite
+  - **Estimated effort**: 1-2 hours
+  - **Docs**: [SUPPLIER_SYSTEM.md](docs/store/SUPPLIER_SYSTEM.md)
+
+- [ ] **First-Party Store Launch (Phase 1)**
+  - Cart management API endpoints
+  - Checkout workflow (pickup/delivery, Bubbles/Paystack)
+  - Order creation and processing
+  - Member order history UI
+  - Admin product creation and management UI
+  - Gateway proxy routes for `/api/v1/store/*`
+  - Source 3-5 real products (talk to Lagos swim retailer)
+  - Soft launch to existing community members
+  - **Why**: Equips swimmers, increases LTV, creates membership gravity
+  - **Estimated effort**: 2-3 weeks
+
+- [ ] **Vetted Supplier Partners (Phase 2)**
+  - Supplier CRUD admin endpoints and UI
+  - Commission tracking per order
+  - Supplier-scoped product/order/inventory admin views
+  - Payout tracking and management
+  - Supplier notification templates
+  - **Trigger**: ≥100 store orders AND external vendor interest AND 3+ months SLA stability
+  - **Estimated effort**: 1-2 weeks
+  - **Docs**: [SUPPLIER_SYSTEM.md](docs/store/SUPPLIER_SYSTEM.md)
+
 ---
 
 ## 🔧 Low Priority / Nice to Have
@@ -307,16 +341,19 @@ This document tracks planned features, improvements, and technical debt for the 
 ## 📅 Maintenance Tasks
 
 ### Weekly
+
 - [ ] Review logs for errors/warnings
 - [ ] Check cohort status transitions are running
 - [ ] Monitor payment success/failure rates
 
 ### Monthly
+
 - [ ] Database backup verification
 - [ ] Performance review (slow queries, API latency)
 - [ ] Security updates for dependencies
 
 ### Quarterly
+
 - [ ] User feedback review and prioritization
 - [ ] Roadmap planning session
 - [ ] Tech stack evaluation (new tools, frameworks)
@@ -487,4 +524,4 @@ Use this section to list **scoped ideas** that are not part of the current TODO 
 
 ---
 
-*Last updated: January 2026*
+_Last updated: January 2026_

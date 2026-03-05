@@ -20,13 +20,13 @@ The Store provides e-commerce functionality for selling swimming equipment, appa
 
 ## Related Services
 
-| Service | Purpose |
-|---------|---------|
-| **Store Service** | Products, cart, orders, inventory management |
-| **Payments Service** | Order payments, Paystack integration |
-| **Members Service** | Customer profiles, shipping addresses |
-| **Communications Service** | Order confirmations, shipping notifications |
-| **Media Service** | Product images and galleries |
+| Service                    | Purpose                                      |
+| -------------------------- | -------------------------------------------- |
+| **Store Service**          | Products, cart, orders, inventory management |
+| **Payments Service**       | Order payments, Paystack integration         |
+| **Members Service**        | Customer profiles, shipping addresses        |
+| **Communications Service** | Order confirmations, shipping notifications  |
+| **Media Service**          | Product images and galleries                 |
 
 ---
 
@@ -37,22 +37,32 @@ The Store provides e-commerce functionality for selling swimming equipment, appa
 - **[STORE_ARCHITECTURE.md](./STORE_ARCHITECTURE.md)** - Store design and data model
 - **[STORE_OPERATIONS.md](./STORE_OPERATIONS.md)** - Operational workflows
 - **[STORE_FRONTEND.md](./STORE_FRONTEND.md)** - Frontend implementation guide
+- **[SUPPLIER_SYSTEM.md](./SUPPLIER_SYSTEM.md)** - Supplier management, marketplace phases, commission model
 
 ---
 
 ## Implementation Status
 
-**⚠️ Minimal Implementation:**
+**⚠️ Minimal Implementation — Supplier System Planned:**
 
-The Store service has extensive models (20+ models) but minimal routes implemented. Most functionality exists in the data model but lacks API endpoints and frontend implementation.
+The Store service has extensive models but minimal routes implemented. The supplier system has been designed across all three phases — see [SUPPLIER_SYSTEM.md](./SUPPLIER_SYSTEM.md).
 
 ### Implemented ✅
+
 - Comprehensive data models (products, variants, cart, orders)
 - Basic product browsing endpoints
 - Cart model and relationships
 - Order model and status tracking
+- Supplier system architecture (3-phase design documented)
+
+### In Progress 🔲
+
+- Supplier model (`store_suppliers` table)
+- `supplier_id` and `cost_price_ngn` on Product model
+- Expanded `SourcingType` enum (dropship, consignment)
 
 ### Gaps (Not Implemented) ⚠️
+
 - Cart management API endpoints
 - Checkout workflow
 - Order processing
@@ -61,8 +71,10 @@ The Store service has extensive models (20+ models) but minimal routes implement
 - Admin product creation UI
 - Member order history UI
 - Paystack payment integration for store
+- Supplier CRUD admin endpoints (Phase 2)
+- Commission tracking and payouts (Phase 2)
 
-See [STORE_ARCHITECTURE.md](./STORE_ARCHITECTURE.md) and [SERVICE_REGISTRY.md](../reference/SERVICE_REGISTRY.md#10-store-service-minimal) for details.
+See [STORE_ARCHITECTURE.md](./STORE_ARCHITECTURE.md) and [SUPPLIER_SYSTEM.md](./SUPPLIER_SYSTEM.md) for details.
 
 ---
 
@@ -73,6 +85,7 @@ See [STORE_ARCHITECTURE.md](./STORE_ARCHITECTURE.md) and [SERVICE_REGISTRY.md](.
 Products are items available for purchase.
 
 **Key Fields:**
+
 - Name, slug, description
 - Price (base price)
 - Category (apparel, equipment, accessories)
@@ -85,6 +98,7 @@ Products are items available for purchase.
 Variants represent different options for a product (size, color, etc.).
 
 **Example:**
+
 - Product: "SwimBuddz T-Shirt"
 - Variants:
   - Small / Blue
@@ -93,6 +107,7 @@ Variants represent different options for a product (size, color, etc.).
   - etc.
 
 **Key Fields:**
+
 - Product ID
 - Variant attributes (size, color)
 - SKU
@@ -105,6 +120,7 @@ Variants represent different options for a product (size, color, etc.).
 Shopping cart for members.
 
 **Key Fields:**
+
 - Member ID
 - Status (active, abandoned, converted)
 - Items (cart items with product variants and quantities)
@@ -115,6 +131,7 @@ Shopping cart for members.
 Completed purchases.
 
 **Status Lifecycle:**
+
 - `PENDING` - Order created, awaiting payment
 - `PAID` - Payment confirmed
 - `PROCESSING` - Being prepared for shipment
@@ -124,6 +141,7 @@ Completed purchases.
 - `REFUNDED` - Payment refunded
 
 **Key Fields:**
+
 - Order number
 - Member ID
 - Items (order items snapshot)
@@ -137,17 +155,20 @@ Completed purchases.
 ## Frontend Routes
 
 ### Public Routes
+
 - `/store` - Store homepage, featured products
 - `/store/products` - Product catalog
 - `/store/products/[slug]` - Product details
 
 ### Member Routes
+
 - `/store/cart` - Shopping cart
 - `/store/checkout` - Checkout flow
 - `/store/orders` - Order history
 - `/store/orders/[id]` - Order details and tracking
 
 ### Admin Routes
+
 - `/admin/store/products` - Manage products
 - `/admin/store/products/create` - Create product
 - `/admin/store/products/[id]` - Edit product
@@ -162,11 +183,13 @@ Completed purchases.
 See [API_ENDPOINTS.md](../../swimbuddz-backend/API_ENDPOINTS.md#12-store-minimal-routes) for API reference.
 
 **Current Endpoints (Minimal):**
+
 - `GET /api/v1/store/products` - List products
 - `GET /api/v1/store/products/{slug}` - Product details
 - Basic product browsing only
 
 **Needed Endpoints:**
+
 - Cart: GET, POST, PUT, DELETE
 - Checkout: POST
 - Orders: GET (list), GET (detail), POST
@@ -213,23 +236,35 @@ See [UI_FLOWS.md](../../swimbuddz-frontend/UI_FLOWS.md#7-member--browse--purchas
 
 ### Core Tables
 
+**Suppliers:**
+
+- `store_suppliers` - Supplier profiles (SwimBuddz is Supplier #001)
+
 **Products & Inventory:**
-- `products` - Product catalog
-- `product_variants` - Size/color/attribute combinations
-- `product_categories` - Product categorization
-- `product_images` - Product photos
-- `inventory_items` - Stock tracking
+
+- `store_products` - Product catalog (with `supplier_id` FK, `cost_price_ngn`)
+- `store_product_variants` - Size/color/attribute combinations
+- `store_categories` - Product categorization
+- `store_product_images` - Product photos
+- `store_inventory_items` - Stock tracking
 
 **Shopping:**
-- `carts` - Shopping carts
-- `cart_items` - Items in cart
+
+- `store_carts` - Shopping carts
+- `store_cart_items` - Items in cart
 
 **Orders:**
-- `orders` - Completed purchases
-- `order_items` - Items in order (snapshot)
-- `shipping_addresses` - Delivery addresses
 
-See [STORE_ARCHITECTURE.md](./STORE_ARCHITECTURE.md) for complete schema.
+- `store_orders` - Completed purchases
+- `store_order_items` - Items in order (snapshot)
+- `store_pickup_locations` - Pickup points
+
+**Financial:**
+
+- `store_credits` - Store credits for refunds
+- `store_supplier_payouts` - Supplier payout records (Phase 2)
+
+See [STORE_ARCHITECTURE.md](./STORE_ARCHITECTURE.md) and [SUPPLIER_SYSTEM.md](./SUPPLIER_SYSTEM.md) for complete schema.
 
 ---
 
@@ -238,6 +273,7 @@ See [STORE_ARCHITECTURE.md](./STORE_ARCHITECTURE.md) for complete schema.
 ### Payments Service
 
 Store orders create payment intents:
+
 - Order created → Payment intent created
 - Payment confirmed → Order status updated to PAID
 - Payment failed → Order remains PENDING
@@ -245,6 +281,7 @@ Store orders create payment intents:
 ### Communications Service
 
 Order status triggers notifications:
+
 - Order placed → Confirmation email
 - Order shipped → Shipping notification with tracking
 - Order delivered → Delivery confirmation
@@ -252,6 +289,7 @@ Order status triggers notifications:
 ### Members Service
 
 Store integrates with member profiles:
+
 - Saved shipping addresses
 - Purchase history
 - Wishlist (planned)
@@ -261,28 +299,34 @@ Store integrates with member profiles:
 
 ## Completion Roadmap
 
-To fully implement the Store:
+### Phase 1: First-Party Store (Current)
 
-### Phase 1: Core Shopping
+- [ ] Add Supplier model and seed SwimBuddz as Supplier #001
+- [ ] Add `supplier_id` and `cost_price_ngn` to Product model
 - [ ] Cart management endpoints (add, update, remove items)
-- [ ] Checkout workflow (address, payment)
+- [ ] Checkout workflow (pickup/delivery, Bubbles/Paystack)
 - [ ] Order creation and tracking
 - [ ] Member order history UI
+- [ ] Admin product creation UI
+- [ ] Source 3-5 real products
+- [ ] Soft launch to existing members
 
-### Phase 2: Admin Tools
-- [ ] Product creation and editing UI
-- [ ] Inventory management endpoints and UI
-- [ ] Order management dashboard
-- [ ] Order status updates
+### Phase 2: Vetted Supplier Partners
+
+- [ ] Supplier CRUD admin endpoints and UI
+- [ ] Supplier-scoped product/order views
+- [ ] Commission tracking per order
+- [ ] Payout tracking and management
+- [ ] Onboard first external supplier
 
 ### Phase 3: Advanced Features
+
+- [ ] Supplier self-service portal
 - [ ] Product variant management UI
 - [ ] Low-stock alerts
-- [ ] Product reviews and ratings
-- [ ] Wishlist functionality
 - [ ] Discount codes and promotions
 
-See [TODO.md](../../TODO.md) for prioritized Store tasks.
+See [SUPPLIER_SYSTEM.md](./SUPPLIER_SYSTEM.md) for full phase details and transition conditions.
 
 ---
 
@@ -291,11 +335,9 @@ See [TODO.md](../../TODO.md) for prioritized Store tasks.
 - **[STORE_ARCHITECTURE.md](./STORE_ARCHITECTURE.md)** - Complete architecture and data models
 - **[STORE_OPERATIONS.md](./STORE_OPERATIONS.md)** - Operational workflows
 - **[STORE_FRONTEND.md](./STORE_FRONTEND.md)** - Frontend implementation
+- **[SUPPLIER_SYSTEM.md](./SUPPLIER_SYSTEM.md)** - Supplier management, marketplace phases, commission model
 - [SERVICE_REGISTRY.md](../reference/SERVICE_REGISTRY.md) - Store service overview
-- [API_ENDPOINTS.md](../../swimbuddz-backend/API_ENDPOINTS.md) - Store API reference
-- [ROUTES_AND_PAGES.md](../../swimbuddz-frontend/ROUTES_AND_PAGES.md) - Store routes
-- [UI_FLOWS.md](../../swimbuddz-frontend/UI_FLOWS.md) - Store user flows
 
 ---
 
-*Last updated: January 2026*
+_Last updated: February 2026_
