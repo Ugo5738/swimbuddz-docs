@@ -120,4 +120,4 @@ Check which challenge is scheduled this week from the session template. No plann
 
 ---
 
-*Last updated: March 2026*
+*Last updated: April 2026*

@@ -154,7 +154,7 @@ Welcome to SwimBuddz!
 If you're here, someone from our community invited you — or you found us and got curious. Either way, glad you're here.
 
 So what is SwimBuddz?
-We're a swimming community based in Lagos. Every week, we swim together — beginners, intermediate, experienced, everyone. Some of us are learning, some are training, and some just want to stay active and meet great people.
+We're a swimming community currently based in Lagos. Every week, we swim together — beginners, intermediate, experienced, everyone. Some of us are learning, some are training, and some just want to stay active and meet great people.
 
 What we offer:
 
@@ -258,9 +258,9 @@ This data tells you where to deploy ambassadors and when.
 
 ## Summary Checklist — Launching the Program
 
-- [ ] Create the "SwimBuddz — New Here?" group in the WhatsApp community
-- [ ] Pin the welcome message (Section D)
-- [ ] Post the volunteer call on Wednesday (Section B)
+- [x] Create the "SwimBuddz — New Here?" group in the WhatsApp community
+- [x] Pin the welcome message (Section D)
+- [x] Post the volunteer call on Wednesday (Section B)
 - [ ] Brief the first ambassadors using the orientation guide (Section C)
 - [ ] Share the poolside script (Section A) and follow-up template (Section F)
 - [ ] Assign someone to manage the prospects group content rhythm (Section G)
