@@ -106,7 +106,12 @@
       "Bash(du -sh /Users/i/Documents/work/*)",
       "Bash(while read:*)",
       "Bash(do du:*)",
-      "Bash(/Applications/Docker.app/Contents/Resources/bin/docker compose:*)"
+      "Bash(/Applications/Docker.app/Contents/Resources/bin/docker compose:*)",
+      "Bash(/usr/local/bin/docker exec swimbuddz_reporting python3 -c \":*)",
+      "WebFetch(domain:chatgpt.com)",
+      "WebFetch(domain:www.swimbuddz.com)",
+      "Bash(PATH=\"/opt/homebrew/bin:$PATH\" ./node_modules/.bin/tsc --noEmit)",
+      "Bash(head -50 /Users/i/Documents/work/swimbuddz/swimbuddz-frontend/src/app/\\\\\\(sessions\\\\\\)/sessions/[id]/book/_components/RideShareSection.tsx)"
     ]
   }
 }

@@ -256,6 +256,62 @@ This data tells you where to deploy ambassadors and when.
 
 ---
 
+## I. Value Proposition Message — "Why Join Us?"
+
+Use this message when a prospect asks "why should I join?", "what makes this different?", or is clearly weighing up whether SwimBuddz is worth their time. It makes the full case — not just what SwimBuddz is, but why it matters.
+
+### When to Use
+
+- **In DMs:** When a prospect asks a deeper question that the welcome message doesn't cover
+- **In the prospects group:** As a monthly post (no more than once a month) to give newer members the full picture
+- **As a forwarded message:** Admins and ambassadors can save this and forward it when someone needs more than the basics
+
+### When NOT to Use
+
+- Don't post this the same day someone is added to the group — let them settle in first
+- Don't use it as a reply to casual questions like "when do you swim?" — it's too much for a simple question
+- Don't lead with this in poolside conversations — use the script (Section A) instead
+
+### The Message
+
+---
+
+*SwimBuddz — Why Join Us?*
+
+Most people try to learn swimming and stop. They take a few lessons, life gets busy, and it never becomes a real part of their life.
+
+SwimBuddz exists to make sure that doesn't happen to you.
+
+We don't just teach you to swim — we make you a swimmer. That means you actually show up consistently, you improve over time, and you have people to swim with long after your first lesson.
+
+*Here's how it works:*
+
+🏊🏾 You start with the Academy — a structured beginner cohort where you go from zero to swimming 50 meters with proper freestyle technique. Certified coaches. Small groups. Every Saturday. You get a certificate when you complete it.
+
+🤝 You join a community that keeps you going — After training, you don't swim alone. You join a club group that swims together weekly. Same people, same time. Accountability built in.
+
+📈 Your progress is tracked — You can actually see yourself improving. Challenges, milestones, leaderboards. It's not just exercise — it's a journey with clear markers.
+
+🧴 We handle the things you didn't know to worry about — Like how chlorine affects your skin (we have a dermatologist for that), or which goggles actually fit (community-tested gear recommendations).
+
+🌊 It gets bigger than the pool — Open water swimming trips. In-house competitions. Events both in Nigeria and internationally. You'll swim in places you never imagined when you're just learning to float right now.
+
+👥 You meet good people — The kind of people who choose to wake up on Saturday morning and do something hard. Professionals, creatives, parents, adventurers. The network builds itself.
+
+Next step: Register at swimbuddz.com and we'll get you into the next cohort.
+
+Have questions? Just ask — happy to answer anything specific to your situation.
+
+---
+
+### Notes
+
+- **No pricing in this message.** Pricing conversations happen in DMs or on the website — not in the group. If someone asks about cost after reading this, reply privately.
+- This message works best after someone has already seen a few session recaps and photos in the group. Context makes it land harder.
+- Feel free to personalise the intro when sending in DMs: "Hey [Name], you asked what makes us different — here's the full picture:"
+
+---
+
 ## Summary Checklist — Launching the Program
 
 - [x] Create the "SwimBuddz — New Here?" group in the WhatsApp community
