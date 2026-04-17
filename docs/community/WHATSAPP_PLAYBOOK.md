@@ -1,27 +1,56 @@
 # SwimBuddz Community WhatsApp Playbook
 
-*Last updated: April 2026*
+*Last updated: 2026-04-17*
 
 ## Purpose
 
-The WhatsApp group is the heartbeat of the SwimBuddz community. It's where members connect between sessions, where prospective members get a feel for the culture, and where the community stays alive even when nobody's in the water. This playbook defines the weekly rhythm, content formats, and moderation approach.
+WhatsApp is the heartbeat of the SwimBuddz community. It's where members connect between sessions, where prospective members get a feel for the culture, and where the community stays alive even when nobody's in the water. This playbook defines the group structure, weekly rhythm, content formats, and moderation approach.
 
 ---
 
-## Group Setup
+## Group Structure (WhatsApp Community)
 
-**Group name:** SwimBuddz Community
-**Group description:** Lagos' swimming community. Sessions, events, conversations, and everything swimming. swimbuddz.com
+SwimBuddz uses a **WhatsApp Community** (WhatsApp's feature that groups related chats under one parent). This separates audiences by intent while keeping everything under one roof.
 
-**Who's in the group:**
-- All active members (community, club, and academy)
-- Prospective members who've shown interest (open admission — this is the top of the funnel)
-- SwimBuddz team and coaches
+### Groups inside the Community
 
-**Admins:**
-- Founder (always)
-- Community manager / designated moderator
-- Peer leaders (club group leaders) — post permissions, not full admin
+| Group | Who's in it | Purpose |
+|-------|-------------|---------|
+| **SwimBuddz - New Here?** | Prospective members who found us via social, referral, or the site's link-in-bio | Low-pressure entry point. People introduce themselves, ask questions, observe the culture before committing. This is the WA group linked from [swimbuddz.com/links](../../swimbuddz-frontend/src/app/(public)/links/page.tsx). |
+| **SwimBuddz Community** | All active members — community, club, and academy | Main cross-layer group. Spotlights, question of the week, session recaps, general swim chat. |
+| **Club Saturday groups** (one per location/group leader) | Members in that specific club group | Logistics for the Saturday session — who's coming, challenge of the week, post-session photos. Run by the peer leader for that group. |
+| **Academy cohort groups** (one per live cohort) | Students + coach for that 12-week cohort | Cohort-specific coordination — session reminders, skill videos, questions about that week's theme. Archived when the cohort ends. |
+| **SwimBuddz team** (admin-only) | Founder, community manager, coaches | Internal coordination, not for members. |
+
+**Community invite link (used in IG/TikTok bio via `/links`):** the "SwimBuddz - New Here?" group. Prospects land here first; they're moved or invited into the main Community group once they sign up for Academy, Club, or buy a Community membership.
+
+### Group descriptions
+
+- **SwimBuddz - New Here?** — "New to SwimBuddz? Say hi 👋 Ask anything. We'll point you to the right programme. swimbuddz.com/links"
+- **SwimBuddz Community** — "Lagos' swimming community. Sessions, events, conversations, and everything swimming. swimbuddz.com"
+- **Club Saturday groups** — "[Location] Saturday crew. Logistics + hype for our weekly sessions."
+- **Academy cohort groups** — "[Cohort name] • [Weeks X–Y] • Coach [Name]"
+
+### Admins
+
+- **Founder** — admin on every group
+- **Community manager / designated moderator** — admin on New Here?, main Community, and team group
+- **Peer leaders (club group leaders)** — admin on their own Saturday group; post permissions (not full admin) on the main Community
+- **Coaches** — admin on their own active cohort groups
+
+### Flow between groups
+
+```
+Instagram/TikTok bio → swimbuddz.com/links → "New Here?" group
+                                                    ↓
+                               signs up for Academy / Club / Community
+                                                    ↓
+                                       added to "SwimBuddz Community"
+                                              + relevant cohort or
+                                              Club Saturday group
+```
+
+Nobody is in "New Here?" forever. Once they convert (or if they go quiet for 6+ weeks), they're moved out. Keeps the group fresh for actual new arrivals.
 
 ---
 
