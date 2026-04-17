@@ -25,6 +25,8 @@ Don't stack fees. If someone has to pay community + club, the mental math become
 - Kicks in after the free first month post-academy
 - By then they've had 16 Saturdays in a row — paying to continue feels natural
 
+Lead with the quarterly price. Only mention the longer commitments if someone asks about discounts — don't overwhelm new prospects with options. (And there is no standalone paid 1-month package — the only "1 month" in SwimBuddz is the free month that comes with academy graduation.)
+
 ### Community: N20,000/year
 
 - Entry point for people who can already swim and just want access to the broader network, events, gear recommendations
@@ -47,6 +49,12 @@ Every tier includes the one below it. Nobody pays twice. Every transition has a 
 The transition from academy to club is where you'll lose people. Your cohort runs 12 weeks. Then 4-week gap. If during that gap you also ask them to pay again, most will say "let me take a break and think about it." They won't come back. The habit dies in that gap.
 
 Including the first month of club in the academy fee solves this. They graduate on Saturday, and the next Saturday they're already part of a club group — no friction, no payment, no decision.
+
+### The bridge does three things
+
+- Removes payment friction at the most vulnerable moment
+- Keeps the habit unbroken (16+ consecutive Saturdays)
+- By the time the quarter payment hits, they're already embedded in the club community
 
 ---
 

@@ -23,17 +23,16 @@ swimbuddz/
 ├── ANTIGRAVITY_PLAYBOOK.md            # AI agent workflow guidelines
 │
 ├── docs/                              # 📚 Centralized documentation
-│   ├── reference/                     # Reference documentation
-│   │   ├── SERVICE_REGISTRY.md        # Complete backend service registry
-│   │   └── DATABASE_SCHEMA.md         # Database schema reference (TODO)
-│   ├── ACADEMY_REVIEW.md              # Academy feature audit (784 lines)
-│   ├── STORE_ARCHITECTURE.md          # E-commerce module design
-│   ├── STORE_OPERATIONS.md            # Store operations playbook
-│   └── STORE_FRONTEND.md              # Store UI/UX planning
-│
-├── docs-archive/                      # 🗄️ Archived/outdated documentation
-│   ├── PRODUCT_ANALYSIS.md            # Original product analysis (outdated status)
-│   └── ACADEMY_IMPLEMENTATION_ROADMAP.md # Original academy roadmap
+│   ├── academy/                       # Academy layer (programs, cohorts, coaches)
+│   ├── club/                          # Club layer (training, peer leaders, pricing)
+│   ├── community/                     # Community layer (events, WhatsApp, tiers)
+│   ├── store/                         # Store layer (e-commerce, suppliers)
+│   ├── company/                       # Vision, brand, advisor insights, seasonality
+│   ├── design/                        # Architecture design docs (homepage, wallet, rewards)
+│   ├── guides/                        # How-to guides (Supabase, email templates)
+│   ├── launch/                        # Pre-launch readiness checklist
+│   ├── marketing/                     # Social playbook, content calendar, creator agreement
+│   └── reference/                     # Engineering reference (service registry, schema)
 │
 ├── swimbuddz-backend/                 # Backend documentation
 │   ├── README.md                      # Backend getting started guide
@@ -76,7 +75,7 @@ swimbuddz/
 | [swimbuddz-backend/ARCHITECTURE.md](./swimbuddz-backend/ARCHITECTURE.md) | Microservices architecture | Gateway pattern, service boundaries, data flow |
 | [swimbuddz-frontend/ARCHITECTURE.md](./swimbuddz-frontend/ARCHITECTURE.md) | Next.js app structure | App Router, layouts, component patterns |
 | [docs/reference/SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md) | **Complete service registry** | All 11 services with ports, status, models |
-| [docs/STORE_ARCHITECTURE.md](./docs/STORE_ARCHITECTURE.md) | E-commerce module design | Product models, cart, orders, inventory |
+| [docs/store/STORE_ARCHITECTURE.md](./docs/store/STORE_ARCHITECTURE.md) | E-commerce module design | Product models, cart, orders, inventory |
 
 ### API & Data
 
@@ -91,10 +90,53 @@ swimbuddz/
 
 | Domain | README | Key Documentation |
 |--------|--------|-------------------|
-| **Community** | [docs/community/README.md](./docs/community/README.md) | Events, social swimming, casual engagement |
-| **Club** | [docs/club/README.md](./docs/club/README.md) | Training sessions, attendance tracking, ride-sharing |
-| **Academy** | [docs/academy/README.md](./docs/academy/README.md) | Programs, cohorts, curriculum, milestones |
-| **Store** | [docs/store/README.md](./docs/store/README.md) | E-commerce, products, orders, inventory |
+| **Community** | [docs/community/README.md](./docs/community/README.md) | Events, social swimming, WhatsApp, tier boundaries |
+| **Club** | [docs/club/README.md](./docs/club/README.md) | Training sessions, peer leaders, pricing strategy |
+| **Academy** | [docs/academy/README.md](./docs/academy/README.md) | Programs, cohorts, curriculum, coaches, milestones |
+| **Store** | [docs/store/README.md](./docs/store/README.md) | E-commerce, products, orders, supplier system |
+
+### Company, Brand & Strategy
+
+| Document | Description | Audience |
+|----------|-------------|----------|
+| [docs/company/ABOUT_SWIMBUDDZ.md](./docs/company/ABOUT_SWIMBUDDZ.md) | Strategic vision: Trinity model (Community → Academy → Club) | Exec, All |
+| [docs/company/VOICE_AND_TONE.md](./docs/company/VOICE_AND_TONE.md) | Brand voice guidelines | All, Marketing |
+| [docs/company/ADULT_LEARNING_PRINCIPLES.md](./docs/company/ADULT_LEARNING_PRINCIPLES.md) | Andragogy framework for adult swim instruction | Coaches, Trainers |
+| [docs/company/ADVISOR_INSIGHTS_ROLF_FEB2026.md](./docs/company/ADVISOR_INSIGHTS_ROLF_FEB2026.md) | Advisor feedback on roadmap and priorities | Exec |
+| [docs/company/SEASONALITY_MODEL.md](./docs/company/SEASONALITY_MODEL.md) | Lagos seasonality model (rainy/dry, school calendar, salary cycles) | Operator, Exec |
+| [docs/company/POOL_PARTNERSHIP_AGREEMENT.md](./docs/company/POOL_PARTNERSHIP_AGREEMENT.md) | Pool access & partnership agreement template (legal) | Partnerships, Legal |
+
+### Design & Feature Architecture
+
+| Document | Description | Audience |
+|----------|-------------|----------|
+| [docs/design/HOMEPAGE_UX_AUDIT.md](./docs/design/HOMEPAGE_UX_AUDIT.md) | UX audit of homepage conversion and messaging | Designer, Product |
+| [docs/design/HOMEPAGE_IMPLEMENTATION_GUIDE.md](./docs/design/HOMEPAGE_IMPLEMENTATION_GUIDE.md) | Frontend specs for homepage sections | Engineer |
+| [docs/design/NOTIFICATION_ARCHITECTURE.md](./docs/design/NOTIFICATION_ARCHITECTURE.md) | In-app/email/SMS/push notification system design | Engineer |
+| [docs/design/REWARDS_ENGINE_DESIGN.md](./docs/design/REWARDS_ENGINE_DESIGN.md) | Event-driven Bubbles rewards engine | Engineer, Product |
+| [docs/design/WALLET_SERVICE_DESIGN.md](./docs/design/WALLET_SERVICE_DESIGN.md) | Backend design for Bubbles closed-loop wallet | Engineer |
+| [docs/design/WALLET_FRONTEND_PLAN.md](./docs/design/WALLET_FRONTEND_PLAN.md) | Frontend specs for Bubbles wallet UI | Engineer |
+
+### Marketing & Content
+
+| Document | Description | Audience |
+|----------|-------------|----------|
+| [docs/marketing/swimbuddz_social_media_playbook.docx](./docs/marketing/swimbuddz_social_media_playbook.docx) | Growth strategy: IG + TikTok, funnel, launch plan, DM scripts | Marketer |
+| [docs/marketing/swimbuddz_content_calendar.xlsx](./docs/marketing/swimbuddz_content_calendar.xlsx) | 12-week content calendar with captions and metrics tracker | Marketer |
+| [docs/marketing/swimbuddz_content_templates.docx](./docs/marketing/swimbuddz_content_templates.docx) | Caption templates by pillar, filming briefs, WhatsApp repurpose | Marketer |
+| [docs/marketing/SwimBuddz_Content_Creator_Agreement.docx](./docs/marketing/SwimBuddz_Content_Creator_Agreement.docx) | Legal agreement template for content creators | Legal, Creators |
+
+### Launch & Go-Live
+
+| Document | Description | Audience |
+|----------|-------------|----------|
+| [docs/launch/launch_readiness.md](./docs/launch/launch_readiness.md) | Pre-launch checklist (legal, onboarding, trust/safety, footer) | Product, Ops |
+
+### Guides
+
+| Document | Description | Audience |
+|----------|-------------|----------|
+| [docs/guides/SUPABASE_EMAIL_TEMPLATES.md](./docs/guides/SUPABASE_EMAIL_TEMPLATES.md) | Transactional email templates (welcome, password reset, etc.) | Engineer |
 
 ### Feature Documentation
 
@@ -134,7 +176,7 @@ swimbuddz/
 |----------|-------------|-------------|
 | [swimbuddz-backend/DEPLOY_ENV_GPG.md](./swimbuddz-backend/DEPLOY_ENV_GPG.md) | Environment configuration | Production, Staging |
 | [swimbuddz-frontend/DEPLOYMENT.md](./swimbuddz-frontend/DEPLOYMENT.md) | Vercel deployment guide | Production |
-| [docs/STORE_OPERATIONS.md](./docs/STORE_OPERATIONS.md) | Store operations playbook | Day-to-day operations |
+| [docs/store/STORE_OPERATIONS.md](./docs/store/STORE_OPERATIONS.md) | Store operations playbook | Day-to-day operations |
 
 ### AI Agent Guides
 
@@ -239,11 +281,11 @@ swimbuddz/
 | Attendance | 8003 | Production | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#4-attendance-service-port-8003) |
 | Communications | 8004 | Production | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#5-communications-service-port-8004) |
 | Payments | 8005 | Production | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#6-payments-service-port-8005) |
-| **Academy** | 8006 | **Production** | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#7-academy-service-port-8006-) + [ACADEMY_REVIEW.md](./docs/ACADEMY_REVIEW.md) |
+| **Academy** | 8006 | **Production** | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#7-academy-service-port-8006-) + [ACADEMY_REVIEW.md](./docs/academy/ACADEMY_REVIEW.md) |
 | Events | 8007 | Minimal | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#8-events-service-port-8007) |
 | Media | 8008 | Minimal | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#9-media-service-port-8008) |
 | Transport | 8009 | Production | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#10-transport-service-port-8009) |
-| Store | 8010 | Minimal | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#11-store-service-port-8010) + [STORE_ARCHITECTURE.md](./docs/STORE_ARCHITECTURE.md) |
+| Store | 8010 | Minimal | [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md#11-store-service-port-8010) + [STORE_ARCHITECTURE.md](./docs/store/STORE_ARCHITECTURE.md) |
 
 ### Frontend (103 pages)
 
@@ -276,10 +318,6 @@ swimbuddz/
 ### ⚠️ Needs Expansion
 - API_ENDPOINTS.md - Only covers core services (needs Academy, Payments, Store, Events, Media, Transport)
 - DATABASE_SCHEMA.md - Not yet created (TODO)
-
-### 🗄️ Archived (Outdated)
-- PRODUCT_ANALYSIS.md - Original analysis (moved to docs-archive/)
-- ACADEMY_IMPLEMENTATION_ROADMAP.md - Original roadmap (moved to docs-archive/)
 
 ---
 
@@ -318,4 +356,4 @@ swimbuddz/
 
 ---
 
-*Last updated: February 2026*
+*Last updated: April 2026*
