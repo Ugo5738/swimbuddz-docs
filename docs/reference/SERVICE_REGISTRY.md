@@ -17,9 +17,13 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 | **media_service** | 8008 | Minimal | Photo/video galleries, albums, site assets | `/gallery/*`, `/admin/gallery/*` |
 | **transport_service** | 8009 | Production | Ride-sharing system, pickup locations, route management | `/admin/transport/*` |
 | **store_service** | 8010 | Minimal | E-commerce, products, cart, orders, inventory | `/store/*`, `/admin/store/*` |
+| **ai_service** | 8011 | Production | AI scoring: cohort complexity, coach grading, coach-cohort matching | Consumed by academy workflows (internal) |
 | **volunteer_service** | 8012 | Production | Volunteer roles, opportunities, scheduling, hours tracking, tiers, rewards | `/community/volunteers/*`, `/admin/community/volunteers/*` |
 | **wallet_service** | 8013 | Production | "Bubbles" closed-loop credit system, topups, transactions, grants, audit | `/account/wallet/*`, `/admin/wallet/*` |
-| **identity_service** | N/A | Placeholder | *Planned: Identity aggregation and RBAC* | Not implemented |
+| **pools_service** | 8014 | Production | Pool registry, partnership CRM, submissions workflow, assets/contacts/visits | `/admin/settings/pools/*`, public pool listings |
+| **reporting_service** | 8015 | Production | Analytics & reports: member insights, community analytics, admin dashboards, seasonality forecasting | `/account/insights`, `/admin/analytics`, `/admin/reports/*` |
+| **chat_service** | 8016 | Planned | Real-time messaging across cohorts, pods, events, trips, DMs; safeguarding enforcement. See [design doc](../design/CHAT_SERVICE_DESIGN.md) | `/account/chat/*`, `/admin/chat/*` (planned) |
+| **identity_service** | — | Deprecated placeholder | Empty directory; authentication is handled by Supabase JWT via `libs/auth`. Not implementing — documented here so it isn't confused with a missing service. | N/A |
 
 ---
 
@@ -272,7 +276,7 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 **Migrations:** Yes (Alembic)
 
-**README:** *Missing - needs creation*
+**README:** [transport_service/README.md](../../swimbuddz-backend/services/transport_service/README.md)
 
 ---
 
@@ -306,7 +310,53 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 ---
 
-### 12. Wallet Service (Port 8013)
+### 12. AI Service (Port 8011)
+
+**Implementation:** `services/ai_service/`
+
+**Purpose:** Machine-scoring engine for academy and coaching workflows. Currently produces cohort complexity scores, coach performance grades, and coach-cohort match suggestions. Designed to grow into broader ML/AI scoring across the platform.
+
+**Status:** Production
+
+**Key Modules:**
+- `scoring/` — scoring logic (complexity, grading, suggestions)
+- `providers/` — provider abstractions (LLM / deterministic scorers)
+- `models/core.py` — scoring records, audit/history
+
+**Key Endpoints (member/admin-facing via gateway):**
+- `POST /ai/score/cohort-complexity` — score a cohort's complexity
+- `POST /ai/score/coach-grade` — grade coach performance
+- `POST /ai/score/suggest-coach` — recommend coaches for a cohort
+
+**Consumers:** Primarily `academy_service` admin workflows; frontend surfaces under `/admin/academy/*`.
+
+**Database:** Scoring records and audit history (migrations present)
+
+**Note:** Historically undocumented in this registry — added 2026-04-19.
+
+---
+
+### 13. Volunteer Service (Port 8012)
+
+**Implementation:** `services/volunteer_service/`
+
+**Purpose:** Volunteer programme: roles, opportunities, scheduling, hours tracking, tiers, rewards.
+
+**Status:** Production
+
+**Key Endpoints:**
+- `/volunteers/*` — volunteer self-service
+- `/admin/community/volunteers/*` — admin management
+
+**Frontend Integration:** `/community/volunteers/*`, `/admin/community/volunteers/*`
+
+**Migrations:** Yes (Alembic)
+
+**Note:** Overview row existed previously but detail section was missing — added 2026-04-19.
+
+---
+
+### 14. Wallet Service (Port 8013)
 
 **Implementation:** `services/wallet_service/`
 
@@ -338,17 +388,87 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 ---
 
-### 13. Identity Service (Not Implemented)
+### 15. Pools Service (Port 8014)
 
-**Implementation:** `services/identity_service/` (empty directory)
+**Implementation:** `services/pools_service/`
 
-**Purpose:** *Planned* - Identity aggregation, role-based access control (RBAC) coordination.
+**Purpose:** Pool venue registry and partnership CRM. Tracks pool facilities, partnership agreements, contacts, on-site assets, status changes, visits, and handles the submissions workflow for new pool partnerships.
 
-**Status:** **Placeholder only** - No models, no routes, no functionality
+**Status:** Production
 
-**Current Approach:** Authentication handled via Supabase JWT validation in `libs/auth/dependencies.py`
+**Key Models:**
+- `Pool`, `PoolContact`, `PoolAgreement`, `PoolAsset`
+- `PoolStatusChange`, `PoolVisit`, `PoolSubmission`
 
-**Note:** CLAUDE.md incorrectly lists this as implemented. This service is entirely unimplemented and should be removed from active documentation or marked as "Future/Planned."
+**Key Endpoints:**
+- `public.py` — public pool listings
+- `submissions.py` — public-facing submission intake for new pool partnerships
+- `admin.py`, `admin_related.py`, `admin_submissions.py` — admin CRM
+
+**Database:** Full partnership CRM schema (migrations present)
+
+**Frontend Integration:** `/admin/settings/pools/*`; public pool listing surfaces
+
+**Note:** Historically undocumented in this registry — added 2026-04-19.
+
+---
+
+### 16. Reporting Service (Port 8015)
+
+**Implementation:** `services/reporting_service/`
+
+**Purpose:** Analytics and reporting across members, community, and admin. Produces member insights (quarterly reports, progress cards), community analytics, administrative dashboards, and seasonality forecasting tied to the SEASONALITY_MODEL.
+
+**Status:** Production
+
+**Key Modules:**
+- `models/core.py`, `models/enums.py`, `models/seasonality.py`
+- `tasks/` — background generation of reports
+- `assets/` — static assets used in reports
+- `cli/` — CLI entrypoints for on-demand report generation
+
+**Key Endpoints:**
+- `/reports/*` — member reports
+- `/reports/community/*` — aggregate community insights
+- `/admin/reports/*` — business dashboards
+- `/admin/reports/seasonality/*` — Lagos demand/seasonality forecasts
+- `internal.py` — service-to-service report fetches
+
+**Frontend Integration:** `/account/insights`, `/admin/analytics`
+
+**Note:** Historically undocumented in this registry — added 2026-04-19.
+
+---
+
+### 17. Chat Service (Port 8016) — Planned
+
+**Implementation:** `services/chat_service/` (scaffolding pending)
+
+**Purpose:** Real-time, persistent, role-aware messaging across SwimBuddz. Covers cohort channels, pod channels, event channels, trip channels, location/community channels, alumni, support DMs, and coach↔parent DMs. Safeguarding rules enforced at the API boundary.
+
+**Status:** **Planned — design approved, Phase 0 scaffolding not yet committed.** Port 8016 (reassigned from initial 8011 on 2026-04-19 due to conflict with ai_service).
+
+**Design doc:** [docs/design/CHAT_SERVICE_DESIGN.md](../design/CHAT_SERVICE_DESIGN.md)
+
+**Key planned models:**
+- `ChatChannel`, `ChatChannelMember`, `ChatMessage`
+- `ChatMessageReaction`, `ChatMessageRead`, `ChatMessageReport`, `ChatAuditLog`
+
+**Planned frontend integration:** `/account/chat/*`, `/admin/chat/*`
+
+---
+
+### 18. Identity Service (Deprecated Placeholder)
+
+**Implementation:** `services/identity_service/` (empty directory — 2 lines total, not in any docker-compose)
+
+**Purpose:** Previously reserved for identity aggregation / RBAC coordination. No longer planned.
+
+**Status:** **Deprecated placeholder.** Not implementing.
+
+**Current approach:** Authentication is handled via Supabase JWT validation in `libs/auth/dependencies.py`. RBAC is checked per-service using shared helpers. No dedicated identity service needed.
+
+**Recommendation:** Directory could be deleted; kept for now to avoid churn and because deletion requires cross-repo grep to ensure nothing references it. Documented here so it's not mistaken for a missing/broken service.
 
 ---
 
@@ -356,7 +476,7 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 ### Request Flow
 ```
-Client → Gateway (8000) → Domain Service (8001-8013) → Database
+Client → Gateway (8000) → Domain Service (8001-8016) → Database
 ```
 
 ### Inter-Service Communication
@@ -391,27 +511,44 @@ Each service must:
 ### Port Allocation
 
 - 8000: Gateway (reserved)
-- 8001-8010: Domain services (assigned)
-- 8012: Volunteer Service
-- 8013: Wallet Service
-- 8014+: Available for new services
+- 8001: Members
+- 8002: Sessions
+- 8003: Attendance
+- 8004: Communications
+- 8005: Payments
+- 8006: Academy
+- 8007: Events
+- 8008: Media
+- 8009: Transport
+- 8010: Store
+- 8011: AI
+- 8012: Volunteer
+- 8013: Wallet
+- 8014: Pools
+- 8015: Reporting
+- 8016: Chat (planned — see [docs/design/CHAT_SERVICE_DESIGN.md](../design/CHAT_SERVICE_DESIGN.md))
+- 8017+: Available for new services
+
+> **Important:** Before allocating a new port, cross-check `swimbuddz-backend/docker-compose.yml` — that is the source of truth. This registry must be updated whenever docker-compose changes.
 
 ---
 
 ## Quick Reference
 
-**Production Services:** gateway, members, sessions, attendance, communications, payments, academy, transport, volunteer, wallet
+**Production Services:** gateway, members, sessions, attendance, communications, payments, academy, transport, ai, volunteer, wallet, pools, reporting
 
 **Minimal/Incomplete Services:** events, media, store (have models but limited routes)
 
-**Placeholder:** identity (no implementation)
+**Planned:** chat (port 8016 — design approved, scaffolding pending)
+
+**Deprecated placeholder:** identity (empty; auth handled by Supabase)
 
 **Most Complete Domain Models:**
-1. Academy (20,332 lines) - Full cohort management system
-2. Wallet (13 tables, 10 enums) - Closed-loop credit system
-3. Transport (6,229 lines) - Complete ride-sharing platform
-4. Store (998 lines) - E-commerce foundation
+1. Academy (20,332 lines) — Full cohort management system
+2. Wallet (13 tables, 10 enums) — Closed-loop credit system
+3. Transport (6,229 lines) — Complete ride-sharing platform
+4. Store (998 lines) — E-commerce foundation
 
 ---
 
-*Last updated: January 2026*
+*Last updated: 2026-04-19 — added ai_service (8011), pools_service (8014), reporting_service (8015), chat_service (8016, planned); clarified identity_service as deprecated; added detail section for volunteer_service.*

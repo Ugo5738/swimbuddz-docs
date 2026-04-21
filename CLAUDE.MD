@@ -22,7 +22,9 @@ cd swimbuddz-backend && pytest tests/
 cd swimbuddz-frontend && npm test
 ```
 
-**Service Ports:** Gateway (8000) | Members (8001) | Sessions (8002) | Attendance (8003) | Communications (8004) | Payments (8005) | Academy (8006) | Events (8007) | Media (8008) | Transport (8009) | Store (8010)
+**Service Ports:** Gateway (8000) | Members (8001) | Sessions (8002) | Attendance (8003) | Communications (8004) | Payments (8005) | Academy (8006) | Events (8007) | Media (8008) | Transport (8009) | Store (8010) | AI (8011) | Volunteer (8012) | Wallet (8013) | Pools (8014) | Reporting (8015) | Chat (8016, planned)
+
+> **Source of truth:** `swimbuddz-backend/docker-compose.yml`. Keep [docs/reference/SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md) in sync whenever ports or services change. Don't trust port lists anywhere else — always cross-check.
 
 **Decision Tree:**
 1. Does it touch auth? → Check Supabase docs + `libs/auth`
@@ -114,7 +116,7 @@ Before making changes, read these files:
 
 ### 2. Understanding the Codebase
 
-**Backend Services** (Ports 8000-8010):
+**Backend Services** (Ports 8000-8016):
 - `gateway_service` (8000) - API Gateway (single entry point, proxies to all services)
 - `members_service` (8001) - Member registration and profiles
 - `sessions_service` (8002) - Swim sessions and events
@@ -126,10 +128,16 @@ Before making changes, read these files:
 - `media_service` (8008) - Photo/video galleries and site assets (minimal implementation)
 - `transport_service` (8009) - Ride-sharing system and route management
 - `store_service` (8010) - E-commerce platform (minimal routes, extensive models)
+- `ai_service` (8011) - AI scoring: cohort complexity, coach grading, coach-cohort matching
+- `volunteer_service` (8012) - Volunteer roles, opportunities, hours tracking, tiers, rewards
+- `wallet_service` (8013) - "Bubbles" closed-loop credit system
+- `pools_service` (8014) - Pool registry, partnership CRM, submissions workflow
+- `reporting_service` (8015) - Analytics & reports (member insights, admin dashboards, seasonality)
+- `chat_service` (8016) - **Planned** in-app real-time messaging (design approved; scaffolding pending). See [docs/design/CHAT_SERVICE_DESIGN.md](./docs/design/CHAT_SERVICE_DESIGN.md).
 
 **Service Communication Pattern:**
 ```
-Client → Gateway (8000) → Individual Service (800X)
+Client → Gateway (8000) → Individual Service (8001-8016)
                 ↓
          Supabase Auth Validation (libs/auth)
                 ↓
@@ -318,6 +326,11 @@ The Model Context Protocol allows AI agents to interact with the SwimBuddz backe
 - Payment processing and Paystack integration (Payments Service)
 - Academy programs with cohort management (Academy Service - see [ACADEMY_REVIEW.md](./docs/ACADEMY_REVIEW.md))
 - Transport/ride-sharing system (Transport Service)
+- AI scoring (AI Service — cohort complexity, coach grading, coach-cohort matching)
+- Volunteer programme (Volunteer Service)
+- Bubbles wallet (Wallet Service)
+- Pool registry and partnership CRM (Pools Service)
+- Analytics & reporting (Reporting Service — member insights, admin dashboards, seasonality)
 - Admin dashboards for all domains
 
 ### Minimal Implementation (Models exist, limited routes)
@@ -325,10 +338,13 @@ The Model Context Protocol allows AI agents to interact with the SwimBuddz backe
 - **Media Service** - Photo/video galleries (basic endpoints only)
 - **Store Service** - E-commerce platform (extensive models, basic routes)
 
+### Planned
+- **Chat Service** (port 8016) — In-app real-time messaging; design approved, scaffolding pending. See [CHAT_SERVICE_DESIGN.md](./docs/design/CHAT_SERVICE_DESIGN.md).
+
 ### Implementation Gaps
 - **Academy Service gaps:** Coach dashboard, capacity enforcement, waitlist automation, enrollment notifications
 - **Club vs Community distinction:** Session model is generic, needs type-based filtering
-- **Identity Service:** Planned but not implemented (Supabase auth used instead)
+- **Identity Service:** Deprecated placeholder — empty directory, not implementing. Authentication is handled by Supabase JWT via `libs/auth`.
 
 See [TODO.md files](./DOCUMENTATION_INDEX.md#task-tracking) for detailed task lists and [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md) for complete service status.
 
@@ -682,7 +698,7 @@ try {
 **Backend won't start:**
 ```bash
 # Check if ports are in use
-lsof -i :8000-8010
+lsof -i :8000-8016
 
 # Restart Docker
 docker-compose down && docker-compose up --build
@@ -767,7 +783,7 @@ docker compose up gateway academy-service members-service
 docker compose logs -f <service_name>
 
 # Gateway available at localhost:8000
-# Individual services at localhost:8001-8010
+# Individual services at localhost:8001-8016
 ```
 
 ### Frontend Setup

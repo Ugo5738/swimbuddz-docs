@@ -8,9 +8,14 @@ These are roles defined within the software platform that control access to feat
 | Role | Access Level | Responsibilities |
 |------|--------------|------------------|
 | **Platform Admin** | Full Access | Global system configuration, user management, sensitive data access (`require_admin`). |
-| **Coach** | Coach Dashboard | Managing assigned cohorts, tracking student progress, marking attendance (`require_coach` - *proposed*). |
+| **Safeguarding Admin** | Safeguarding queue | Reviews reported content, approves/quarantines flagged media, verifies guardian links, manages code-of-conduct acceptance. **Not automatically granted to Platform Admins** — assigned explicitly. Gated by `require_safeguarding_admin`. See [CHAT_SERVICE_DESIGN.md](../design/CHAT_SERVICE_DESIGN.md) §6. |
+| **Coach** | Coach Dashboard | Managing assigned cohorts, tracking student progress, marking attendance (`require_coach`). |
 | **Member** | Member Dashboard | Basic user role. Can enroll in programs, view personal progress. |
-| **Guardian/Parent** | Linked Account | Managing enrollments for under-18 members (*Future/Nice-to-Have*). |
+| **Guardian/Parent** | Linked Account | An adult member linked to a minor member via `GuardianLink` (members_service). Must be verified by an admin before granting safeguarding-sensitive access (e.g. entering a coach–minor DM). |
+
+### Role storage
+
+Roles are stored as a Postgres `TEXT[]` array on `members.roles`. A member can hold multiple roles simultaneously (e.g. `["member", "coach", "safeguarding_admin"]`). Role strings are lowercase, snake_case. No schema change is required to introduce a new role — document it here and add the corresponding `require_*` dependency under `libs/auth/dependencies.py`.
 
 ---
 
@@ -73,7 +78,7 @@ Opportunities for members to contribute to the community.
 
 *   **Event Logisticians**: Help run community meets and social events.
 *   **Peer Mentors**: Experienced Club members assisting beginners.
-*   **Social Ambassadors**: manage sub-community groups or "squads".
+*   **Social Ambassadors**: manage sub-community groups or "pods".
 
 ---
 
