@@ -422,8 +422,8 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 **Status:** Production
 
 **Key Modules:**
-- `models/core.py`, `models/enums.py`, `models/seasonality.py`
-- `tasks/` — background generation of reports
+- `models/core.py`, `models/enums.py`, `models/seasonality.py`, `models/flywheel.py`
+- `tasks/` — background generation of reports + flywheel snapshots (ARQ cron)
 - `assets/` — static assets used in reports
 - `cli/` — CLI entrypoints for on-demand report generation
 
@@ -432,11 +432,18 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 - `/reports/community/*` — aggregate community insights
 - `/admin/reports/*` — business dashboards
 - `/admin/reports/seasonality/*` — Lagos demand/seasonality forecasts
+- `/admin/reports/flywheel/*` — cohort fill, funnel conversion, wallet ecosystem snapshots (see [FLYWHEEL_METRICS_DESIGN.md](../reference/FLYWHEEL_METRICS_DESIGN.md))
 - `internal.py` — service-to-service report fetches
 
-**Frontend Integration:** `/account/insights`, `/admin/analytics`
+**Flywheel responsibilities (added 2026-04-29):**
+- Snapshot tables: `cohort_fill_snapshots` (daily), `funnel_conversion_snapshots` (weekly), `wallet_ecosystem_snapshots` (weekly).
+- Computed by ARQ tasks on the `arq:reporting` queue; refreshable on-demand via `POST /admin/reports/flywheel/refresh`.
+- Calls cross-service prerequisite endpoints: `academy/internal/cohorts(+enrollment-counts)`, `members/internal/joined-tier`, `members/internal/{id}/tier-history`, `wallet/internal/ecosystem-stats`.
+- Funnel breakdown by `acquisition_source` enum on `member_profiles` (typed at registration; legacy `how_found_us` preserved as free-form fallback).
 
-**Note:** Historically undocumented in this registry — added 2026-04-19.
+**Frontend Integration:** `/account/insights`, `/admin/analytics`, `/admin/flywheel`
+
+**Note:** Historically undocumented in this registry — added 2026-04-19; flywheel metrics added 2026-04-29.
 
 ---
 
@@ -551,4 +558,6 @@ Each service must:
 
 ---
 
-*Last updated: 2026-04-19 — added ai_service (8011), pools_service (8014), reporting_service (8015), chat_service (8016, planned); clarified identity_service as deprecated; added detail section for volunteer_service.*
+*Last updated: 2026-04-29 — documented flywheel metrics responsibilities under reporting_service (admin endpoints, cross-service prerequisites, acquisition_source).*
+
+*2026-04-19 — added ai_service (8011), pools_service (8014), reporting_service (8015), chat_service (8016, planned); clarified identity_service as deprecated; added detail section for volunteer_service.*
