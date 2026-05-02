@@ -554,6 +554,26 @@ test(academy): add cohort enrollment tests
 - [ ] No merge conflicts
 - [ ] Reviewed own code first
 
+### File Safety When Shuffling Files Around Git Operations
+
+**Real incident (May 2026):** A pre-push helper destroyed `services/payments_service/routers/recurring_payout.py` (~700 lines, untracked) by `mv`-ing it and `services/payments_service/schemas/recurring_payout.py` to a single flat staging directory. The two files had the same basename, so the second `mv` overwrote the first. Untracked → unrecoverable from git; required full reconstruction from the conversation transcript.
+
+**Rules — apply whenever moving files for git/hook purposes:**
+
+1. **Default to `git stash --include-untracked`** (or `--all`) when "moving WIP aside before push." It preserves untracked files in the stash without losing the working-tree copy. Restore with `git stash pop`.
+2. **NEVER `mv` two files with the same basename to one flat directory.** Files in this repo with colliding basenames across services are common (e.g. `services/*/schemas/main.py`, `services/*/routers/__init__.py`, `services/*/alembic/env.py`).
+3. **If you must use `mv` for staging, preserve the relpath:**
+   ```bash
+   mkdir -p /tmp/staging/$(dirname "$path") && mv "$path" "/tmp/staging/$path"
+   ```
+4. **Pre-flight check for collisions before any flat move:**
+   ```bash
+   git ls-files --others --exclude-standard | xargs -n1 basename | sort | uniq -d
+   ```
+   If anything prints, refuse the flat move.
+5. **Always run `git status --short` before AND after** any move/copy/rm in a hook helper, so destruction surfaces immediately.
+6. **Untracked files are not safe.** Treat any file not in `git ls-files` as if it has no backup. If you need to preserve it through an operation, stash first.
+
 ## Performance Considerations
 
 ### Mobile-First Guidelines
