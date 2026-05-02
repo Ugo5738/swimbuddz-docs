@@ -466,4 +466,81 @@ Specific roles — shown after joining:
 
 ---
 
-*Last updated: February 2026*
+## Founder Transition Map
+
+> SwimBuddz is currently constrained on operational headcount. Hiring a paid Operations Manager isn't viable until cohort revenue compounds. The volunteer tier system — specifically the **Tier 3 Lead** path — is the bridge. This map defines which founder-held tasks transition to which Lead-tier volunteers, and the explicit triggers for handover.
+
+### Why this matters
+
+Today, the founder is the bottleneck on session prep, comms, attendance follow-up, ride coordination, content gathering, and cohort admin. The cost of this isn't just hours — it's that **owner work** (capital allocation, fundraising, partnerships, B2B sales, AI swim analyzer prototyping) gets crowded out by **operator work**. The ultra-wealthy mental model: every hour spent doing what a Lead volunteer could do is an hour not spent compounding the business.
+
+**Target:** Reduce founder operator-hours from ~100% to <30% of weekly time within 12 months.
+
+### Transition triggers (how a Lead earns ownership of a task)
+
+A volunteer is ready to take over a task when **all three** are true:
+
+1. **Hours**: 80+ logged hours in the role's category
+2. **Reliability**: Score ≥ 95 (no-shows are the killer of trust)
+3. **Demonstrated judgment**: Has handled at least 3 unscripted situations correctly without founder intervention (e.g., last-minute pool change, member emergency, payment dispute)
+
+Below those thresholds, the volunteer **shadows** the task with the founder. Above them, the founder shifts to **review-only** mode.
+
+### Task transition table
+
+| # | Founder task today | Receiving Lead role | Transition trigger | Founder's residual involvement |
+|---|---|---|---|---|
+| 1 | Saturday session prep & venue coordination | **Session Lead** (Tier 2+) | First Tier 3 Session Lead reaches 80h + 95 reliability | Weekly 15-min review only |
+| 2 | Pre-session WhatsApp reminders + headcount | **Check-in Volunteer** (Tier 3 promotion) | Same volunteer runs 6 consecutive sessions cleanly | Quarterly audit |
+| 3 | Welcoming + onboarding first-timers | **Welcome Volunteer** (Tier 2+) lifted to Lead-Welcome | 3 Welcome volunteers active per session, 95+ avg reliability | None — fully delegated |
+| 4 | Member milestone celebration + WhatsApp shout-outs | **Mentor / Buddy** Lead | Mentor program has 5+ active mentor pairings | Spot-check monthly |
+| 5 | Content gathering at sessions (photos, video) | **Media Volunteer** + **Gallery Support** | Content Buddy rotation runs unprompted for 4 weeks | Weekly approval of social posts only |
+| 6 | Ride share coordination (route planning, payment splits) | **Ride Share Lead** (Tier 3) | Lead ride-share volunteer manages 3+ routes for a month | None |
+| 7 | Special event logistics (community meets, beach days) | **Events & Logistics** Lead + **Trip Planner** | First Tier 3 events lead runs one event end-to-end | Sign-off on budget only |
+| 8 | Academy session support (drill demos, hands-on coaching) | **Academy Assistant** | Academy Assistant has shadowed 3 cohorts and lead coach signs off | None — coach owns it |
+| 9 | Payment chasing for overdue installments | **Check-in / Admin volunteer** at Lead tier (new role TBD) | New role created + first volunteer trained | Escalation only |
+| 10 | New member intake + WhatsApp group adds | **Welcome Volunteer** Lead | Welcome flow documented + first Lead Welcome volunteer trained | None |
+
+### Tasks that DO NOT transition
+
+These stay with the founder regardless of volunteer maturity, because the cost of error is high or they require founder authority:
+
+- **Cohort pricing decisions** and discount approvals
+- **Pool partnership negotiations** (beyond first-conversation scheduling)
+- **Coach grade promotions** (Grade 1 → 2 → 3)
+- **Disciplinary decisions** (member or coach)
+- **Brand voice / public statements** in crises
+- **Anything financial above ₦50,000**
+- **Capital allocation** (where ad spend goes, which service gets engineering time)
+- **Hiring** (when paid hires resume)
+
+### Cadence
+
+- **Weekly** (Sunday, 15 min): founder reviews the past week's volunteer-led tasks. What broke? What surprised?
+- **Monthly** (1 hour): founder reviews this transition map. Promote, demote, or split tasks based on what's working.
+- **Quarterly**: founder asks "what % of my hours were operator hours this quarter?" Targets:
+  - Q1 from start: 70%
+  - Q2: 50%
+  - Q3: 35%
+  - Q4: <30%
+
+### Sustaining volunteer reliability
+
+The whole transition depends on volunteers being there. Levers:
+
+- **Recognition cadence**: public WhatsApp shout-out for every Lead-tier promotion; Bronze/Silver/Gold milestones celebrated within the week earned.
+- **Discount perks**: Silver = 20% off sessions, Gold = 50% off membership. Apply consistently and visibly — invisible perks don't motivate.
+- **Path to coach**: Academy Assistant → certified coach pathway. This is one of the strongest retention levers — it gives the most committed volunteers a future in the org, not just a free t-shirt.
+- **Honest feedback**: a missed session needs a real conversation, not a passive WhatsApp note. Reliability as a culture, not a metric.
+
+### When this map is wrong
+
+Update this map when:
+
+- A volunteer hits the trigger but isn't ready in practice (judgment matters more than hours — adjust the trigger, not the standard)
+- A task gets bigger and outgrows volunteer capacity (e.g., 200+ Saturday attendees won't be Lead-led; that's when the operations manager hire becomes real)
+- A Lead volunteer leaves Lagos / steps back (don't depend on a single point of failure — every Lead role needs a Tier 2 backup in shadow mode)
+
+---
+
+*Last updated: 2026-04-29*
