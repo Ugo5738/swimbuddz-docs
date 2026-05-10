@@ -1,0 +1,50 @@
+contact_id,name,company,role,relationship,temperature,corporate_track,channel,first_contact_date,last_contact_date,next_action_date,status,referred_in_by,referrals_made,price_quoted,notes
+SAMPLE-01,Adaeze Okafor (SAMPLE),Flutterwave,Product Manager,Worked together on a side project 2024; close,Hot,Y,WhatsApp,2026-05-06,2026-05-08,2026-05-13,Replied,,,₦150k,Mentioned wanting to learn for a year - kid started swimming. Ask if HR contact is open to corp pitch.
+SAMPLE-02,Tunde Adeyemi (SAMPLE),PiggyVest,Engineering Lead,Mutual friend (Chioma) introduced 2025,Warm,Y,WhatsApp,2026-05-06,,2026-05-11,Sent,Chioma A.,,₦150k,Sent personal message + corporate PDF. Follow up if no reply by Mon.
+SAMPLE-03,Ifeoma Bello (SAMPLE),GTBank,People Ops,Cousin's friend; loose connection,Cold,Y,Email,,,2026-05-07,Not contacted,,,Corporate ₦127.5k pp (10+),Send corporate PDF only. Ask cousin to forward with one-line endorsement first.
+SAMPLE-04,Kola Martins (SAMPLE),RiseVest,Marketing,Fitness-curious; posted about gym fatigue,Hot,N,DM (Instagram),2026-05-04,2026-05-04,2026-05-09,Booked call,,,₦150k,Call booked Sat 10am. Pitch cohort + free assessment as backup.
+SAMPLE-05,Damilola Eze (SAMPLE),Andela,Senior Engineer,Cold - found via LinkedIn search,Cold,N,LinkedIn DM,,,2026-05-08,Not contacted,,,₦150k,Lower priority - cold outreach. Only message after warm list cleared.
+SAMPLE-06,Ngozi Williams (SAMPLE),Self-employed (consultant),Consultant,Old uni friend; saw her at wedding,Warm,N,WhatsApp,2026-05-02,2026-05-05,,Declined,,,,N/A,Said no - already takes Pilates. Asked for referrals; she'll think about it.
+SAMPLE-07,Chinedu Obi (SAMPLE),(referred by SAMPLE-01),Banking analyst,Friend of Adaeze; never met,Warm,N,WhatsApp,,,2026-05-09,Not contacted,Adaeze Okafor,,₦140k (referral discount),Use referral language - Adaeze suggested. Apply ₦10k off.
+SAMPLE-08,Funmi Adeleke (SAMPLE),Paystack,Operations,Cold; warm intro available via James,Cold,Y,WhatsApp,,,2026-05-10,Not contacted,,,Corporate ₦135k pp (5+),Ask James to forward corporate PDF first; do not cold-contact.
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,

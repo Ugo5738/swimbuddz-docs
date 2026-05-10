@@ -3,7 +3,7 @@
 **Owner:** Daniel
 **Audience:** HR / People Ops / Wellness leads at Lagos employers
 **Purpose:** Sell 5-15 employee swim cohort packages as B2B revenue
-**Last updated:** 2026-04-29
+**Last updated:** 2026-05-07
 
 This doc has two halves: an **outward-facing pitch** (the content you send to HR contacts, also exportable to PDF) and an **internal playbook** (how we sell, price, deliver, and measure outcomes).
 
@@ -38,15 +38,41 @@ Adults across Lagos share one quiet anxiety: **most of them never learned to swi
 - **Community-driven** — group format, not solo gym time. Builds bonds your team retreats can't.
 - **Photogenic outcomes** — your CSR / employer brand team will thank you
 
+### More than a wellness benefit
+
+Most wellness perks expire at the office door. Once an employee learns to swim, the skill ripples outward — into their family, their weekends, and the next thirty years of their life.
+
+**At work**
+
+- **Stress regulation that lasts beyond Saturday** — water is uniquely down-regulating; calmer baselines carry into the weekday
+- **Cohesion across departments** — cohort friendships outlast team retreats and build informal cross-team networks
+- **Internal storytelling that earns its keep** — completion rates, before/after testimonials, and photo content HR can actually use
+- **Sleep, energy, and presence** — regular swimmers report better sleep and steadier energy through the week
+
+**At home**
+
+- **Employees teach their kids** — one trained adult raises a generation that swims
+- **Real water safety** — in a city surrounded by water, household risk drops when adults can swim and teach their children
+- **Shared family activity** — partners and parents who swim together; weekends that don't revolve around screens
+- **A quiet anxiety, finally resolved** — the embarrassment most adults carry about not swimming gets put down for good
+
+**For life**
+
+- **Vacation confidence** — beaches, hotel pools, and boat rides become destinations, not stressors
+- **Mental health regulation** — repetitive, low-impact, sensory-rich; one of the most sustainable stress outlets adults find
+- **Exercise that ages with you** — joints intact past 60, unlike high-impact alternatives
+- **A hobby that grows** — open water, masters meets, coaching others — long after the 12 weeks end
+
 ### Pricing tiers
 
-| Employees enrolled | Per-employee cost | Total |
-|---|---|---|
-| 1-4 | ₦150,000 (full price) | — |
+| Employees enrolled    | Per-employee cost      | Total           |
+| --------------------- | ---------------------- | --------------- |
+| 1-4                   | ₦150,000 (full price)  | —               |
 | **5-9 (recommended)** | **₦135,000 (10% off)** | ₦675k - ₦1.215M |
-| 10+ | ₦127,500 (15% off) | ₦1.275M+ |
+| 10+                   | ₦127,500 (15% off)     | ₦1.275M+        |
 
 Optional add-ons:
+
 - **Free corporate "Intro to Water" assessment session** for staff considering the program (one per company, 90 min, on us)
 - Branded merchandise (caps, towels) at cost
 - Quarterly SwimBuddz Wrapped report for HR (attendance, milestones, employee testimonials — useful for internal wellness storytelling)
@@ -54,6 +80,7 @@ Optional add-ons:
 ### Pilot offer (limited)
 
 The first 5 corporate partners get a **pilot package**:
+
 - No setup or admin fees
 - 1 free intro session for ≥10 staff
 - Outcome report shared with HR at week 6 and week 12
@@ -62,8 +89,8 @@ The first 5 corporate partners get a **pilot package**:
 ### Logistics
 
 - **Cohort schedule:** New cohorts start every 8-12 weeks
-- **Location:** Lagos partner pools (Ikoyi, VI, Yaba — confirmed per cohort)
-- **Time commitment:** 90 mins/week, Saturday mornings
+- **Location:** Lagos partner pools (Ikoyi, VI, Yaba, Festac — confirmed per cohort)
+- **Time commitment:** 90 - 120 mins/week, Saturday mornings
 - **Onboarding:** Each employee gets a SwimBuddz account, individual progress tracking, and access to the broader SwimBuddz community
 - **Privacy:** Health-relevant data (skill level, fears, conditions) stays with the coach — never shared with the employer
 
@@ -77,16 +104,16 @@ The first 5 corporate partners get a **pilot package**:
 
 ### Why companies have already chosen this
 
-> *"My team retreats used to feel like obligations. This was the first one people brought their friends to. Two of our managers signed up after seeing the photos."*
+> _"My team retreats used to feel like obligations. This was the first one people brought their friends to. Two of our managers signed up after seeing the photos."_
 > — [Reserved for first corporate partner testimonial]
 
-> *"I stopped trying to make our wellness budget feel like wellness. People actually finish this program. They come back to work calmer, fitter, and they talk about it for months."*
+> _"I stopped trying to make our wellness budget feel like wellness. People actually finish this program. They come back to work calmer, fitter, and they talk about it for months."_
 > — [Reserved for second corporate partner testimonial]
 
 ### Get started
 
-**Email:** danielnwachukwu5738@gmail.com (replace with corporate email when ready)
-**WhatsApp:** [Daniel's number]
+**Email:** swimbuddz@gmail.com (replace with corporate email when ready)
+**WhatsApp:** +2347033588400
 **Web:** swimbuddz.com/corporate
 
 **Or:** Reply to this email to schedule a 20-min intro call. We'll walk you through the curriculum, answer questions, and confirm whether SwimBuddz is right for your team.
@@ -98,6 +125,7 @@ The first 5 corporate partners get a **pilot package**:
 ## Target buyer profile
 
 **Who buys:**
+
 - Head of People / HR Director (final say on wellness spend)
 - Wellness / L&D Manager (recommends and implements)
 - Office Manager (owns logistics, sometimes the final yes)
@@ -132,7 +160,7 @@ Subject: Adult swim wellness for [Company] employees — quick intro
 
 Hi [Name],
 
-I run SwimBuddz, a Lagos swimming community building structured 12-week adult swim programs. We're seeing strong demand from working professionals — most of whom never learned, or learned badly as kids and gave up.
+I run SwimBuddz, a swimming community building structured 12-week adult swim programs. We're seeing strong demand from working professionals — most of whom never learned, or learned badly as kids and gave up.
 
 I think this could be a useful addition to [Company]'s wellness offering. Quick reasons why:
 
@@ -141,7 +169,7 @@ I think this could be a useful addition to [Company]'s wellness offering. Quick 
 - Lifelong skill — measurable, photogenic outcomes
 - Group format builds team cohesion
 
-Attached: 1-page overview with pricing and a pilot offer for the first 5 corporate partners.
+Attached: a short overview with pricing, logistics, and a pilot offer for the first 5 corporate partners.
 
 Worth a 20-min call to discuss?
 
@@ -175,13 +203,13 @@ Daniel
 
 ## Intro call structure (20 mins)
 
-| Time | Section | Goal |
-|---|---|---|
-| 0-2 min | Their context — what wellness programs do they run today? What's working / failing? | Understand actual pain |
-| 2-7 min | SwimBuddz overview — curriculum, coaches, milestones, schedule | Establish credibility |
-| 7-12 min | How it would work for [Company] specifically — pool nearest their HQ, schedule fit, pricing tier | Show fit |
-| 12-17 min | Outcomes & reporting — what they'd see after 6 weeks and 12 weeks | Show measurability |
-| 17-20 min | Next steps — pilot offer, internal champion, decision timeline | Move forward |
+| Time      | Section                                                                                          | Goal                   |
+| --------- | ------------------------------------------------------------------------------------------------ | ---------------------- |
+| 0-2 min   | Their context — what wellness programs do they run today? What's working / failing?              | Understand actual pain |
+| 2-7 min   | SwimBuddz overview — curriculum, coaches, milestones, schedule                                   | Establish credibility  |
+| 7-12 min  | How it would work for [Company] specifically — pool nearest their HQ, schedule fit, pricing tier | Show fit               |
+| 12-17 min | Outcomes & reporting — what they'd see after 6 weeks and 12 weeks                                | Show measurability     |
+| 17-20 min | Next steps — pilot offer, internal champion, decision timeline                                   | Move forward           |
 
 **Don't pitch hard.** HR buyers are evaluated on quality of choices, not enthusiasm. Calm, evidence-based, low-pressure converts. Aggressive doesn't.
 
@@ -196,6 +224,7 @@ Daniel
 ## Internal handoff after a sale
 
 When a corporate yes lands:
+
 1. Cohort capacity check — does the upcoming cohort have room? If not, schedule a dedicated cohort.
 2. HR contact gets a 1-pager: how employees register, what they need to bring to first session, WhatsApp group invite.
 3. Each employee gets a SwimBuddz account (members service) with `acquisition_source = CORPORATE` (when that field ships).
