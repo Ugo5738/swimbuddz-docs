@@ -67,9 +67,9 @@ This document defines how SwimBuddz handles members from different tiers (Commun
 
 ### Scenario 2: Community member tries to join the club session activities
 
-**Don't allow.** The peer leader redirects warmly but firmly. No ambiguity, no "just this once."
+**Don't allow.** The Pod Lead redirects warmly but firmly. No ambiguity, no "just this once."
 
-**Escalation:** If it becomes a pattern (same person showing up weekly trying to join), the peer leader flags it to the SwimBuddz team. Founder reaches out personally with an upgrade conversation.
+**Escalation:** If it becomes a pattern (same person showing up weekly trying to join), the Pod Lead flags it to the SwimBuddz team. Founder reaches out personally with an upgrade conversation.
 
 ### Scenario 3: Community member shows up to an academy session
 
@@ -93,7 +93,7 @@ This document defines how SwimBuddz handles members from different tiers (Commun
 
 ---
 
-## How Peer Leaders Enforce Boundaries
+## How Pod Leads Enforce Boundaries
 
 ### Do:
 - Be warm and welcoming — they showed up, that's a good sign

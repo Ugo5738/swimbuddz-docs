@@ -32,14 +32,15 @@ The Club Layer serves committed swimmers with performance goals who want structu
 
 ## Documentation Files
 
-Currently, this folder contains Club Layer-specific documentation. Files will be added as Club features are developed and documented.
+- **[POD_OPERATIONS.md](./POD_OPERATIONS.md)** - How Club pods are constituted, named, and run (size, naming, lifecycle, backend model)
+- **[POD_LEAD_GUIDE.md](./POD_LEAD_GUIDE.md)** - What a Pod Lead does at and around the Saturday session (formerly PEER_LEADER_GUIDE.md)
+- **[PRICING_STRATEGY.md](./PRICING_STRATEGY.md)** - Club membership fees, transition bridges, Pod Lead perks
 
 ### Planned Documentation
 
 - **CLUB_ARCHITECTURE.md** - Club layer design and membership model
 - **CLUB_ATTENDANCE.md** - Attendance policies, tracking, consequences
-- **CLUB_TRAINING.md** - Training structure, coaching, progression
-- **CLUB_MEMBERSHIP.md** - Membership tiers, fees, benefits
+- **CLUB_TRAINING.md** - Training structure and pod-led progression
 
 ---
 

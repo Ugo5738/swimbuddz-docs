@@ -68,6 +68,8 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 **Key Models:**
 - `Member` - Core member profile
 - `PendingRegistration` - Registration workflow state
+- `Club` - Structured swimming club (name, slug, location, default session schedule)
+- `Pod` / `PodAssignment` - Club training sub-groups (2–5 members, peer-led with Pod Lead + optional Assistant Pod Lead, 3-month review cycle). See [docs/club/POD_OPERATIONS.md](../club/POD_OPERATIONS.md). Moved here from sessions_service in May 2026.
 
 **Key Endpoints:**
 - `POST /members/` - Create member profile
@@ -75,8 +77,10 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 - `PATCH /members/me` - Update profile
 - `GET /members/admin` - List all members (admin)
 - `PATCH /members/admin/{id}/status` - Update membership status (admin)
+- Pod admin: `/admin/members/pods/*` (create, dissolve, extend, member assign/remove, transfer, review queue)
+- Pod member: `/members/pods/me`, `/members/pods/public`, `/members/pods/{id}/join`, `/members/pods/me/leave`
 
-**Database:** `members` table, `pending_registrations` table
+**Database:** `members`, `pending_registrations`, `clubs`, `pods`, `pod_assignments` tables
 
 **Migrations:** Yes (Alembic)
 
@@ -92,17 +96,15 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 **Key Models:**
 - `Session` - All session types (club_training, community_meetup, trip, camp, open_water, scuba, etc.)
-- `Pod` / `PodAssignment` - Club training sub-groups (2–5 members, 3-month review cycle). See [docs/design/POD_MODEL_DESIGN.md](../design/POD_MODEL_DESIGN.md).
+- (Pod / PodAssignment moved to `members_service` in May 2026 — see [docs/club/POD_OPERATIONS.md](../club/POD_OPERATIONS.md).)
 
 **Key Endpoints:**
 - `POST /sessions/` - Create session (admin)
 - `GET /sessions/` - List upcoming sessions
 - `GET /sessions/{id}` - Get session details
 - `PATCH /sessions/{id}` - Update session (admin)
-- Pod admin/coach: `/admin/sessions/pods/*` (create, dissolve, extend, member assign/remove, transfer, review queue)
-- Pod member: `/sessions/pods/me`, `/sessions/pods/public`, `/sessions/pods/{id}/join`, `/sessions/pods/me/leave`
 
-**Database:** `sessions`, `pods`, `pod_assignments` tables
+**Database:** `sessions` table (pod tables now in members_service)
 
 **Migrations:** Yes (Alembic)
 
@@ -456,7 +458,7 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 **Purpose:** Real-time, persistent, role-aware messaging across SwimBuddz. Covers cohort channels, pod channels, event channels, trip channels, location/community channels, alumni, support DMs, and coach↔parent DMs. Safeguarding rules enforced at the API boundary.
 
-**Status:** Phase 1 largely complete. Member-facing CRUD (channels, messages, reactions, reports, mute/read/leave, attachment upload), admin/moderator router (`/admin/chat/*`: hard-delete with safeguarding-admin gate for minor channels, reports queue, audit log, member-role updates, channel archive), internal s2s router (`channels/ensure`, `memberships/reconcile`), pre-persist text moderation (OpenAI Moderation), image moderation (AWS Rekognition pre-upload), and push notification fan-out to `communications_service` all implemented. RLS + Realtime publication migration ready (generated via `./scripts/db/migrate.sh` and filled in). Frontend at `/account/chat` and `/account/chat/[channel_id]` with thread, composer, mark-read, Realtime subscription, reactions, edit/delete, report modal. Integration tests cover internal endpoints + member endpoints (including text moderation flag, idempotency, reaction collapse, report dedupe). **Upstream emit wired:** `academy_service` (cohorts + enrollments + dropouts), `events_service` (events + RSVPs), `transport_service` (trip channel keyed on `session_ride_config_id`; reconcile on RideBooking create/move), `sessions_service` (pod channel keyed on `pods.id`; reconcile on PodAssignment create/leave/transfer/dissolve). **Not yet implemented:** IndexedDB outbox (deferred to Phase 2); signed-URL renewal flow for attachment reads (currently public URLs); admin bulk-delete of member transport bookings doesn't notify chat (gap documented in `transport_service/services/chat_sync.py`); chat channel archive on pod dissolve is manual (admin archives via chat admin API). Port 8016.
+**Status:** Phase 1 largely complete. Member-facing CRUD (channels, messages, reactions, reports, mute/read/leave, attachment upload), admin/moderator router (`/admin/chat/*`: hard-delete with safeguarding-admin gate for minor channels, reports queue, audit log, member-role updates, channel archive), internal s2s router (`channels/ensure`, `memberships/reconcile`), pre-persist text moderation (OpenAI Moderation), image moderation (AWS Rekognition pre-upload), and push notification fan-out to `communications_service` all implemented. RLS + Realtime publication migration ready (generated via `./scripts/db/migrate.sh` and filled in). Frontend at `/account/chat` and `/account/chat/[channel_id]` with thread, composer, mark-read, Realtime subscription, reactions, edit/delete, report modal. Integration tests cover internal endpoints + member endpoints (including text moderation flag, idempotency, reaction collapse, report dedupe). **Upstream emit wired:** `academy_service` (cohorts + enrollments + dropouts), `events_service` (events + RSVPs), `transport_service` (trip channel keyed on `session_ride_config_id`; reconcile on RideBooking create/move), `members_service` (pod channel keyed on `pods.id`; reconcile on PodAssignment create/leave/transfer/dissolve — moved from sessions_service in May 2026). **Not yet implemented:** IndexedDB outbox (deferred to Phase 2); signed-URL renewal flow for attachment reads (currently public URLs); admin bulk-delete of member transport bookings doesn't notify chat (gap documented in `transport_service/services/chat_sync.py`); chat channel archive on pod dissolve is manual (admin archives via chat admin API). Port 8016.
 
 **Design doc:** [docs/design/CHAT_SERVICE_DESIGN.md](../design/CHAT_SERVICE_DESIGN.md)
 

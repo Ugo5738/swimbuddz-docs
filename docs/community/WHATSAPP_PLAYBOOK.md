@@ -1,6 +1,6 @@
 # SwimBuddz Community WhatsApp Playbook
 
-_Last updated: 2026-04-17_
+_Last updated: 2026-05-04_
 
 ## Purpose
 
@@ -20,7 +20,7 @@ SwimBuddz uses a **WhatsApp Community** (WhatsApp's feature that groups related 
 | **SwimBuddz Community**                                  | All active members — community, club, and academy                                                              | Main cross-layer group. Spotlights, question of the week, session recaps, general swim chat.                                                                                                                                        |
 | **SwimBuddz Volunteers**                                 | All registered volunteers, across every role in [VOLUNTEER_ROLES.md](./VOLUNTEER_ROLES.md) (Tier 1, 2, 3)      | The operational home for volunteering. Weekly opportunity posts, sign-ups, swaps, last-minute cover, tier milestones, Volunteer of the Month. Kept focused on volunteering — general chat stays in the main Community group.        |
 | **Pool Ambassadors**                                     | Members actively rostered as Pool Ambassadors (see [POOL_AMBASSADOR_PROGRAM.md](./POOL_AMBASSADOR_PROGRAM.md)) | Sub-group for the ambassador rotation. Pre-session briefings, conversion tracking reports, follow-up message templates, shared learnings on what worked poolside. Members rotate in/out as they take up or step back from the role. |
-| **Club Saturday groups** (one per location/group leader) | Members in that specific club group                                                                            | Logistics for the Saturday session — who's coming, challenge of the week, post-session photos. Run by the peer leader for that group.                                                                                               |
+| **Club pod groups** (one per pod, e.g. `SB Club – Dolphins`)  | The 5 Club members in that pod                                                                                 | The pod's home: Saturday logistics, midweek "anyone in for a swim?" coordination, photos/videos/PBs, the weekly challenge. Run by the Pod Lead. See [Pod Operations](../club/POD_OPERATIONS.md).                                    |
 | **Academy cohort groups** (one per live cohort)          | Students + coach for that 12-week cohort                                                                       | Cohort-specific coordination — session reminders, skill videos, questions about that week's theme. Archived when the cohort ends.                                                                                                   |
 | **SwimBuddz team** (admin-only)                          | Founder, community manager, coaches                                                                            | Internal coordination, not for members.                                                                                                                                                                                             |
 
@@ -32,7 +32,25 @@ SwimBuddz uses a **WhatsApp Community** (WhatsApp's feature that groups related 
 - **SwimBuddz Community** — "Lagos' swimming community. Sessions, events, conversations, and everything swimming. swimbuddz.com"
 - **SwimBuddz Volunteers** — "The people who make SwimBuddz run. Opportunities, sign-ups, and recognition. Roles guide: swimbuddz.com/guides/volunteer-roles"
 - **Pool Ambassadors** — "Active ambassador rotation. Briefings, follow-ups, conversion tracking."
-- **Club Saturday groups** — "[Location] Saturday crew. Logistics + hype for our weekly sessions."
+- **Club pod groups** — Use the standard pod description below (paste verbatim, fill in the bracketed bits). The Pod Lead also sends the [pod kickoff message](../club/POD_LEAD_GUIDE.md#pod-kickoff-message) within 24 hours of group creation.
+
+  ```
+  🐬 SB Club – [Pod name]
+  Your swim crew. Same 5, every Saturday — and whenever else we can get in the water together.
+
+  🏊 Saturday [time + pool] (default — your lead may move it if it can't hold)
+  📍 Lead: [Pod Lead name]
+  ✅ Sign in via the app for the Saturday session — attendance counts
+
+  House rules
+  • Be kind. Effort > performance.
+  • No spam, promos, or forwards.
+  • Coaching qs → next academy cohort. Money/schedule → SwimBuddz team.
+
+  Wider chat → main SwimBuddz group. swimbuddz.com
+  ```
+
+  Pin a longer welcome message in the group covering Saturday default + reschedule rule, midweek "anyone in?" coordination, photo/video posting, and the ad-hoc-swims-don't-count-toward-attendance rule. Template lives in [Pod Operations](../club/POD_OPERATIONS.md#between-saturdays).
 - **Academy cohort groups** — "[Cohort name] • [Weeks X–Y] • Coach [Name]"
 
 ### Admins
@@ -40,7 +58,7 @@ SwimBuddz uses a **WhatsApp Community** (WhatsApp's feature that groups related 
 - **Founder** — admin on every group
 - **Community manager / designated moderator** — admin on New Here?, main Community, Volunteers, Pool Ambassadors, and team group
 - **Volunteer coordinator (if appointed)** — admin on Volunteers and Pool Ambassadors
-- **Peer leaders (club group leaders)** — admin on their own Saturday group; post permissions (not full admin) on the main Community
+- **Pod Leads** — admin on their own pod group; post permissions (not full admin) on the main Community
 - **Coaches** — admin on their own active cohort groups
 
 ### Flow between groups
@@ -52,7 +70,7 @@ Instagram/TikTok bio → swimbuddz.com/links → "New Here?" group
                                                     ↓
                                        added to "SwimBuddz Community"
                                               + relevant cohort or
-                                              Club Saturday group
+                                              Club pod group
                                                     ↓
                                (optional) registers as a volunteer
                                                     ↓
@@ -73,23 +91,23 @@ The group has two anchor posts per week that create predictable conversation pea
 
 | Day                | Content                                             | Owner                  |
 | ------------------ | --------------------------------------------------- | ---------------------- |
-| **Monday AM**      | Member Spotlight of the Week                        | Community manager      |
+| **Monday AM**      | Question of the Week                                | Community manager      |
 | **Wednesday**      | Volunteer opportunity post (when available)         | SwimBuddz team         |
-| **Thursday PM**    | Question of the Week                                | Community manager      |
+| **Thursday PM**    | Member Spotlight of the Week                        | Community manager      |
 | **Friday**         | Session booking reminder (before 3pm deadline)      | Automated or team      |
-| **Saturday**       | Post-session energy — photos, results, celebrations | Peer leaders / members |
+| **Saturday**       | Post-session energy — photos, results, celebrations | Pod Leads / members    |
 | **Sunday–Tuesday** | Organic conversation, pool tips, gear chat          | Everyone               |
 
-### Monday: Member Spotlight (9:00 AM)
+### Thursday: Member Spotlight (2:00 PM)
 
 The spotlight is the signature community ritual. One member featured per week.
 
-**Preparation (Thursday/Friday before):**
+**Preparation (Sunday/Monday before):**
 Message the featured member privately:
 
-> "Hey [Name]! You're our SwimBuddz Spotlight Member next week 🏊 Can you answer these 5 quick questions and send me a photo of you (swimming or not, your choice)? I'll post it Monday morning."
+> "Hey [Name]! You're our SwimBuddz Spotlight Member this week 🏊 Can you answer these 5 quick questions and send me a photo of you (swimming or not, your choice)? I'll post it Thursday afternoon."
 
-Send them the 5 questions (see question bank below). Give them the weekend to respond.
+Send them the 5 questions (see question bank below). They have until Wednesday to respond.
 
 **Post format:**
 
@@ -115,14 +133,15 @@ _This week: [First Name]_
 - Tag 2-3 members who have a connection to the featured person: "@Temi you also swim at Federal Palace right?"
 - Reply to every comment in the first hour to keep momentum going
 - If conversation dies, ask a follow-up question about one of their answers
+- **Friday:** cross-post to the **SwimBuddz - New Here?** group so prospects see the spotlight *with* the comment activity already on it (see [New Here? Group Operating Rules — Rule 3](#rule-3-spotlight-cross-post-timing))
 
 **Selection order:**
 
 - Weeks 1-4: Pick your most outgoing, interesting members. They set the tone.
 - Weeks 5+: Mix of established and newer members. Everyone should want to be featured.
-- Always have 3-4 spotlights pre-collected so you never miss a Monday.
+- Always have 3-4 spotlights pre-collected so you never miss a Thursday.
 
-### Thursday: Question of the Week (2:00 PM)
+### Monday: Question of the Week (9:00 AM)
 
 A single question thrown to the entire group. No featured member — everyone answers.
 
@@ -205,7 +224,7 @@ Rotate through these. Mix swimming-related and personal questions to keep it fre
 
 ### Community & Connection
 
-21. Who in this group would you like to know better?
+21. What's something you wish more people in this group knew about you?
 22. What's one thing SwimBuddz could do better?
 23. Would you be interested in [specific event idea]? (Use for gauging interest)
 24. What brought you to this group?
@@ -319,28 +338,91 @@ If there's no response after 2 weeks, move them out of the Volunteers group but 
 
 ---
 
+## New Here? Group Operating Rules
+
+The **SwimBuddz - New Here?** group is a low-pressure entry point for prospective members. Same tone and moderation rules as the main Community group, plus four rules specific to how it's run.
+
+### Rule 1: No hard-sell
+
+This is the prospect's *observation* phase, not the conversion call. Things that don't belong here:
+
+- Cohort sales pitches with prices and urgency framing ("first come, first swim")
+- "You need to register to be a member"-style nudges from team or volunteers
+- Repeated CTAs to sign up
+
+Cohort and academy promos belong in the **main Community group** (where members amplify them) or in **DMs to qualified prospects** — people who've already said they want to learn or join. Brief any volunteer or team member helping in this group on this rule; gently correct if they slip.
+
+**The CTA that works here:** "We're at [pool] this Saturday — come watch a session and meet the crew. No commitment." A real Saturday outperforms any pitch.
+
+**Why:** Prospects in this group haven't opted in to being sold to — they came to *observe*. Selling too early makes the group feel transactional and prospects mute or leave. The cohort pitch lands when they're ready: at the pool, in DM, or in the main group after they've converted.
+
+### Rule 2: Show, don't tell — let members do the talking
+
+The energy comes from **members being members**, not the founder posting more. Use these content types to give prospects glimpses of the real community:
+
+| Content                       | What it is                                                                                                                                                       | Cadence                  |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| **Weekend session recap**     | 2-3 photos from Saturday + one short member quote ("first time swimming 50m without stopping — wild")                                                            | Sunday or Monday         |
+| **Spotlight cross-post**      | Repost the week's spotlight from the main Community group (see Rule 3 for timing)                                                                                | Friday                   |
+| **Organic conversation snap** | Screenshot of a fun thread from the main group — gear debate, pool rec chain, banter — with permission, captioned "this is a normal Tuesday in here"             | Once a week              |
+| **Member voice/video**        | Short clip or voice note from a member ("come swim with us this Saturday")                                                                                       | When organic, not forced |
+
+That's 2-3 native posts per week — all glimpses, zero pressure.
+
+### Rule 3: Spotlight cross-post timing
+
+Spotlights drop in the **main Community group on Thursday at 2:00 PM** (per Weekly Rhythm). They cross-post to **New Here? on Friday**, *after* the comments have built up in the main group.
+
+**Why Friday, not same-day:** prospects who scroll back see real members reacting, tagging each other, sharing connections — that comment activity is the social proof. A same-day cross-post lands without comments because prospects don't know the featured member; it reads like a brochure.
+
+### Rule 4: Welcomes are personal, not blurb-dumps
+
+The full welcome message should be **pinned once** in the group. Do **not** re-post the full blurb every time someone new joins — it buries everything else and trains people to scroll past.
+
+**When someone new joins:**
+
+```
+Welcome [Name] 🙌 Pinned post has the basics.
+What brought you here? And which side of Lagos are you on?
+```
+
+The pin does the explaining; you do the connecting. Two qualifying questions in one message get you the info you need to route them (cohort vs. club vs. just hang out) without an interrogation.
+
+**Bring in member ambassadors:** invite 2-3 of your most outgoing existing members (the same ones you'd spotlight first) into New Here? as informal welcomers. When a prospect sees *another member* welcoming them — not just the founder — perceived community energy multiplies. This is the embryo of the Pool Ambassador role defined in [POOL_AMBASSADOR_PROGRAM.md](./POOL_AMBASSADOR_PROGRAM.md).
+
+### Suggested weekly rhythm (New Here?)
+
+| Day               | Content                                                |
+| ----------------- | ------------------------------------------------------ |
+| **Sat eve / Sun** | Weekend session recap (photos + member quote)          |
+| **Mid-week**      | Organic conversation screenshot or member voice note   |
+| **Friday**        | Spotlight cross-post (after main group comments build) |
+| **Always-on**     | Personal welcomes + 1:1 routing questions              |
+
+---
+
 ## Content Calendar Template (Monthly)
 
 ### Week 1
 
-- **Mon:** Spotlight #1 (pick a strong personality to set the tone)
-- **Thu:** Question: Swimming-related ("What's your swimming goal for this month?")
+- **Mon:** Question: Swimming-related ("What's your swimming goal for this month?")
+- **Thu:** Spotlight #1 (pick a strong personality to set the tone)
 
 ### Week 2
 
-- **Mon:** Spotlight #2
-- **Thu:** Question: Fun/lifestyle ("Best restaurant you've been to recently in Lagos?")
+- **Mon:** Question: Fun/lifestyle ("Best restaurant you've been to recently in Lagos?")
+- **Thu:** Spotlight #2
 
 ### Week 3
 
-- **Mon:** Spotlight #3
-- **Thu:** Question: Community ("What's one thing SwimBuddz could do better?")
+- **Mon:** Question: Community ("What's one thing SwimBuddz could do better?")
+- **Thu:** Spotlight #3
 
 ### Week 4
 
-- **Mon:** Spotlight #4
+- **Mon:** Question: Swimming-related ("What piece of swim gear made the biggest difference for you?")
 - **Wed:** Volunteer of the Month announcement (if applicable)
-- **Thu:** Question: Swimming-related ("What piece of swim gear made the biggest difference for you?")
+- **Thu:** Spotlight #4
 
 ### Recurring (every week):
 
@@ -394,9 +476,9 @@ Before launching the spotlight and question of the week:
 - [ ] Announce the new format in the group (see Q2 announcement template)
 - [ ] Have 4 spotlights pre-collected and ready
 - [ ] Have 8 questions of the week queued (2 months of Thursdays)
-- [ ] Brief peer leaders on the format so they can amplify
+- [ ] Brief Pod Leads on the format so they can amplify
 - [ ] Pin the group rules
-- [ ] Set a weekly reminder to collect next week's spotlight (Thursday/Friday)
+- [ ] Set a weekly reminder to collect this week's spotlight (Sunday/Monday)
 
 ---
 

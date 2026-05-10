@@ -63,7 +63,7 @@ Including the first month of club in the academy fee solves this. They graduate 
 Consider making the first **quarter** of club free for your first 8 graduates, not just the first month. These people are your founding club members. They'll:
 
 - Prove the model works
-- Become your first peer leaders
+- Become your first Pod Leads
 - Recruit the next wave through word of mouth
 
 That's worth more than N340,000 in collected fees.

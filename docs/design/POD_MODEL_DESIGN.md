@@ -1,8 +1,12 @@
 # Pod Model Design — Club Sub-Groups
 
-> **Status:** Design accepted (decisions captured 2026-05-07)
+> **⚠️ SUPERSEDED** — see [POD_OPERATIONS.md](../club/POD_OPERATIONS.md) (May 2026).
+>
+> The decisions in this doc placed pods in `sessions_service` with `lead_coach_id` + `assistant_coach_id`. Subsequent product decisions moved pods to `members_service` and replaced coaches with `pod_lead_id` + `assistant_pod_lead_id` (Club pods are peer-led; coaches only exist in the Academy layer). The schedule-anchoring fields, slug+handle naming, and the `lead_transfer` enum value also differ. Treat this doc as historical context for the prior design only.
+>
+> **Status:** Design accepted (decisions captured 2026-05-07) — **superseded 2026-05-10**
 > **Owner:** Daniel (SwimBuddz)
-> **Related:** [CHAT_SERVICE_DESIGN.md](./CHAT_SERVICE_DESIGN.md) §3, §10.2
+> **Related:** [POD_OPERATIONS.md](../club/POD_OPERATIONS.md), [CHAT_SERVICE_DESIGN.md](./CHAT_SERVICE_DESIGN.md) §3, §10.2
 > **Supersedes:** the earlier `POD_MODEL_PROPOSAL.md` (open questions)
 
 ---

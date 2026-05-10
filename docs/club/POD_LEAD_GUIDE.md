@@ -1,14 +1,26 @@
-# SwimBuddz Club Group Leader Guide
+# SwimBuddz Pod Lead Guide
 
-**Your role in one sentence:** You keep the group showing up, feeling welcome, and having fun — you don't coach technique, you hold the rhythm.
+**Your role in one sentence:** You keep the pod showing up, feeling welcome, and having fun — you don't coach technique, you hold the rhythm.
+
+> Pods are peer-led, not coached. If you're looking for the coaching role, that's an Academy coach in a cohort — see the [Coach Handbook](../academy/COACH_HANDBOOK.md). For the operating model behind pods (size, naming, lifecycle, schedule), see [Pod Operations](./POD_OPERATIONS.md).
+
+### Assistant Pod Lead (optional)
+
+Pods can have an Assistant Pod Lead — a second member who shares the load. The assistant runs the session when you can't make it, helps onboard new members, and is a backup voice in the chat when you're heads-down at work. Most pods don't need one to start. Ask the SwimBuddz team if you want one assigned; ideally pick someone the pod already trusts.
 
 ---
 
 ## Before Saturday
 
-**Wednesday or Thursday:** Send a message to your group WhatsApp: "See you Saturday! We're doing [this week's challenge]." Keep it short and energetic. Tag anyone who missed last week with a warm "hope to see you this time."
+**Wednesday or Thursday:** Send a message to your pod WhatsApp: "See you Saturday! We're doing [this week's challenge]." Keep it short and energetic. Tag anyone who missed last week with a warm "hope to see you this time."
 
 Check which challenge is scheduled this week from the session template. No planning needed — just know what's coming.
+
+**If your default day won't hold:** You decide the reschedule. It's not a group vote. Consult the pod where you want to, but the call is yours — that's how the consistency stays intact. If the session can't be rescheduled at all, tell the pod and the SwimBuddz team; everyone gets an attendance pass for that week.
+
+**One-off vs permanent change:**
+- **One-off** (lead unavailable this week, pool closed): you create a one-off session for the new day/time. Doesn't change the pod's default schedule.
+- **Permanent** (the pod has decided Wednesdays work better long-term): you ask the SwimBuddz team to update the pod's `default_session_day` / `default_session_time`. This is rare — most pods stick with their original anchor.
 
 ---
 
@@ -18,7 +30,7 @@ Check which challenge is scheduled this week from the session template. No plann
 
 - Greet everyone by name as they arrive
 - Take attendance in the app (tracks streaks and leaderboard — it matters)
-- **Run the weekly question.** Gather the group poolside: "Before we get in — [question of the week]." You go first. Keep it light but personal.
+- **Run the weekly question.** Gather the pod poolside: "Before we get in — [question of the week]." You go first. Keep it light but personal.
 - If someone is new, introduce them: "Everyone, this is [name], they just finished the academy."
 
 ### 2. Warm-Up (15 min)
@@ -28,7 +40,7 @@ Check which challenge is scheduled this week from the session template. No plann
 
 ### 3. Main Session (60-75 min)
 
-**Endurance Block (25-30 min)** — Sets based on the group's level. Start comfortable, add distance over weeks. Count laps for anyone who wants tracking. Celebrate personal bests out loud.
+**Endurance Block (25-30 min)** — Sets based on the pod's level. Start comfortable, add distance over weeks. Count laps for anyone who wants tracking. Celebrate personal bests out loud.
 
 **Challenge Block (20-25 min)** — Run the week's challenge:
 
@@ -54,6 +66,63 @@ Check which challenge is scheduled this week from the session template. No plann
 
 ---
 
+## Pod Kickoff Message
+
+The first message you send when your pod's WhatsApp group is created. Send it within 24 hours of group creation. Replace the bracketed bits, fill in your own answers to the three questions, then send.
+
+```
+🐬 Welcome to SB Club – [Pod name]
+
+Hey crew! I'm [Your name] — your Pod Lead. Really glad we're in the water together 🌊
+
+The deal: same 5 of us, every Saturday, plus whatever else we can pull off in between. We hype each other up, post our swims here, and slowly become each other's favourite reason to show up.
+
+To break the ice — quick intro from each of you 👇
+
+1. Your name + what you do Mon–Fri
+2. How you got into swimming (or what brought you to SwimBuddz)
+3. One thing you want out of the pool over the next few months
+
+I'll go first:
+
+1. [Your name + weekday gig]
+2. [How you got into swimming — 1–2 lines]
+3. [Your own goal — distance, technique, consistency, whatever]
+
+---
+📅 First Saturday together: [date, time, pool]
+✅ Sign in via the app once it opens
+🚗 Need a ride? Drop a 🙋 by Friday 3pm
+
+Can't wait to meet you all in the water 🐬
+```
+
+**After sending:**
+- React to each member's intro with an emoji within an hour.
+- Call out one thing from each ("oh you swim at Lekki — same!"). That's what turns a one-shot intro thread into actual conversation.
+
+---
+
+## Midweek chat rhythm
+
+The pod chat is a 7-day-a-week relationship, not a Saturday-only logistics channel. Two patterns to actively encourage:
+
+### Solo → group conversion
+
+When a member wants to swim midweek, they post **before** they go: "Federal Palace, Tuesday 6am — anyone in?" If someone bites, it's a group swim. If nobody does, the member swims solo and shares a recap.
+
+Your job: model this yourself. Post your own midweek swim plans first, so everyone sees the pattern.
+
+### Photos, videos, recaps
+
+All swims — Saturday or ad-hoc — get posted in the pod chat. Photos, videos, lap counts, PBs. React to every one. This is what keeps the pod alive between Saturdays.
+
+### What ad-hoc swims don't do
+
+Make sure your pod knows: ad-hoc swims **do not** count toward Club attendance, streaks, or leaderboards. Only the Saturday session does. State this once at kickoff so nobody assumes "I swam Tuesday with two pod members" replaces showing up Saturday.
+
+---
+
 ## Weekly Questions (rotate these)
 
 1. What do you do Monday to Friday?
@@ -67,7 +136,7 @@ Check which challenge is scheduled this week from the session template. No plann
 9. Who's someone that inspires you and why?
 10. What's something people wouldn't guess about you?
 11. What song gets you moving every time?
-12. If the group went on a trip together, where should we go?
+12. If the pod went on a trip together, where should we go?
 
 ---
 
@@ -80,12 +149,12 @@ Check which challenge is scheduled this week from the session template. No plann
 - Notice when someone is quiet or struggling — check in privately.
 - Celebrate effort, not just performance. The person who went from 25m to 50m deserves as much noise as the person who swam 500m.
 - Record attendance, challenge results, and personal bests in the app.
-- Message the group midweek. Keep the energy alive between Saturdays.
+- Message the pod midweek. Keep the energy alive between Saturdays.
 - Report back to the SwimBuddz team weekly: attendance, concerns, anyone at risk of dropping off.
 
 ### Never do:
 
-- Teach technique. If someone asks for stroke correction, say: "Great question for the next academy cohort" or flag it for a coach.
+- **Teach technique.** Pods are peer-led, not coached. If someone asks for stroke correction, say: "Great question for the next academy cohort" or flag it for an Academy coach.
 - Let anyone feel invisible. If someone came once and didn't come back, reach out personally.
 - Skip the social element. The questions, the post-swim hangout, the celebrations — these aren't extras. They're why people stay.
 - Handle money, resolve conflicts, or make promises about pricing/schedules. Escalate to the SwimBuddz team.
@@ -98,18 +167,19 @@ Check which challenge is scheduled this week from the session template. No plann
 |-----------|------------|
 | Someone hasn't come in 2+ weeks | Send a personal message: "Hey [name], missed you the last couple Saturdays. Everything okay? No pressure, just checking in." |
 | Two people have tension | Don't mediate. Tell the SwimBuddz team. |
-| Someone is much faster/slower than the group | Adjust sets so everyone has something appropriate. Pair the faster swimmer with someone for encouragement. |
-| Attendance is dropping | Talk to the SwimBuddz team. Might need a group event, a new challenge, or direct conversations. |
+| Someone is much faster/slower than the pod | Adjust sets so everyone has something appropriate. Pair the faster swimmer with someone for encouragement. |
+| Attendance is dropping | Talk to the SwimBuddz team. Might need a pod event, a new challenge, or direct conversations. |
 | Someone asks about joining without doing the academy | Point them to swimbuddz.com. Don't make exceptions. |
+| Non-Club member shows up to a Saturday session | See [Tier Boundary Policy](../community/TIER_BOUNDARY_POLICY.md). Warm welcome, firm redirect. |
 | Safety concern in the water | Stop the session. Get everyone out. Contact pool staff immediately. Report to SwimBuddz team. |
 
 ---
 
 ## What You Get
 
-- **Club Group Leader** title and recognition
+- **Pod Lead** title and recognition
 - Bubbles rewards for every session you lead
-- Free or discounted club membership
+- Free or discounted Club membership
 - Priority access to SwimBuddz events and trips
 - Direct line to the founder
 - A leadership experience you can reference professionally
@@ -120,4 +190,4 @@ Check which challenge is scheduled this week from the session template. No plann
 
 ---
 
-*Last updated: April 2026*
+*Last updated: May 2026*

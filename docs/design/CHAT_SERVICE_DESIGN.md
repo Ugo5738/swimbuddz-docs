@@ -363,10 +363,14 @@ Archival is soft: `archived_at` is set, channel becomes read-only, messages rema
 - On `cohort.created`: cohort channel auto-created with coach as admin.
 - On `cohort.completed`: channel archived; alumni membership offered to students.
 
-### 10.2 `sessions_service` (pods → pod channels)
+### 10.2 `members_service` (pods → pod channels)
 
+- On `pod.created`: pod channel auto-created with the **Pod Lead** as channel admin.
 - On `pod_assignment.created` / `.removed`: membership added/removed.
+- On `pod.dissolve`: reconcile remove for each active member; channel archive happens via the chat admin API once the final messages settle (+180 day retention).
 - Per-session channels NOT created (too ephemeral); use pod channel + pinned session info.
+
+> Pods moved from `sessions_service` to `members_service` in May 2026 — see [docs/club/POD_OPERATIONS.md](../club/POD_OPERATIONS.md). The chat-side enums (`ParentEntityType.POD`, `MembershipDerivation.POD_ASSIGNMENT`, `RetentionPolicy.POD`) are unchanged.
 
 ### 10.3 `events_service` (RSVPs → event channels)
 

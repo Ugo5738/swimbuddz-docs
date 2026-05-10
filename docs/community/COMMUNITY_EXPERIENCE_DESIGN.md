@@ -147,7 +147,7 @@ The most natural conversion path:
 1. Community member joins WhatsApp group
 2. They see club members celebrating personal bests every Saturday
 3. They attend an open meetup and swim alongside a club group
-4. They ask "how do I join the club?" — peer leader directs them to the founder
+4. They ask "how do I join the club?" — Pod Lead directs them to the founder
 5. Founder has a 5-minute conversation, explains the tier, they sign up
 
 The open meetup is where this happens most reliably. Make sure club members bring energy on those Saturdays — the contrast between "casual community swim" and "club group celebrating each other" is what sells the upgrade.
@@ -171,4 +171,5 @@ Academy members posting their progress reports publicly is the most powerful com
 - **WHATSAPP_PLAYBOOK.md** — detailed weekly posting calendar, spotlight format, question bank, moderation
 - **TIER_BOUNDARY_POLICY.md** — what happens when community members show up to club/academy sessions
 - **PRICING_STRATEGY.md** — tier structure, transition bridges, how to price the conversation
-- **PEER_LEADER_GUIDE.md** — how club group leaders run Saturday sessions (community members may observe)
+- **[POD_LEAD_GUIDE.md](../club/POD_LEAD_GUIDE.md)** — how Pod Leads run Saturday sessions (community members may observe)
+- **[POD_OPERATIONS.md](../club/POD_OPERATIONS.md)** — how Club pods are constituted, named, and run
