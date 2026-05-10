@@ -148,6 +148,7 @@ swimbuddz/
 | [docs/store/STORE_ARCHITECTURE.md](./docs/store/STORE_ARCHITECTURE.md) | Store design and data model         | -     | Current |
 | [docs/store/STORE_OPERATIONS.md](./docs/store/STORE_OPERATIONS.md)     | Store operations playbook           | -     | Current |
 | [docs/store/STORE_FRONTEND.md](./docs/store/STORE_FRONTEND.md)         | Store UI/UX planning                | -     | Current |
+| [docs/store/KIT_SPECS.md](./docs/store/KIT_SPECS.md)                   | Source of truth for kits & bundles  | -     | Current |
 
 ### Coach Operations Documentation
 
