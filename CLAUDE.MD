@@ -22,7 +22,7 @@ cd swimbuddz-backend && pytest tests/
 cd swimbuddz-frontend && npm test
 ```
 
-**Service Ports:** Gateway (8000) | Members (8001) | Sessions (8002) | Attendance (8003) | Communications (8004) | Payments (8005) | Academy (8006) | Events (8007) | Media (8008) | Transport (8009) | Store (8010) | AI (8011) | Volunteer (8012) | Wallet (8013) | Pools (8014) | Reporting (8015) | Chat (8016, planned)
+**Service Ports:** Gateway (8000) | Members (8001) | Sessions (8002) | Attendance (8003) | Communications (8004) | Payments (8005) | Academy (8006) | Events (8007) | Media (8008) | Transport (8009) | Store (8010) | AI (8011) | Volunteer (8012) | Wallet (8013) | Pools (8014) | Reporting (8015) | Chat (8016)
 
 > **Source of truth:** `swimbuddz-backend/docker-compose.yml`. Keep [docs/reference/SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md) in sync whenever ports or services change. Don't trust port lists anywhere else — always cross-check.
 
@@ -85,7 +85,6 @@ Before making changes, read these files:
 - [DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md) - Master index of all docs
 - [swimbuddz-backend/ARCHITECTURE.md](./swimbuddz-backend/ARCHITECTURE.md) - Microservices design
 - [swimbuddz-frontend/ARCHITECTURE.md](./swimbuddz-frontend/ARCHITECTURE.md) - Next.js app structure
-- [PRODUCT_ANALYSIS.md](./PRODUCT_ANALYSIS.md) - Product vision and risks
 
 ### Coding Standards
 - [swimbuddz-backend/CONVENTIONS.md](./swimbuddz-backend/CONVENTIONS.md) - Python/FastAPI standards
@@ -125,15 +124,15 @@ Before making changes, read these files:
 - `payments_service` (8005) - Payment records and Paystack integration
 - `academy_service` (8006) - **Production-ready** cohort-based programs, curriculum, enrollment
 - `events_service` (8007) - Community events and RSVPs (minimal implementation)
-- `media_service` (8008) - Photo/video galleries and site assets (minimal implementation)
+- `media_service` (8008) - Photo/video galleries and site assets (member + admin routes; media items, albums, audio, uploads)
 - `transport_service` (8009) - Ride-sharing system and route management
-- `store_service` (8010) - E-commerce platform (minimal routes, extensive models)
+- `store_service` (8010) - E-commerce platform (extensive models + admin catalog/inventory routes; member-facing UI is minimal)
 - `ai_service` (8011) - AI scoring: cohort complexity, coach grading, coach-cohort matching
 - `volunteer_service` (8012) - Volunteer roles, opportunities, hours tracking, tiers, rewards
 - `wallet_service` (8013) - "Bubbles" closed-loop credit system
 - `pools_service` (8014) - Pool registry, partnership CRM, submissions workflow
 - `reporting_service` (8015) - Analytics & reports (member insights, admin dashboards, seasonality)
-- `chat_service` (8016) - **Planned** in-app real-time messaging (design approved; scaffolding pending). See [docs/design/CHAT_SERVICE_DESIGN.md](./docs/design/CHAT_SERVICE_DESIGN.md).
+- `chat_service` (8016) - In-app real-time messaging with safeguarding moderation (Phase 1 in production: member + admin + internal routers, RLS + Realtime, frontend at `/account/chat`). See [docs/design/CHAT_SERVICE_DESIGN.md](./docs/design/CHAT_SERVICE_DESIGN.md).
 
 **Service Communication Pattern:**
 ```
@@ -324,22 +323,20 @@ The Model Context Protocol allows AI agents to interact with the SwimBuddz backe
 - Attendance tracking with ride-share (Attendance Service)
 - Announcements and communications (Communications Service)
 - Payment processing and Paystack integration (Payments Service)
-- Academy programs with cohort management (Academy Service - see [ACADEMY_REVIEW.md](./docs/ACADEMY_REVIEW.md))
+- Academy programs with cohort management (Academy Service - see [ACADEMY_REVIEW.md](./docs/academy/ACADEMY_REVIEW.md))
 - Transport/ride-sharing system (Transport Service)
 - AI scoring (AI Service — cohort complexity, coach grading, coach-cohort matching)
 - Volunteer programme (Volunteer Service)
 - Bubbles wallet (Wallet Service)
 - Pool registry and partnership CRM (Pools Service)
 - Analytics & reporting (Reporting Service — member insights, admin dashboards, seasonality)
+- Photo/video galleries and site assets (Media Service)
+- In-app real-time messaging with safeguarding (Chat Service — Phase 1: member + admin + internal routers, RLS, Realtime, moderation)
 - Admin dashboards for all domains
 
 ### Minimal Implementation (Models exist, limited routes)
 - **Events Service** - Community events and RSVPs (basic endpoints only)
-- **Media Service** - Photo/video galleries (basic endpoints only)
-- **Store Service** - E-commerce platform (extensive models, basic routes)
-
-### Planned
-- **Chat Service** (port 8016) — In-app real-time messaging; design approved, scaffolding pending. See [CHAT_SERVICE_DESIGN.md](./docs/design/CHAT_SERVICE_DESIGN.md).
+- **Store Service** - E-commerce platform (extensive models and admin routes; member-facing UI is minimal)
 
 ### Implementation Gaps
 - **Academy Service gaps:** Coach dashboard, capacity enforcement, waitlist automation, enrollment notifications
@@ -411,8 +408,6 @@ See [TODO.md files](./DOCUMENTATION_INDEX.md#task-tracking) for detailed task li
    - Middleware for protected routes
 
 ## Anti-Patterns to Avoid
-
-Based on [PRODUCT_ANALYSIS.md](./PRODUCT_ANALYSIS.md):
 
 ### ❌ DON'T: Create "god objects"
 The `Session` model shouldn't handle Community, Club, AND Academy use cases.
