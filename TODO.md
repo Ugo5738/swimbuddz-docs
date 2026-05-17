@@ -264,6 +264,14 @@ This document tracks planned features, improvements, and technical debt for the 
 
 ## 🐛 Technical Debt / Refactoring
 
+- [ ] **Code-review follow-ups** → see [docs/REVIEW_FOLLOWUPS.md](./docs/REVIEW_FOLLOWUPS.md)
+  - Deferred items from the comprehensive code review: F5–F7 type
+    discipline (migrate-on-touch), G2 mega-component splits, G4
+    `next/image`, B4 audit-log unification (design note + sequenced
+    PRs), D2/H2 `PRODUCT_ANALYSIS.md` (needs product input).
+  - Rules for each are already codified (CONVENTIONS §3/§5/§6/§12) and
+    ESLint-enforced where applicable; that doc is the tracked backlog.
+
 - [ ] **Unify Member Lookup Pattern**
   - Create reusable service for member lookups across services
   - Reduce duplicate SQL queries (many places do `SELECT * FROM members WHERE id=...`)
