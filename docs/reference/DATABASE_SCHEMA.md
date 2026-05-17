@@ -2,6 +2,12 @@
 
 This document provides database schema documentation for SwimBuddz services, with a focus on shared types and conventions.
 
+> **Per-table column reference:** see the auto-generated companion
+> [DATABASE_SCHEMA_TABLES.md](./DATABASE_SCHEMA_TABLES.md) — every table,
+> column, type, key, and constraint, grouped by owning service.
+> Regenerate with `python scripts/db/generate-schema-doc.py` after model
+> changes. This file stays hand-curated for conventions and shared enums.
+
 ---
 
 ## String-Based Enum Pattern
