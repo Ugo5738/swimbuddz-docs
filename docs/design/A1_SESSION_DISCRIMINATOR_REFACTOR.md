@@ -147,13 +147,15 @@ Walk-in flow stays exactly as today: hit `POST /sessions/{id}/sign-in` → `Atte
 ```python
 # attendance_service/models/booking.py
 
+# SessionBooking represents the booking *lifecycle* only — the journey from
+# "member intends to attend" to "session start time." It does not encode
+# post-session outcome; that lives entirely on AttendanceRecord. Splitting
+# the responsibilities avoids two tables tracking the same fact.
 class SessionBookingStatus(str, Enum):
     PENDING    = "pending"     # awaiting payment / approval
-    CONFIRMED  = "confirmed"   # paid / approved, capacity held
-    ATTENDED   = "attended"    # check-in produced an AttendanceRecord
-    NO_SHOW    = "no_show"     # session passed without check-in
+    CONFIRMED  = "confirmed"   # paid / approved, capacity held — terminal once session starts
     CANCELLED  = "cancelled"   # member or admin cancelled before session
-    EXPIRED    = "expired"     # PENDING booking aged out
+    EXPIRED    = "expired"     # PENDING booking aged out without confirmation
 
 class BookingChannel(str, Enum):
     MEMBER_SELF    = "member_self"     # member booked directly
@@ -231,31 +233,58 @@ This is an **intra-service** FK (both tables live in `attendance_service`), so t
 WALK-IN (today's flow — unchanged)
     member at pool → POST /sessions/{id}/sign-in
     → AttendanceRecord(session_id, member_id, status=PRESENT, booking_id=NULL)
+    No SessionBooking row.
 
-PRE-BOOK (new flow — for corporate wellness, popular sessions, etc.)
-    member browses → POST /sessions/{id}/book
-    → SessionBooking(status=PENDING, capacity reserved)
-    payment clears (Paystack webhook / Bubbles debit)
-    → SessionBooking.status = CONFIRMED
+PRE-BOOK + ATTENDS
+    member books → SessionBooking(status=PENDING)
+    payment clears (Paystack webhook / Bubbles debit) → status=CONFIRMED
+    at session time, coach signs them in
+    → AttendanceRecord(status=PRESENT, booking_id=<booking.id>)
+    SessionBooking stays CONFIRMED — its lifecycle ended when the session
+    started; the post-session fact lives on AttendanceRecord.
 
-    at session time, coach/member calls existing sign-in
-    → SessionBooking is found by (session_id, member_id)
-    → AttendanceRecord(…, booking_id=<booking.id>, status=PRESENT)
-    → SessionBooking.status = ATTENDED
+PRE-BOOK + DOESN'T SHOW
+    member books → SessionBooking(status=PENDING) → CONFIRMED
+    session ends without check-in
+    nightly sweep creates an AttendanceRecord on their behalf
+    → AttendanceRecord(status=ABSENT, booking_id=<booking.id>)
+    SessionBooking stays CONFIRMED. "No-show" is computed as
+    AttendanceRecord.status=ABSENT WHERE booking_id IS NOT NULL — no
+    duplicate field on SessionBooking.
 
-NO-SHOW
-    SessionBooking.status was CONFIRMED but no AttendanceRecord ever created.
-    Nightly job (or end-of-session sweep): SessionBooking.status = NO_SHOW.
+PRE-BOOK + EXCUSED ABSENCE
+    member or coach marks excused (sickness, etc.)
+    → AttendanceRecord(status=EXCUSED, booking_id=<booking.id>)
+    SessionBooking stays CONFIRMED.
 
-CANCEL
-    member cancels before session → SessionBooking.status = CANCELLED
+PRE-BOOK + CANCEL BEFORE SESSION
+    member cancels → SessionBooking.status = CANCELLED
     refund handled per policy (out of scope for this doc)
+    No AttendanceRecord is ever created (they weren't expected at session time).
 
 CORPORATE BULK
     sponsor purchases N×M (N sessions × M employees)
     → N×M SessionBooking rows, channel=CORPORATE_BULK, status=CONFIRMED
     each employee follows the standard sign-in flow at session time
+    (or the nightly sweep records their absence)
 ```
+
+### Division of responsibilities
+
+To avoid the two-tables-tracking-the-same-fact drift problem:
+
+| Question | Table & column |
+|---|---|
+| "Did the booking get honoured up to session time?" | `SessionBooking.status` — `CONFIRMED` (held), `CANCELLED` (refunded), `EXPIRED` (timed out before payment) |
+| "What happened at the session for this member?" | `AttendanceRecord.status` — `PRESENT`, `LATE`, `ABSENT`, `EXCUSED` |
+| "Did this attendance come from a pre-booking or a walk-in?" | `AttendanceRecord.booking_id` (set vs `NULL`) |
+
+Reporting queries stay single-table:
+
+* Utilisation: `AttendanceRecord.status='present'` per session
+* No-show rate: `AttendanceRecord.status='absent' AND booking_id IS NOT NULL` per session
+* Walk-in vs pre-book mix: `AttendanceRecord.booking_id IS NULL` vs `IS NOT NULL`
+* Cancellations / refund volume: `SessionBooking.status='cancelled'`
 
 ---
 
@@ -295,12 +324,12 @@ This document. Awaiting an implementation slot.
 - Add `SessionBooking` model + table.
 - Add `AttendanceRecord.booking_id` column with intra-service FK.
 - `migrate.sh attendance_service "add session bookings"`.
-- Existing sign-in endpoint gets a small change: on entry, look up an existing `SessionBooking` for `(session_id, member_id)`; if found and status is `CONFIRMED`, set the new `AttendanceRecord.booking_id` and transition the booking to `ATTENDED`. If none found, behaviour is identical to today (walk-in).
+- Existing sign-in endpoint gets a small change: on entry, look up an existing `SessionBooking` for `(session_id, member_id)`; if found and `status=CONFIRMED`, set the new `AttendanceRecord.booking_id`. If none found, behaviour is identical to today (walk-in). The booking's own status does not change at sign-in time — its lifecycle ended when the session started.
 - New endpoints (these are product work, not infra):
   - `POST /attendance/sessions/{id}/book` — member self-book; creates `SessionBooking(status=PENDING)`, returns a payment intent reference for the fee.
   - `POST /attendance/bookings/{id}/cancel` — member or admin cancel.
   - `POST /internal/attendance/bookings/bulk` — service-role bulk-create for corporate-wellness orchestration.
-- Nightly task (in attendance_service's existing arq queue) — sweep `CONFIRMED` bookings past their session's `ends_at` with no matching `AttendanceRecord` → `NO_SHOW`.
+- Nightly task (in attendance_service's existing arq queue) — for every `CONFIRMED` booking whose session's `ends_at` has passed and which has no `AttendanceRecord`, create an `AttendanceRecord(status=ABSENT, booking_id=…)` on the member's behalf. This is how "no-show" gets recorded — as a regular ABSENT attendance row, tied to the booking via `booking_id`, with no special status on the booking itself.
 
 **Risk: medium.** New table + new endpoints + sign-in flow change. Walk-in stays unchanged but needs regression tests.
 **Estimate: 3–5 days** (table + flow change + endpoints + nightly task + tests).
