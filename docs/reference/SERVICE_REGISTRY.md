@@ -23,6 +23,7 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 | **pools_service** | 8014 | Production | Pool registry, partnership CRM, submissions workflow, assets/contacts/visits | `/admin/settings/pools/*`, public pool listings |
 | **reporting_service** | 8015 | Production | Analytics & reports: member insights, community analytics, admin dashboards, seasonality forecasting | `/account/insights`, `/admin/analytics`, `/admin/reports/*` |
 | **chat_service** | 8016 | In Development (Phase 1 backend) | Real-time messaging across cohorts, pods, events, trips, DMs; safeguarding enforcement. See [design doc](../design/CHAT_SERVICE_DESIGN.md) | `/account/chat/*`, `/admin/chat/*` (planned) |
+| **ledger_service** | 8017 | Planned (design approved) | Multi-tenant double-entry accounting: chart of accounts, journal entries, reconciliation, period close, FIRS e-invoicing. Designed as B2B-extractable from day 1. See [design doc](../design/LEDGER_SERVICE_DESIGN.md) | `/admin/finance/*` (planned) |
 | **identity_service** | — | Deprecated placeholder | Empty directory; authentication is handled by Supabase JWT via `libs/auth`. Not implementing — documented here so it isn't confused with a missing service. | N/A |
 
 ---
@@ -187,7 +188,7 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 **Purpose:** Structured swim education programs with cohort-based learning, curriculum management, student progress tracking, milestone assessment.
 
-**Status:** **Fully implemented backend, production-ready** with minor operational gaps (see [ACADEMY_REVIEW.md](../ACADEMY_REVIEW.md))
+**Status:** **Fully implemented backend, production-ready** with minor operational gaps (see [ACADEMY_REVIEW.md](../academy/ACADEMY_REVIEW.md))
 
 **Key Models (20,332 lines total):**
 - **Program Management:** `AcademyProgram`, `ProgramCurriculum`, `CurriculumWeek`, `CurriculumLesson`
@@ -217,7 +218,7 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 **README:** [academy_service/README.md](../../swimbuddz-backend/services/academy_service/README.md)
 
-**Deep Dive:** [ACADEMY_REVIEW.md](../ACADEMY_REVIEW.md) (784 lines)
+**Deep Dive:** [ACADEMY_REVIEW.md](../academy/ACADEMY_REVIEW.md) (784 lines)
 
 ---
 
@@ -471,7 +472,33 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 ---
 
-### 18. Identity Service (Deprecated Placeholder)
+### 18. Ledger Service (Port 8017) — Planned (design approved)
+
+**Implementation:** `services/ledger_service/` (not yet scaffolded — Phase 0 in progress)
+
+**Purpose:** Multi-tenant double-entry accounting system. The single source of truth for money across SwimBuddz: every payment, refund, wallet top-up, Bubbles spend, store sale, academy enrollment, coach payout, and volunteer reward posts a journal entry here. Owns chart of accounts, balances, trial balance, P&L, balance sheet, period close, Paystack reconciliation, multi-currency, and FIRS-compliant e-invoicing.
+
+**Status:** Design approved. Architected as multi-tenant from day 1 so it can be extracted as a B2B accounting product for other African SMBs (gyms, schools, clubs) without rewriting — `organization_id` on every row, RLS, CoA seeded from vertical templates, no SwimBuddz-specific schema. Operational tables in `payments_service`, `wallet_service`, `store_service`, `academy_service`, etc. remain authoritative for *what happened in the business*; the ledger is authoritative for *what happened to the money*. AI features (anomaly detection, narrated close, NL queries) layer on top in phase 8 and never write entries directly. Port 8017.
+
+**Design doc:** [docs/design/LEDGER_SERVICE_DESIGN.md](../design/LEDGER_SERVICE_DESIGN.md)
+
+**Planned models:**
+- `Organization`, `ChartOfAccounts`, `JournalEntry`, `JournalLine`
+- `AccountBalances` (materialized), `Period`, `CostCenter`
+- `ExternalTransaction`, `ReconciliationBreak` (PSP/bank matching)
+- `FxRate`, `TaxCode`, `Invoice`, `InvoiceLine` (FIRS-ready)
+- `LedgerUser`, `AuditLog`
+
+**Planned frontend integration:** `/admin/finance/*` (trial balance, P&L, balance sheet, reconciliation queue, manual journal entry, invoice issuance)
+
+**Dependencies before Phase 1 ships:**
+- `LEDGER_DEFAULT_ORG_ID` env var seeded in `libs/common/config.py`
+- `libs/common/ledger_client.py` (parallel to `service_client.py`)
+- Gateway routing for `/ledger/*` → `ledger_service:8017`
+
+---
+
+### 19. Identity Service (Deprecated Placeholder)
 
 **Implementation:** `services/identity_service/` (empty directory — 2 lines total, not in any docker-compose)
 
@@ -540,7 +567,8 @@ Each service must:
 - 8014: Pools
 - 8015: Reporting
 - 8016: Chat (planned — see [docs/design/CHAT_SERVICE_DESIGN.md](../design/CHAT_SERVICE_DESIGN.md))
-- 8017+: Available for new services
+- 8017: Ledger (planned — see [docs/design/LEDGER_SERVICE_DESIGN.md](../design/LEDGER_SERVICE_DESIGN.md))
+- 8018+: Available for new services
 
 > **Important:** Before allocating a new port, cross-check `swimbuddz-backend/docker-compose.yml` — that is the source of truth. This registry must be updated whenever docker-compose changes.
 
@@ -552,7 +580,7 @@ Each service must:
 
 **Minimal/Incomplete Services:** events, media, store (have models but limited routes)
 
-**Planned:** chat (port 8016 — design approved, scaffolding pending)
+**Planned:** chat (port 8016 — design approved, scaffolding pending); ledger (port 8017 — design approved, scaffolding pending)
 
 **Deprecated placeholder:** identity (empty; auth handled by Supabase)
 
@@ -564,6 +592,8 @@ Each service must:
 
 ---
 
-*Last updated: 2026-04-29 — documented flywheel metrics responsibilities under reporting_service (admin endpoints, cross-service prerequisites, acquisition_source).*
+*Last updated: 2026-05-14 — added ledger_service (port 8017, planned) — multi-tenant double-entry accounting designed for SwimBuddz internal use and B2B extraction; see [LEDGER_SERVICE_DESIGN.md](../design/LEDGER_SERVICE_DESIGN.md).*
+
+*2026-04-29 — documented flywheel metrics responsibilities under reporting_service (admin endpoints, cross-service prerequisites, acquisition_source).*
 
 *2026-04-19 — added ai_service (8011), pools_service (8014), reporting_service (8015), chat_service (8016, planned); clarified identity_service as deprecated; added detail section for volunteer_service.*
