@@ -22,8 +22,8 @@ What remains, conceptually, is that **the `SessionType` enum conflates three ort
 | `CLUB` | a **layer** of the platform |
 | `COHORT_CLASS` | a **format** within Academy + a **context anchor** (cohort_id) |
 | `EVENT` | a **context anchor** (event_id) |
-| `ONE_ON_ONE` | a **format** (size) + a **context anchor** (booking_id) |
-| `GROUP_BOOKING` | a **format** + an **action** ("booking" is what the user does, not what the session is) |
+| `ONE_ON_ONE` | a **format** (size) + a **context anchor** (booking_id) — **aspirational; zero rows in production today** |
+| `GROUP_BOOKING` | a **format** + an **action** ("booking" is what the user does, not what the session is) — **aspirational; zero rows in production today** |
 
 This document proposes a three-dimension model that separates these concerns cleanly. It is the *honest* version of Phase 3 — not the table-per-type split the reviewer originally suggested.
 
@@ -92,7 +92,15 @@ Format is independent of layer (a Club can hold a clinic; the Academy can hold a
 | `ONE_ON_ONE` | *depends* | `booking` | `private` |
 | `GROUP_BOOKING` | *depends* | `booking` | `group_private` |
 
-The two booking rows have a wrinkle: the layer is determined by *who* is booking. Today the booking system isn't built, so no rows exist with these types. When the booking system ships, layer will be set from the booking record's tier.
+**The two booking rows are aspirational and the source of the biggest open question.** A member-facing private-lesson booking flow has not been built:
+
+* Zero `Session` rows have `session_type='one_on_one'` or `'group_booking'`.
+* Zero `Session` rows have `booking_id` set.
+* No router creates these sessions; no frontend lets you book one; no `PaymentPurpose` covers a private-lesson booking.
+* The coach-side preference flag (`CoachProfile.accepts_one_on_one`) is captured but never consumed.
+* The only thing called `*Booking` in the codebase is `transport_service.RideBooking`, which is for ride-share seats — unrelated to `Session.booking_id`.
+
+The infrastructure slot exists; the product that uses it doesn't. Whether to keep these slots or remove them is a product decision (see **Open question 1** below). Academy cohort teaching does **not** use these types — academy uses `COHORT_CLASS` exclusively, where sessions are pre-scheduled at cohort creation and members enroll rather than book individual slots.
 
 ---
 
@@ -276,7 +284,13 @@ This is substantially less than the original 5-table split estimate (1–2 weeks
 
 ## Open questions
 
-1. **Booking layer policy.** When the booking system is built, what determines the layer of a `(context=booking)` session — the booker's tier, the coach's tier, or an explicit field on the booking?
+1. **What happens to the booking slot?** `SessionType.ONE_ON_ONE`, `SessionType.GROUP_BOOKING`, and `Session.booking_id` are aspirational — zero rows in production, no flow creates them, no payment purpose covers them, no frontend books them. The coach-side `accepts_one_on_one` flag is the only related code that's actually consumed. Three directions:
+   - **A. Keep + build.** Commit to the member-facing private-lesson / small-group-private booking product. The slot finally gets used. New revenue stream parallel to cohorts.
+   - **B. Drop.** Acknowledge the booking flow isn't going to ship. Remove `ONE_ON_ONE` and `GROUP_BOOKING` from `SessionType`, drop `booking_id` from `sessions`, simplify the discriminator down to (cohort / event / pod / none). Eliminates ~4 months of bit-rotted aspirational code and shrinks the Phase 2 CHECK constraint by two branches.
+   - **C. Repurpose.** If academy needs make-up sessions or extension lessons outside the regular cohort schedule, these slots could become that — e.g., `SessionType.MAKEUP_LESSON` with a `makeup_obligation_id`. Today the slot is empty; that's a refactor opportunity.
+
+   **Direction matters BEFORE Phase 3.** If we're going with B, the `(layer, context, format)` model gets simpler: `booking` drops out of `context`, `private` and `group_private` drop out of `format`. If A or C, the existing structure stays.
+
 2. **`SessionTemplate` parallels.** Templates mirror the Session enum; do they get the same three-dimension treatment, or do they collapse to `(layer, format)` only since template-time context isn't known yet?
 3. **Reporting backwards compat.** Reporting aggregations consume `session_type.value` in stored JSON / cards. How long do we hold `session_type` in `SessionBasic` for downstream services to migrate?
 4. **Frontend type-picker UX.** Today admins pick "session type" from a single dropdown. Do we replace with three dependent dropdowns (layer → format → context), or keep a single "session kind" picker that maps to a `(layer, context, format)` triple under the hood?
