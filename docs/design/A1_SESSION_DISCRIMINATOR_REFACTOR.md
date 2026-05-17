@@ -1,8 +1,8 @@
 # A1 — Session Discriminator Refactor (Phase 3 design note)
 
-> **Status:** Design note — *deferred, not approved for implementation*
-> **Service:** `sessions_service` (Port 8002)
-> **Date:** 2026-05-17
+> **Status:** Design note — *Phase 3 scope locked; awaiting implementation slot*
+> **Service:** `sessions_service` (Port 8002), `academy_service` (8006), `attendance_service` (8003)
+> **Date:** 2026-05-17 (last update); originally 2026-05-17
 > **Author:** Daniel + AI collaborator
 > **Phases 1 & 2 status:** shipped in commits `214e1c8` (Pydantic + SQLAlchemy event listener) and `4a3deb3` (Postgres `CHECK` constraint with `NOT VALID`). The data-integrity risk the May 2026 code review flagged is already eliminated.
 
@@ -14,18 +14,22 @@ The May 2026 code review flagged the `Session` model as a "god object": a single
 
 **Phases 1 & 2 closed the data-integrity gap.** The discriminator rule is now enforced at three layers (Pydantic at API entry, SQLAlchemy `before_insert`/`before_update` for any ORM caller, Postgres `CHECK` at the DB). No write path can produce an inconsistent row.
 
-What remains, conceptually, is that **the `SessionType` enum conflates three orthogonal dimensions**:
+What remains, conceptually, is that **the `SessionType` enum conflates three orthogonal dimensions** — and two of its values (`ONE_ON_ONE`, `GROUP_BOOKING`) plus the `booking_id` column are aspirational dead code that should never have shipped without a backing product flow.
 
-| Enum value | What it actually encodes |
-|---|---|
-| `COMMUNITY` | a **layer** of the platform |
-| `CLUB` | a **layer** of the platform |
-| `COHORT_CLASS` | a **format** within Academy + a **context anchor** (cohort_id) |
-| `EVENT` | a **context anchor** (event_id) |
-| `ONE_ON_ONE` | a **format** (size) + a **context anchor** (booking_id) — **aspirational; zero rows in production today** |
-| `GROUP_BOOKING` | a **format** + an **action** ("booking" is what the user does, not what the session is) — **aspirational; zero rows in production today** |
+| Enum value | What it actually encodes | Production rows |
+|---|---|---|
+| `COMMUNITY` | a **layer** of the platform | many |
+| `CLUB` | a **layer** of the platform (with optional `pod_id` for pod-scoped) | many |
+| `COHORT_CLASS` | **format** within Academy + **context anchor** (cohort_id) | many |
+| `EVENT` | **context anchor** (event_id) — events are community-tier today | some |
+| `ONE_ON_ONE` | aspirational private-lesson slot; no flow uses it | **zero** |
+| `GROUP_BOOKING` | aspirational small-group-private slot; no flow uses it | **zero** |
 
-This document proposes a three-dimension model that separates these concerns cleanly. It is the *honest* version of Phase 3 — not the table-per-type split the reviewer originally suggested.
+This Phase 3 splits the cleanup across three services:
+
+1. **`sessions_service`** — drop the two aspirational enum values and the `booking_id` column; the discriminator simplifies to `cohort` / `event` / `pod` / `none`.
+2. **`academy_service`** — introduce `CohortType` so Academy can express private 1-on-1 instruction, member-specified small groups, and corporate-sponsored cohorts within the existing cohort model.
+3. **`attendance_service`** — introduce `SessionBooking` as a first-class table representing "member commits to attending a session" (the concept that's currently spread across `AttendanceRecord`, `SessionBundleCart`, and implicit walk-in flows). `AttendanceRecord` continues to represent physical presence.
 
 ---
 
@@ -34,186 +38,304 @@ This document proposes a three-dimension model that separates these concerns cle
 The reviewer's original Phase 3 proposed splitting `sessions` into `ClubSession`, `CommunitySession`, `CohortClassSession`, `EventSession`, `BookingSession`. After analysis this was discarded:
 
 1. **Sessions are fundamentally a unified scheduling row.** Time, place, capacity, fees, status — these are identical across every session kind. Splitting forces a `UNION ALL` (or a five-way query) for any "list upcoming sessions across all layers" query. Sessions's largest consumers (admin, member dashboards, reporting) all want unified views.
-2. **The discriminator FKs aren't a smell.** They're a **junction** between scheduling (`sessions`) and domain (`cohorts` in academy, `events` in events, `pods` in members, `bookings` in payments). That junction is the point.
+2. **The discriminator FKs aren't a smell.** They're a **junction** between scheduling (`sessions`) and domain (`cohorts` in academy, `events` in events, `pods` in members). That junction is the point.
 3. **Per-type tables would leak cross-service knowledge into the schema.** Naming a table `CohortClassSession` encodes "a session whose context lives in academy_service" — the *naming* implies coupling even though FK constraints don't cross service boundaries (per the cross-service-no-FK rule in `SERVICE_COMMUNICATION.md`).
 4. **Phase 1 + Phase 2 already prevent the actual safety problem.** What remains is taste.
+5. **The names themselves were incoherent:** `BookingSession` mistook a user action ("booking") for a session type; `ClubSession`/`CommunitySession` conflated platform layers with session contexts.
 
 ---
 
-## Proposed model — three orthogonal dimensions
+## The three-dimension lens (informative, not implemented)
 
-### 1. Layer (which tier of the platform)
+The current `SessionType` enum conflates three orthogonal dimensions. After Phase 3 the schema reflects this implicitly rather than forcing a three-column representation:
 
-```
-enum SessionLayer:
-    community  - open swimming, casual engagement
-    club       - structured training with attendance tracking
-    academy    - formal cohort-based education
-```
+| Dimension | Where it lives after Phase 3 |
+|---|---|
+| **Layer** (community / club / academy) | Implicit in `session_type` (`community` / `club` / `cohort` → academy); `pod_id` distinguishes pod-scoped club |
+| **Context** (which other-service row, if any) | `session_type` directly (`cohort` / `event` / `pod` / `none`) and the matching FK column |
+| **Format / Size** (group / private / small-group) | Moved to **`Cohort.type`** for academy; community/club sessions are always group-format |
 
-Every session sits in exactly one layer. The layer drives access control, pricing tier, and most filtering queries.
-
-### 2. Context (which domain row, if any, this session is anchored to)
-
-```
-enum SessionContext:
-    none     - no domain anchor; standalone session
-    cohort   - anchored to a row in academy_service.cohorts; cohort_id required
-    event    - anchored to a row in events_service.events; event_id required
-    pod      - anchored to a row in members_service.pods; pod_id required
-    booking  - anchored to a row in payments_service (or future bookings_service); booking_id required
-```
-
-This dimension is what the existing CHECK constraint actually enforces — it's the column that carries semantic meaning about the FK columns. Renaming `session_type` → `context` makes the constraint's purpose self-documenting.
-
-### 3. Format (what kind of session structurally)
-
-```
-enum SessionFormat:
-    open           - free-form swim; no curriculum, no booking
-    cohort_lesson  - curriculum-driven lesson (current "COHORT_CLASS")
-    private        - one-on-one private lesson (current "ONE_ON_ONE")
-    group_private  - small group private (current "GROUP_BOOKING")
-    clinic         - skills workshop
-    meet           - open meet / social gathering / competition
-```
-
-Format is independent of layer (a Club can hold a clinic; the Academy can hold a meet) and largely independent of context (a clinic might be cohort-anchored or stand-alone).
-
-### Current → proposed value mapping
-
-| Current `SessionType` | `layer` | `context` | `format` |
-|---|---|---|---|
-| `COMMUNITY` | `community` | `none` | `open` |
-| `CLUB` (no pod_id) | `club` | `none` | `open` |
-| `CLUB` (with pod_id) | `club` | `pod` | `open` |
-| `COHORT_CLASS` | `academy` | `cohort` | `cohort_lesson` |
-| `EVENT` | `community` | `event` | `meet` |
-| `ONE_ON_ONE` | *depends* | `booking` | `private` |
-| `GROUP_BOOKING` | *depends* | `booking` | `group_private` |
-
-**The two booking rows are aspirational and the source of the biggest open question.** A member-facing private-lesson booking flow has not been built:
-
-* Zero `Session` rows have `session_type='one_on_one'` or `'group_booking'`.
-* Zero `Session` rows have `booking_id` set.
-* No router creates these sessions; no frontend lets you book one; no `PaymentPurpose` covers a private-lesson booking.
-* The coach-side preference flag (`CoachProfile.accepts_one_on_one`) is captured but never consumed.
-* The only thing called `*Booking` in the codebase is `transport_service.RideBooking`, which is for ride-share seats — unrelated to `Session.booking_id`.
-
-The infrastructure slot exists; the product that uses it doesn't. Whether to keep these slots or remove them is a product decision (see **Open question 1** below). Academy cohort teaching does **not** use these types — academy uses `COHORT_CLASS` exclusively, where sessions are pre-scheduled at cohort creation and members enroll rather than book individual slots.
+Earlier iterations of this note proposed three explicit columns (`layer`, `context`, `format`). That was over-engineered: layer is derivable from `session_type`, and format is meaningful only for Academy — which now expresses it via `CohortType`. We can revisit if non-academy formats ever appear.
 
 ---
 
-## Schema changes
+## Proposed changes
 
-### New columns on `sessions`
+### A. Session-side cleanup (`sessions_service`)
 
-```sql
-ALTER TABLE sessions ADD COLUMN layer    text NOT NULL DEFAULT 'community';
-ALTER TABLE sessions ADD COLUMN format   text NOT NULL DEFAULT 'open';
-ALTER TABLE sessions ADD COLUMN context  text NOT NULL DEFAULT 'none';
--- session_type stays in place during dual-write, then drops in Phase 3.3.
+**Drop two aspirational `SessionType` values:**
+
+```python
+class SessionType(str, Enum):
+    COHORT_CLASS = "cohort_class"
+    CLUB         = "club"
+    COMMUNITY    = "community"
+    EVENT        = "event"
+    # ONE_ON_ONE  = "one_on_one"      ← DROPPED
+    # GROUP_BOOKING = "group_booking" ← DROPPED
 ```
 
-(In the actual Alembic migration these are proper enum types with the values above. Defaults are temporary backfill helpers; the real defaults are managed by the model and the backfill SQL below.)
+**Drop the `booking_id` column** from `sessions`. It has zero rows and no future caller — the new `SessionBooking` table holds the reverse link.
 
-### Backfill
-
-```sql
-UPDATE sessions SET layer = 'community', context = 'none',  format = 'open'           WHERE session_type = 'community';
-UPDATE sessions SET layer = 'club',      context = 'none',  format = 'open'           WHERE session_type = 'club' AND pod_id IS NULL;
-UPDATE sessions SET layer = 'club',      context = 'pod',   format = 'open'           WHERE session_type = 'club' AND pod_id IS NOT NULL;
-UPDATE sessions SET layer = 'academy',   context = 'cohort', format = 'cohort_lesson' WHERE session_type = 'cohort_class';
-UPDATE sessions SET layer = 'community', context = 'event',  format = 'meet'          WHERE session_type = 'event';
--- one_on_one / group_booking: no rows exist yet (booking system not built).
-```
-
-### Updated CHECK constraint
-
-The Phase 2 constraint expressed in terms of `session_type`. After Phase 3.3 it's rewritten in terms of `context` (cleaner because `context` IS the column that names the discriminator):
+**Simplify the Phase 2 `CHECK` constraint** from six branches to four:
 
 ```sql
 ALTER TABLE sessions DROP CONSTRAINT ck_sessions_discriminator;
 
 ALTER TABLE sessions ADD CONSTRAINT ck_sessions_discriminator CHECK (
-       (context = 'none'    AND cohort_id IS NULL AND event_id IS NULL AND booking_id IS NULL)
-    OR (context = 'cohort'  AND cohort_id IS NOT NULL AND event_id IS NULL AND booking_id IS NULL AND pod_id IS NULL)
-    OR (context = 'event'   AND event_id  IS NOT NULL AND cohort_id IS NULL AND booking_id IS NULL AND pod_id IS NULL)
-    OR (context = 'pod'     AND pod_id    IS NOT NULL AND cohort_id IS NULL AND event_id IS NULL AND booking_id IS NULL)
-    OR (context = 'booking' AND booking_id IS NOT NULL AND cohort_id IS NULL AND event_id IS NULL AND pod_id IS NULL)
+       (session_type = 'cohort_class' AND cohort_id IS NOT NULL
+            AND event_id IS NULL AND pod_id IS NULL)
+    OR (session_type = 'event'        AND event_id  IS NOT NULL
+            AND cohort_id IS NULL AND pod_id IS NULL)
+    OR (session_type = 'club'
+            AND cohort_id IS NULL AND event_id IS NULL)
+    OR (session_type = 'community'
+            AND cohort_id IS NULL AND event_id IS NULL AND pod_id IS NULL)
 );
 ```
 
-Note this is **simpler** than the Phase 2 expression — six branches collapsed to five, with `context` doing the discrimination instead of the conflated `session_type`.
+The matching Python validator (`models/_validators.py`) and the Pydantic `@model_validator` on `SessionCreate` get the same trim.
+
+### B. Cohort taxonomy (`academy_service`)
+
+Introduce `CohortType` so Academy can express private and corporate cohorts inside the existing cohort framework:
+
+```python
+class CohortType(str, Enum):
+    GROUP       = "group"        # Standard 8–12 student cohort (today's default)
+    PRIVATE     = "private"      # 1 student; member-paid 1-on-1 academy program
+    SMALL_GROUP = "small_group"  # 2–6 students; member-specified group (friends/family)
+    CORPORATE   = "corporate"    # Commissioned by an organisation; capacity set by sponsor
+
+class Cohort(Base):
+    # …existing fields…
+    type: Mapped[CohortType] = mapped_column(
+        SAEnum(CohortType, name="cohort_type_enum", values_callable=enum_values),
+        nullable=False, default=CohortType.GROUP, server_default="group",
+    )
+    # Optional forward-looking link to a future corporate-wellness programme model.
+    # Plain UUID per the cross-service-no-FK rule; no `ForeignKey(...)` declared.
+    corporate_program_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+        UUID(as_uuid=True), nullable=True, index=True
+    )
+```
+
+All Sessions produced by these cohorts stay `SessionType.COHORT_CLASS` with `cohort_id` set. The type lives on the Cohort row, not on each Session. This means:
+
+- All existing academy plumbing (cohort enrollments, session pre-scheduling, coach assignments, payment intents for `academy_cohort` purpose, attendance flow) **works unchanged** for the new types.
+- A "private academy 1-on-1" is just a `Cohort(type=PRIVATE, capacity=1)` with a single `Enrollment`.
+- "Bring 4 friends" is a `Cohort(type=SMALL_GROUP, capacity=4)` with 4 enrollments.
+- A "corporate-wellness programme for 12 employees" is a `Cohort(type=CORPORATE, capacity=12, corporate_program_id=<UUID>)` with 12 enrollments tied back to the sponsoring org.
+
+The corporate-wellness product itself (org model, billing terms, enrolment ingest, reporting) is its own design note when scoped — see `docs/design/CORPORATE_WELLNESS.md` (to be written). This document only commits to the `Cohort.type` + `corporate_program_id` columns that enable it.
+
+### C. Booking model (`attendance_service`)
+
+**Today's state.** Members don't pre-book community/club sessions — they walk in and call `POST /sessions/{id}/sign-in`, which creates an `AttendanceRecord` directly with status `PRESENT`. The session's `capacity` column gates this at sign-in time. There is no "I intend to come on Saturday" data anywhere. Academy is the exception: members commit via `Enrollment` at the cohort level, and the pre-scheduled sessions are theirs automatically. The only existing thing called `*Booking` is `transport_service.RideBooking` for ride-share seats.
+
+**The asymmetry to fix.** `AttendanceRecord` does double duty: it's both "intent to attend" (created at sign-in) and "physical presence" (status PRESENT/LATE/ABSENT/etc.). This works for walk-ins but breaks down as soon as advance booking is needed — corporate-wellness pre-purchases, popular sessions with limited capacity, no-show tracking, refund-on-cancel flows.
+
+**Decision: Option 2 — add a separate `SessionBooking` table; keep `AttendanceRecord`.**
+
+The two tables represent two genuinely different concepts:
+
+- **`SessionBooking`** = intent. "This member has reserved a spot in this session." Capacity is decremented when this is created.
+- **`AttendanceRecord`** = fact. "This member physically attended this session." Status reflects what happened (PRESENT/LATE/ABSENT/EXCUSED/CANCELLED).
+
+Walk-in flow stays exactly as today: hit `POST /sessions/{id}/sign-in` → `AttendanceRecord` created with `status=PRESENT`, no `SessionBooking`. Pre-book flow goes through a new endpoint and creates a `SessionBooking` first; at check-in time the existing sign-in endpoint links the booking and produces the attendance record.
+
+```python
+# attendance_service/models/booking.py
+
+class SessionBookingStatus(str, Enum):
+    PENDING    = "pending"     # awaiting payment / approval
+    CONFIRMED  = "confirmed"   # paid / approved, capacity held
+    ATTENDED   = "attended"    # check-in produced an AttendanceRecord
+    NO_SHOW    = "no_show"     # session passed without check-in
+    CANCELLED  = "cancelled"   # member or admin cancelled before session
+    EXPIRED    = "expired"     # PENDING booking aged out
+
+class BookingChannel(str, Enum):
+    MEMBER_SELF    = "member_self"     # member booked directly
+    ADMIN          = "admin"           # admin booked on behalf of member
+    CORPORATE_BULK = "corporate_bulk"  # corporate wellness bulk booking
+    BUNDLE_CART    = "bundle_cart"     # paid via the multi-session cart
+
+class SessionBooking(Base):
+    __tablename__ = "session_bookings"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+
+    # Cross-service refs — plain UUIDs, no FKs, per the architecture rule.
+    session_id:     Mapped[uuid.UUID] = mapped_column(nullable=False, index=True)
+    member_id:      Mapped[uuid.UUID] = mapped_column(nullable=False, index=True)
+    member_auth_id: Mapped[str]       = mapped_column(nullable=False, index=True)
+
+    # Booking lifecycle
+    status:  Mapped[SessionBookingStatus] = mapped_column(
+        SAEnum(SessionBookingStatus, name="session_booking_status_enum",
+               values_callable=enum_values),
+        nullable=False, default=SessionBookingStatus.PENDING,
+    )
+    channel: Mapped[BookingChannel] = mapped_column(
+        SAEnum(BookingChannel, name="booking_channel_enum",
+               values_callable=enum_values),
+        nullable=False, default=BookingChannel.MEMBER_SELF,
+    )
+
+    # Pricing snapshot in kobo, captured at booking time.
+    fee_amount_kobo: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    # Payment linkage (cross-service; plain UUIDs).
+    payment_intent_id:     Mapped[Optional[uuid.UUID]] = mapped_column(nullable=True, index=True)
+    wallet_transaction_id: Mapped[Optional[uuid.UUID]] = mapped_column(nullable=True)
+
+    # Corporate-wellness link (forward-looking). Plain UUID.
+    corporate_program_id:  Mapped[Optional[uuid.UUID]] = mapped_column(nullable=True, index=True)
+
+    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    booked_at:    Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+    confirmed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    cancelled_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    expires_at:   Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    created_at:   Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+    updated_at:   Mapped[datetime] = mapped_column(DateTime(timezone=True),
+                                                    default=utc_now, onupdate=utc_now)
+
+    # Defence in depth: a member can only have one active booking per session.
+    __table_args__ = (
+        UniqueConstraint("session_id", "member_id", name="uq_session_bookings_session_member"),
+    )
+```
+
+**`AttendanceRecord` gains one optional intra-service FK** linking back to the booking that produced it (when there was one):
+
+```python
+class AttendanceRecord(Base):
+    # …existing fields…
+    booking_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("session_bookings.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+```
+
+This is an **intra-service** FK (both tables live in `attendance_service`), so the cross-service-no-FK rule doesn't apply. `ondelete="SET NULL"` means cancelling a booking that already produced attendance leaves the attendance record intact (history preserved).
+
+### Walk-in vs pre-book flow after Phase 3
+
+```
+WALK-IN (today's flow — unchanged)
+    member at pool → POST /sessions/{id}/sign-in
+    → AttendanceRecord(session_id, member_id, status=PRESENT, booking_id=NULL)
+
+PRE-BOOK (new flow — for corporate wellness, popular sessions, etc.)
+    member browses → POST /sessions/{id}/book
+    → SessionBooking(status=PENDING, capacity reserved)
+    payment clears (Paystack webhook / Bubbles debit)
+    → SessionBooking.status = CONFIRMED
+
+    at session time, coach/member calls existing sign-in
+    → SessionBooking is found by (session_id, member_id)
+    → AttendanceRecord(…, booking_id=<booking.id>, status=PRESENT)
+    → SessionBooking.status = ATTENDED
+
+NO-SHOW
+    SessionBooking.status was CONFIRMED but no AttendanceRecord ever created.
+    Nightly job (or end-of-session sweep): SessionBooking.status = NO_SHOW.
+
+CANCEL
+    member cancels before session → SessionBooking.status = CANCELLED
+    refund handled per policy (out of scope for this doc)
+
+CORPORATE BULK
+    sponsor purchases N×M (N sessions × M employees)
+    → N×M SessionBooking rows, channel=CORPORATE_BULK, status=CONFIRMED
+    each employee follows the standard sign-in flow at session time
+```
 
 ---
 
 ## Phased migration
 
-### Phase 3.0 — design lock (this document)
+Each phase is independently deployable and reversible.
 
-- Stakeholder approval of the layer / context / format model
-- Decision on booking-row layer policy
-- Explicit go/no-go
+### Phase 3.0 — design lock
 
-### Phase 3.1 — add new columns (zero-impact, backwards-compatible)
+This document. Awaiting an implementation slot.
 
-- Alembic migration (via `migrate.sh --manual`) adds `layer`, `format`, `context` columns
-- Backfill SQL populates them from existing `session_type`
-- Model gains the new columns; existing code keeps reading `session_type`
-- New writes set both old AND new columns (dual-write)
-- Consumers continue to work unchanged
+### Phase 3.1 — Session-side cleanup (`sessions_service`)
 
-**Risk: low.** Nothing reads the new columns yet.
+- Drop `SessionType.ONE_ON_ONE` and `SessionType.GROUP_BOOKING` from the enum.
+- Drop `Session.booking_id` column.
+- Trim `models/_validators.py`, the SQLAlchemy event listener payload, and the Pydantic validator on `SessionCreate`.
+- Replace the Phase 2 CHECK constraint with the 4-branch version (`migrate.sh --manual sessions_service "simplify discriminator constraint"`).
+- Update the 19 `_session_discriminator` unit tests — drop the four `ONE_ON_ONE` / `GROUP_BOOKING` test cases.
 
-### Phase 3.2 — migrate consumers (one service at a time)
+**Risk: low.** Zero rows use the dropped types; nothing references `booking_id`.
+**Estimate: ~half a day.**
 
-Order, smallest blast first:
+### Phase 3.2 — Cohort taxonomy (`academy_service`)
 
-1. `sessions_service/routers/internal.py` — `SessionBasic` gains `layer`/`context`/`format`; `session_type` stays in the response for compat
-2. `reporting_service` aggregations — start reading from `layer` for "by-tier" reports
-3. `academy_service` — switches its filter from `session_type='cohort_class'` to `context='cohort'`
-4. Frontend `admin/sessions/page.tsx` — drives the type-picker off the three-dimension model
-5. Frontend `(member)/sessions/page.tsx` — filter by layer
-6. Other services (`communications`, `payments`, `attendance`, `members`) — verify their HTTP callers still work; no DB filter changes needed
+- Add `CohortType` enum + `Cohort.type` column with default `GROUP` and `server_default="group"` (auto-backfills existing rows).
+- Add `Cohort.corporate_program_id` column (nullable, indexed; no FK).
+- `migrate.sh academy_service "add cohort type and corporate link"`.
+- Expose `type` in the academy router responses; the admin cohort-creation UI gets a type picker.
+- No data migration needed beyond the server_default.
 
-Each step is a separate PR, separately verified.
+**Risk: low.** Additive change; existing cohorts become `GROUP` automatically.
+**Estimate: 1 day** (model + admin UI picker + tests; corporate-wellness flow is a separate later project).
 
-**Risk: medium.** External services consume `SessionBasic`; the shape must stay additive (new fields added, old field kept) during this phase.
+### Phase 3.3 — `SessionBooking` table (`attendance_service`)
 
-### Phase 3.3 — drop the old column
+- Add `SessionBookingStatus`, `BookingChannel` enums.
+- Add `SessionBooking` model + table.
+- Add `AttendanceRecord.booking_id` column with intra-service FK.
+- `migrate.sh attendance_service "add session bookings"`.
+- Existing sign-in endpoint gets a small change: on entry, look up an existing `SessionBooking` for `(session_id, member_id)`; if found and status is `CONFIRMED`, set the new `AttendanceRecord.booking_id` and transition the booking to `ATTENDED`. If none found, behaviour is identical to today (walk-in).
+- New endpoints (these are product work, not infra):
+  - `POST /attendance/sessions/{id}/book` — member self-book; creates `SessionBooking(status=PENDING)`, returns a payment intent reference for the fee.
+  - `POST /attendance/bookings/{id}/cancel` — member or admin cancel.
+  - `POST /internal/attendance/bookings/bulk` — service-role bulk-create for corporate-wellness orchestration.
+- Nightly task (in attendance_service's existing arq queue) — sweep `CONFIRMED` bookings past their session's `ends_at` with no matching `AttendanceRecord` → `NO_SHOW`.
 
-- Remove `session_type` from the model and `SessionBasic`
-- Drop the old column in a new migration
-- Rewrite the Phase 2 CHECK constraint per "Updated CHECK constraint" above
-- Update `SessionType` enum file (now just `SessionLayer`, `SessionFormat`, `SessionContext`)
+**Risk: medium.** New table + new endpoints + sign-in flow change. Walk-in stays unchanged but needs regression tests.
+**Estimate: 3–5 days** (table + flow change + endpoints + nightly task + tests).
 
-**Risk: low** if Phase 3.2 was done cleanly. Any consumer still reading `session_type` after 3.2 surfaces as a hard failure in CI / smoke tests.
+### Phase 3.4 — Surface the new flow
+
+- Frontend: pre-book button on the session detail page for sessions that are pre-bookable (vs walk-in only).
+- Admin: bulk-booking tools for corporate-wellness onboarding.
+- Reporting: include `SessionBooking` aggregates (utilisation, no-show rate, channel mix).
+- Communications: confirmation email on `status=CONFIRMED`; reminder before session; refund-confirmation on `CANCELLED`.
+
+**Risk: medium** (product surface).
+**Estimate: 1 week+** depending on how much corporate-wellness UI ships with it.
 
 ---
 
-## Consumer impact (from the discovery report)
+## Consumer impact (cross-service)
 
-Internal to sessions_service:
-- `routers/member.py` — type filtering + create flow that branches on COHORT_CLASS
-- `routers/internal.py` — `SessionBasic` shape + several stats endpoints aggregating by `session_type.value`
-- `routers/templates.py` — `SessionTemplate` mirrors the same enum; same refactor applies
-- `routers/bundles.py` — no direct type filtering; minimal change
+Phase 3.1 (session-side cleanup):
+- `services/transport_service/routers/routes.py` — uses `get_session_by_id`; doesn't read `booking_id`. No change.
+- `services/reporting_service` — `range-stats` / `detailed-stats` aggregate by `session_type.value`. Dropping two enum values means two zero-rows-anyway buckets disappear from reports. No code change required.
+- `services/sessions_service/routers/internal.py` `SessionBasic` — already doesn't include `booking_id`. No external contract change.
+- Frontend admin/sessions type picker — drops two unused dropdown options.
 
-Cross-service consumers:
-- `academy_service` — filters by `cohort_id` already; only the "list sessions for cohort" logic needs to verify context='cohort'
-- `reporting_service` — `range-stats` / `detailed-stats` aggregate by `session_type` enum value (e.g. "X cohort classes this week"). Aggregations switch to `(layer, format)` pairs.
-- `communications_service` — only reads time/title/location; unaffected
-- `payments_service` — same
-- `attendance_service` — pool-hour duration; unaffected
-- `members_service` — coach lookup; unaffected
-- `transport_service` — already moved to `service_client.sessions.get_session_by_id`; consumes `pool_id`/`location` only
+Phase 3.2 (cohort type):
+- `services/academy_service/routers/cohorts/*` — type picker on create; type visible on read.
+- `services/reporting_service` flywheel cards — could aggregate enrolments by cohort type.
+- Frontend admin cohort-creation page — adds the picker.
+- No cross-service contract change (academy's existing cohort responses just gain one field).
 
-Frontend:
-- `(admin)/admin/sessions/page.tsx` (1640 lines) — type-picker UI replaces with three dimensions
-- `(admin)/admin/academy/cohorts/new/page.tsx` (1084 lines) — already creates COHORT_CLASS sessions; switches to passing `(academy, cohort, cohort_lesson)`
-- `(member)/sessions/page.tsx` (1139 lines) — filter chips switch to layer-based
-- A few smaller pages that branch on type
+Phase 3.3 (SessionBooking):
+- `services/payments_service` — needs to know about the new `SessionBooking.id` so payment intents can reference it (similar to how cohort enrollments are referenced today). This is the main cross-service contract change.
+- `services/communications_service` — confirmation / reminder email templates.
+- Frontend `(member)/sessions/page.tsx` — pre-book button + booking-state display.
+- `services/sessions_service` — unchanged.
 
 ---
 
@@ -221,86 +343,93 @@ Frontend:
 
 | Phase | Effort | Risk |
 |---|---|---|
-| 3.0 design lock | ~half a day | none |
-| 3.1 add columns + backfill | 1 day | low |
-| 3.2 migrate consumers | 3–5 days (one service per day, with testing) | medium |
-| 3.3 drop old column | half a day | low |
-| **Total** | **~1 week** | medium |
+| 3.0 design lock (this doc) | done | none |
+| 3.1 session-side cleanup | ~½ day | low |
+| 3.2 cohort taxonomy | ~1 day | low |
+| 3.3 SessionBooking table + sign-in change | 3–5 days | medium |
+| 3.4 product surface (booking UI, corporate flow, comms) | 1+ week | medium |
+| **Phase 3 infrastructure (3.1–3.3)** | **~1 week** | **low–medium** |
+| **Phase 3.4 product** | **separate slot** | medium |
 
-This is substantially less than the original 5-table split estimate (1–2 weeks) and avoids the data-model coupling smell.
+3.1 + 3.2 + 3.3 can ship without 3.4 — the schemas are in place, walk-in flow is unchanged, and the booking surface stays internal-only until product is ready.
 
 ---
 
 ## What this buys us
 
-1. **First-class queries on layer.** "Show me all community sessions this week" becomes `WHERE layer = 'community'` instead of `WHERE session_type IN ('community', 'event')` plus mental gymnastics.
-2. **First-class queries on format.** "All private lessons across all layers" was previously inexpressible; becomes `WHERE format IN ('private', 'group_private')`.
-3. **CHECK constraint expresses what it actually means.** "Context determines which FK is required" reads cleanly; the Phase 2 expression is correct but conflated.
-4. **New session subtypes don't need an enum change.** Want a `community / event / clinic` session? Just set `(community, event, clinic)`. Today you'd need a new `SessionType` enum value and CHECK constraint update.
-5. **The naming stops fighting itself.** No more `BookingSession`-as-a-noun confusion.
+1. **Session model is honest about its own dimensions.** ONE_ON_ONE / GROUP_BOOKING / booking_id were a lie — they implied a flow that didn't exist. After 3.1, the schema describes only what actually exists.
+
+2. **Academy can express the products we actually want.** Private 1-on-1 academy, member-specified small groups, corporate-sponsored cohorts — all expressible as `Cohort(type=…)` with no new tables and no Session-level changes. Existing payment intents, enrolments, attendance flow all work.
+
+3. **The booking concept gets a name.** `SessionBooking` mirrors `RideBooking`; both are intent-to-attend rows owned by attendance_service / transport_service respectively. `AttendanceRecord` cleanly represents physical presence, not intent.
+
+4. **Walk-in flow doesn't break.** The most-trafficked path (member at pool → sign-in) stays exactly as today. The new pre-book flow is additive.
+
+5. **Corporate wellness has a clear schema path.** When the product is scoped, the data model already supports it: `Cohort(type=CORPORATE, corporate_program_id=...)` for the academy version, `SessionBooking(channel=CORPORATE_BULK, corporate_program_id=...)` for the community/club version.
 
 ---
 
 ## What this costs
 
-1. **One week of focused work** across backend + frontend.
-2. **A migration window** where new columns are dual-written. Any rollback during 3.2 requires careful coordination.
-3. **External-service compatibility** — `SessionBasic` becomes additive; consumers need to be told the shape evolved and the old `session_type` field will eventually disappear.
-4. **Testing burden** — sessions has only 4 test files; meaningful pre-work to expand coverage before 3.2 is recommended.
+1. **Three migrations across three services** (sessions, academy, attendance) — each small and reversible.
+2. **One cross-service contract change** in 3.3 — payments needs to know about `SessionBooking.id` for the pre-book payment-intent flow.
+3. **Sign-in flow refactor** in attendance_service — the most error-prone change; walk-in regression coverage matters.
+4. **Frontend work** in 3.4 — pre-book button, booking-state surface, corporate flow. Sized with the corporate-wellness product, not on its own.
 
 ---
 
-## Alternatives considered
+## Alternatives considered (and rejected)
 
-### A. Keep at Phase 1+2 (recommended baseline)
+### A. Stay at Phase 1+2
 
-- **Pros:** zero risk; integrity already enforced; sessions taxonomy stays workable
-- **Cons:** the enum continues to mix layer + format + context dimensions; new contributors have to internalize the inconsistency
+- **Pros:** zero risk; integrity already enforced; everything works today
+- **Cons:** the aspirational `ONE_ON_ONE` / `GROUP_BOOKING` / `booking_id` slots continue to confuse new contributors; the corporate-wellness product would have to fight the current model
 
-### B. Pure rename only (`session_type` → `context`)
+### B. Full table-per-type split (original reviewer suggestion)
 
-- **Pros:** small migration; resolves the CHECK constraint's naming awkwardness
-- **Cons:** doesn't introduce `layer` or `format`; misses most of the win
+- Five tables per session type; the data model leaks cross-service domain names; high blast radius. Rejected.
 
-### C. Full table-per-type split (original reviewer suggestion)
+### C. Rename `AttendanceRecord` → `SessionBooking`, expand status enum (Option 1 from the conversation)
 
-- **Pros:** Python type system enforces shape at compile/IDE time
-- **Cons:** loses unified scheduling view, leaks cross-service domain names into schema, ~2 weeks of work, much higher blast radius
-- **Verdict: rejected.**
+- Single table fuses intent + fact; matches `RideBooking` naming
+- **Rejected** in favour of two-table model (Option 2 below): intent and fact really are different concepts; fusing them complicates corporate-wellness, no-show, refund, and reporting flows
 
-### D. Decompose by layer (3 tables: CommunitySession, ClubSession, AcademySession)
+### D. Three explicit columns (`layer`, `format`, `context`)
 
-- **Pros:** less drastic than five-way split; matches the platform's three-layer story
-- **Cons:** still forces UNION ALL for cross-layer queries; layer-specific tables make it harder to add new layers (if it ever happens); session-format split is still missing
-- **Verdict: rejected** in favour of the three-dimension model (E), which captures the same intent without splitting the table.
+- Earlier draft of this note proposed this
+- **Rejected** as over-engineered: layer is derivable from `session_type`, and format is only meaningful for Academy, which now expresses it via `Cohort.type`
 
-### E. Three-dimension model (this document)
+### E. **Option 2 — two-table booking model (chosen)**
 
-- **Pros:** captures real conceptual structure; queries-by-layer and queries-by-format become first-class; CHECK constraint becomes self-documenting; doesn't fight cross-service architecture
-- **Cons:** real work; ~1 week with phased rollout
-- **Verdict: recommended *if* we choose to do Phase 3 at all.**
+- `SessionBooking` = intent (new)
+- `AttendanceRecord` = fact (existing, gains `booking_id`)
+- Walk-in path: AttendanceRecord only
+- Pre-book path: SessionBooking → eventually AttendanceRecord
+- **Pros:** intent and fact stay distinct; walk-in flow is preserved exactly; corporate-wellness slots in cleanly; reporting / billing / refunds have a clean home
+- **Cons:** one extra table; coordination concern (booking exists with no attendance vs attendance with no booking) handled by the nightly NO_SHOW sweep
 
 ---
 
 ## Open questions
 
-1. **What happens to the booking slot?** `SessionType.ONE_ON_ONE`, `SessionType.GROUP_BOOKING`, and `Session.booking_id` are aspirational — zero rows in production, no flow creates them, no payment purpose covers them, no frontend books them. The coach-side `accepts_one_on_one` flag is the only related code that's actually consumed. Three directions:
-   - **A. Keep + build.** Commit to the member-facing private-lesson / small-group-private booking product. The slot finally gets used. New revenue stream parallel to cohorts.
-   - **B. Drop.** Acknowledge the booking flow isn't going to ship. Remove `ONE_ON_ONE` and `GROUP_BOOKING` from `SessionType`, drop `booking_id` from `sessions`, simplify the discriminator down to (cohort / event / pod / none). Eliminates ~4 months of bit-rotted aspirational code and shrinks the Phase 2 CHECK constraint by two branches.
-   - **C. Repurpose.** If academy needs make-up sessions or extension lessons outside the regular cohort schedule, these slots could become that — e.g., `SessionType.MAKEUP_LESSON` with a `makeup_obligation_id`. Today the slot is empty; that's a refactor opportunity.
+These don't block Phase 3.1–3.3 but will need answers before 3.4:
 
-   **Direction matters BEFORE Phase 3.** If we're going with B, the `(layer, context, format)` model gets simpler: `booking` drops out of `context`, `private` and `group_private` drop out of `format`. If A or C, the existing structure stays.
-
-2. **`SessionTemplate` parallels.** Templates mirror the Session enum; do they get the same three-dimension treatment, or do they collapse to `(layer, format)` only since template-time context isn't known yet?
-3. **Reporting backwards compat.** Reporting aggregations consume `session_type.value` in stored JSON / cards. How long do we hold `session_type` in `SessionBasic` for downstream services to migrate?
-4. **Frontend type-picker UX.** Today admins pick "session type" from a single dropdown. Do we replace with three dependent dropdowns (layer → format → context), or keep a single "session kind" picker that maps to a `(layer, context, format)` triple under the hood?
+1. **Which session types are pre-bookable today?** All of them, or only specific ones? Walk-in might stay the default for community sessions; pre-book might be club-only. Product call.
+2. **Pre-book payment policy.** Full pre-pay vs hold-then-charge-on-attendance vs cancellation-free-until-N-hours. Drives the `SessionBookingStatus` transitions.
+3. **`SessionTemplate` parallels.** Templates carry `session_type` today; the same trim (drop ONE_ON_ONE / GROUP_BOOKING) applies. Bundle into 3.1.
+4. **Reporting compat.** `range-stats` etc. aggregate by `session_type`; dropping enum values is safe (zero rows), but downstream cards may need a one-line update.
+5. **Corporate-wellness scoping.** The `corporate_program_id` column lands in 3.2 / 3.3 but the corporate product (sponsor model, billing terms, ingest API, admin tools) is a separate design note.
 
 ---
 
 ## Decision
 
-**A1 is closed at Phase 2 as of 2026-05-17.** The integrity risk is gone.
+**Phase 3 scope is locked** as:
+- 3.1 sessions cleanup (drop aspirational discriminators)
+- 3.2 cohort taxonomy (`CohortType`, `corporate_program_id`)
+- 3.3 `SessionBooking` (two-table booking model, Option 2)
+- 3.4 product surface (separate slot, ships with corporate-wellness)
 
-Phase 3 (this design's three-dimension refactor) is *deferred pending product-level decision* on the open questions above. If product cleanup, query-pattern needs, or onboarding pain make the conflated enum a real cost, revisit this document, lock the open questions, and start at 3.1.
+A1 stays "closed" at Phase 2 for risk-management purposes — the integrity gap is already solved. Phase 3 ships when there's an implementation slot; the design is ready and reversible.
 
-This is **not** approval to implement. It's a reference for the future "if we do Phase 3, this is the shape" decision.
+When ready, start at 3.1 (lowest risk, lowest blast radius) and proceed in order. 3.1 and 3.2 are independently shippable; 3.3 should ship together with 3.4 or behind a feature flag, since the pre-book surface needs frontend work to be useful.
