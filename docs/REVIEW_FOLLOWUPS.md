@@ -8,8 +8,9 @@ migrations / product input) that must not be bulk-executed in a
 cleanup batch.
 
 Everything else from the review is **closed** (see commit history:
-E1/E3/E4, F2/F4/F5–F7 rules, G2/G3/G4 rules, D1/D3/D4/D6/D7, H1/H4/H5,
-FU1/2/3/5/6/7/8/9). This file tracks only what remains.
+E1/E3/E4, F2/F4/F5–F7 rules, G2/G3/G4 rules + full G4 sweep,
+D1/D3/D4/D6/D7, H1/H4/H5, FU1/2/3/5/6/7/8/9). This file tracks only
+what remains.
 
 Status legend: 🟦 backlog (rule live, migrate-on-touch) · 📋 project
 (needs its own PR series) · ✍️ needs product input · ✅ done.
@@ -63,22 +64,21 @@ bulk-rewrite untested 1k-line pages.
 
 ---
 
-## 3. G4 — Raw `<img>` → `next/image` 🟦
+## 3. G4 — Raw `<img>` → `next/image` ✅ (closed 2026-05-22)
 
-**What:** ~150 `<img>` sites across ~70 files (mobile-bandwidth cost).
+**Closed:** swept across 8 PRs (442f9bb → 54d615b). Final state: zero
+raw `<img>` in JSX. The 4 remaining grep matches are:
+- `src/components/ui/MediaInput.tsx` — blob-preview exception (line 247,
+  eslint-disabled) + the comment explaining it (line 244).
+- `src/app/(admin)/admin/gallery/[id]/upload/page.tsx` — same blob
+  exception (line 396, eslint-disabled with a documented comment).
+- `src/components/admin/EnrollmentEvidenceGallery.tsx` — false positive
+  (the string `<img>` appears in a JSDoc comment).
 
-**Already done:** rule + patterns + exceptions codified in
-`CONVENTIONS.md` §5; ESLint `@next/next/no-img-element` warns.
-Reference conversions: the logo (7 sites, all layouts, `priority`) and
-`CoachSpotlight` (`fill`). Legitimate exception (blob/data: preview)
-documented + `eslint-disable`d in `MediaInput`.
-
-**Definition of done:** non-exception `<img>` converted (width/height
-or `fill`; remote hosts verified in `next.config` `remotePatterns`);
-then raise the rule to `error`.
-
-**How to measure:**
-`grep -rnE "<img([ />]|$)" src --include="*.tsx" | grep -v __tests__ | wc -l`.
+`@next/next/no-img-element` flipped from `warn` to `error` in
+`.eslintrc.json` — new violations now fail CI. `CONVENTIONS.md` §5
+documents three patterns (width/height, fill, intrinsic
+width-0/height-0) plus the blob exception.
 
 ---
 
@@ -132,4 +132,4 @@ action required.
 
 ---
 
-_Last updated: 2026-05-17._
+_Last updated: 2026-05-22 (G4 closed)._
