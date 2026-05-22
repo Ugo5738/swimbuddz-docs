@@ -8,9 +8,9 @@ migrations / product input) that must not be bulk-executed in a
 cleanup batch.
 
 Everything else from the review is **closed** (see commit history:
-E1/E3/E4, F2/F4/F5–F7 rules, G2/G3/G4 rules + full G4 sweep,
-D1/D3/D4/D6/D7, H1/H4/H5, FU1/2/3/5/6/7/8/9). This file tracks only
-what remains.
+E1/E3/E4, F2/F4/F5–F7 rules, G2 5 named pages, G2/G3/G4 rules + full
+G4 sweep, D1/D3/D4/D6/D7, H1/H4/H5, FU1/2/3/5/6/7/8/9). This file
+tracks only what remains.
 
 Status legend: 🟦 backlog (rule live, migrate-on-touch) · 📋 project
 (needs its own PR series) · ✍️ needs product input · ✅ done.
@@ -42,25 +42,45 @@ in `src/app|src/components` once the count is low enough to flip to
 
 ---
 
-## 2. G2 — Mega-component splits 🟦
+## 2. G2 — Mega-component splits ✅ (5 named pages done 2026-05-22)
 
-**What:** files over the `CONVENTIONS.md` §12 caps — ~5 pages >800
-lines (admin volunteers 1.5k, store product edit 1.4k, onboarding
-1.25k, academy cohorts/new, account/billing) and several components
->500.
+**Closed for the 5 named candidates** in 5 dedicated PRs over the
+800-line hard cap:
 
-**Already done:** §12 rule + how-to-split + backlog policy codified;
-ESLint `max-lines` warn@500 is **live** (`.eslintrc.json`, with the
-`api-types.ts` override). Reference split: homepage `page.tsx`
-980→915, two static sections extracted to `src/app/_homepage/`.
+| Page | Before | After (raw) | Commit |
+|---|---:|---:|---|
+| `(member)/account/billing/page.tsx` | 1010 | 241 | `9fdda43` |
+| `(admin)/admin/academy/cohorts/new/page.tsx` | 1074 | 249 | `ffe329b` |
+| `(member)/account/onboarding/page.tsx` | 1242 | 746 | `83f6709` |
+| `(admin)/admin/store/products/[id]/edit/page.tsx` | 1416 | 639 | `ec0e379` |
+| `(admin)/admin/community/volunteers/page.tsx` | 1918 | 697 | `ecda90d` |
 
-**Definition of done:** oversize files split (page = thin orchestrator
-of focused children, per §12). Once the backlog is clear, raise
-`max-lines` from `warn` → `error` so new violations block CI.
+Pattern: thin orchestrator `page.tsx` + `_<page>/` sub-directory with
+focused JSX-section components and (optionally) hooks for substantial
+business logic. All split-out children are well under the 500-line
+component cap.
 
-**Note:** these are stateful pages with no test safety net — split
-them in **dedicated PRs** (one file or cluster each), not bulk. Don't
-bulk-rewrite untested 1k-line pages.
+**Note:** the larger pages (onboarding, store product, volunteers)
+still have a single `max-lines` warning around 600–620 lint-counted —
+the structural floor for orchestrators that own many `useState`
+declarations and share a single `load`/refetch path across tabs.
+Pushing them further would mean a megahook (hides line count without
+reducing complexity) or fragmenting form state across step files
+(adds prop drilling). All five are well under the 800 hard cap.
+
+**Still open (not in the named-5 list):** a number of other pages and
+components still exceed the soft target, eg. `admin/attendance`,
+`admin/transport`, `admin/academy/cohorts/[id]/score`,
+`admin/homepage-media`, `admin/academy/programs/[id]/edit`,
+`(public)/store/product/[slug]`, plus components like `PoolForm` (922
+raw lines), `SessionSignIn` (798). They're below the named-5
+threshold; address them as migrate-on-touch the next time someone is
+working in those files.
+
+**Flipping the rule:** before raising `max-lines` from `warn` →
+`error`, the remaining oversize files (above) need to either be split
+or get an ESLint per-file override. Defer until that backlog is
+clear.
 
 ---
 
@@ -132,4 +152,4 @@ action required.
 
 ---
 
-_Last updated: 2026-05-22 (G4 closed)._
+_Last updated: 2026-05-22 (G2 + G4 closed)._
