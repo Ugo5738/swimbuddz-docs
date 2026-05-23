@@ -17,9 +17,9 @@ Status legend: 🟦 backlog (rule live, migrate-on-touch) · 📋 project
 
 ---
 
-## 1. F5/F6/F7 — Type discipline 🟦
+## 1. F5/F6/F7 — Type discipline 🟦 (in progress)
 
-**What:** ~50 components still use the raw `fetch()` + manual
+**What:** ~50 components on the raw `fetch()` + manual
 `useState/useEffect/catch` triad; ~130 `any`-typed API payloads.
 
 **Already done:** rule codified — `CONVENTIONS.md` §3 (no `any` on
@@ -27,6 +27,35 @@ payloads = review blocker) and §6 (`useApi` is the canonical client GET
 hook; **migrate-on-touch**). Foundation `src/hooks/useApi.ts` shipped +
 unit-tested (11 cases). Reference migrations: `community/directory`,
 `community/tips`, `community/events` pages.
+
+**Sweep progress (2026-05-23, 8 PRs):**
+
+| PR | File(s) | Δ fetch | Δ any |
+|---|---|---:|---:|
+| `d9f1ebb` | `app/page.tsx` + new `_homepage/api.ts` + `MembersApi.getPublicMember` | −3 | −10 |
+| `2877adc` | `(public)/gallery`, `(public)/tips/page`, `(public)/tips/[id]/page` | −3 files | 0 |
+| `642890c` | `admin/homepage-media` + hoisted `SiteAsset` to `lib/media.ts` | −7 | −6 |
+| `f60c6a2` | `admin/academy/enrollments/[id]` (drop no-op casts) | 0 | −9 |
+| `9ebc32f` | `components/admin/TemplatesDrawer` + `RideShareConfigEntry` | 0 | −8 |
+| `4c85937` | `admin/attendance` (memberId casts + 6 catch-any) | 0 | −8 |
+| `58ff743` | `admin/academy/programs/[id]/edit` (curriculum_json types, STEPS tuple) | 0 | −7 |
+| `87665b9` | `admin/sessions` cluster (`SessionFormModal` + `SessionPayload`/`SessionRideConfig`); **deleted dead 357-line `EditSessionForm.tsx`** | 0 | −16 |
+| **Total** | | **−4 files** | **−63 (116 → 53)** |
+
+Counts as of `87665b9`: **36 fetch files, 53 `any` usages.**
+
+Three shared types hoisted (`SiteAsset`, `RideShareConfigEntry`,
+`SessionPayload + SessionRideConfig`). Four reusable migration shapes
+proven: useApi for client GETs · apiGet/apiPost/apiDelete + typed
+payload · drop no-op casts when the type already covers the access ·
+**delete dead code instead of typing it.**
+
+**Top remaining `any` hotspots** (post-sweep, still migrate-on-touch):
+1. `lib/academy/types.ts` — 5 (schema-level `preferences?: any`,
+   `rubric_json?: any`, `pickup_locations: any[]` — structural)
+2. `(member)/account/onboarding/page.tsx` — 4
+3. `components/admin/SessionDetailsModal.tsx` and the remaining ~40
+   files with 1-3 each.
 
 **Definition of done:** raw-`fetch()` component count and `any`-payload
 count trend to ~0 via migrate-on-touch; new code uses `useApi`
@@ -152,4 +181,4 @@ action required.
 
 ---
 
-_Last updated: 2026-05-22 (G2 + G4 closed)._
+_Last updated: 2026-05-23 (F5/F6/F7 8-PR sweep)._
