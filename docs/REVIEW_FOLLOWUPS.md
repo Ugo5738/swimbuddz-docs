@@ -131,7 +131,7 @@ width-0/height-0) plus the blob exception.
 
 ---
 
-## 4. B4 — Audit-log unification 📋
+## 4. B4 — Audit-log unification 📋 (1 of 3 PRs done)
 
 **What:** `wallet_audit_logs`, `store_audit_logs`, `chat_audit_log`
 are three divergently-shaped tables.
@@ -140,13 +140,29 @@ are three divergently-shaped tables.
 [`docs/design/B4_AUDIT_LOG_UNIFICATION.md`](./design/B4_AUDIT_LOG_UNIFICATION.md).
 Key correction captured: a single shared table would violate service
 isolation; unification = a shared **shape** (`libs/common` mixin), not
-a shared table. First PR (wallet) spawned as a dedicated task.
+a shared table.
+
+| PR | Status | Commit | Notes |
+|---|---|---|---|
+| Wallet | ✅ done 2026-05-24 | swimbuddz-backend `d32c9f6` | `libs/common/audit.py` (mixin + Pydantic + helpers), wallet model adopts canonical 12 cols, 3 writers + reader + schema migrated, 2 alembic migrations applied to dev DB (Supabase `bhdugkgialnkbvdbtnpi`, eu-central-1), 1 row backfilled cleanly, row-count invariant held, 36/36 wallet tests + 26/26 contract tests pass. |
+| Store | ⏳ pending | — | `store_audit_logs` is already generic-shaped (entity_type / entity_id present) but uses `performed_at` not `created_at`, has `notes` not `reason`, and free-string action without namespacing. Same pattern as wallet PR1 — adopt mixin, backfill, contract test reused as-is. |
+| Chat | ⏳ pending | — | `chat_audit_log` (singular!) needs the most change: no entity_id today (chat-specific scope fields: channel_id/message_id/subject_member_id), JSONB `payload` instead of old/new_value split. The canonical shape captures the *audit* facts; chat-specific scope info migrates into `entity_type`/`entity_id` (e.g. type=`message`, id=message_id) and the payload spreads into `old_value`/`new_value` per action. |
 
 **Definition of done:** three sequenced PRs (wallet → store → chat),
 each: model→canonical, `migrate.sh`-generated migration + lossless
 compliance-grade backfill (row-count invariant), readers/writers
 updated, contract test for the canonical shape. **Never** hand-write
-the migrations.
+the migrations (use `migrate.sh --manual` for data migrations).
+
+**Reusable from wallet PR1 for store/chat:**
+- `libs/common/audit.py` is stable — store + chat just import.
+- `tests/libs/test_audit_mixin.py` is a pure introspection contract
+  test — any drift in the mixin (or its Pydantic schema) breaks it
+  before it ships to dependent services.
+- Migration shape: stage 1 add nullable cols, stage 2 backfill +
+  ALTER NOT NULL + drop old. For chat: the conversion of `payload`
+  → `old_value`/`new_value` is action-specific so the backfill needs
+  per-action `CASE` arms (see ChatAuditAction enum values).
 
 ---
 
@@ -181,4 +197,4 @@ action required.
 
 ---
 
-_Last updated: 2026-05-23 (F5/F6/F7 8-PR sweep)._
+_Last updated: 2026-05-24 (B4 wallet PR1 done; F5/F6/F7 8-PR sweep)._
