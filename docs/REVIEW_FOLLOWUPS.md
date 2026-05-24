@@ -131,38 +131,45 @@ width-0/height-0) plus the blob exception.
 
 ---
 
-## 4. B4 — Audit-log unification 📋 (1 of 3 PRs done)
+## 4. B4 — Audit-log unification ✅ (closed 2026-05-24)
 
 **What:** `wallet_audit_logs`, `store_audit_logs`, `chat_audit_log`
-are three divergently-shaped tables.
+were three divergently-shaped tables.
 
-**Already done:** full design + scoping note —
+**Closed:** three sequenced PRs (wallet → store → chat) — each adopted
+the canonical shape from `libs/common/audit.py` (`AuditLogMixin` +
+`AuditLogRead` Pydantic + `make_action` / `parse_uuid_or_none`
+helpers). Each service keeps its **own** physical table per the
+service-isolation rule; what they share is the **column shape**. Full
+design in
 [`docs/design/B4_AUDIT_LOG_UNIFICATION.md`](./design/B4_AUDIT_LOG_UNIFICATION.md).
-Key correction captured: a single shared table would violate service
-isolation; unification = a shared **shape** (`libs/common` mixin), not
-a shared table.
 
 | PR | Status | Commit | Notes |
 |---|---|---|---|
 | Wallet | ✅ done 2026-05-24 | swimbuddz-backend `d32c9f6` | `libs/common/audit.py` (mixin + Pydantic + helpers), wallet model adopts canonical 12 cols, 3 writers + reader + schema migrated, 2 alembic migrations applied to dev DB (Supabase `bhdugkgialnkbvdbtnpi`, eu-central-1), 1 row backfilled cleanly, row-count invariant held, 36/36 wallet tests + 26/26 contract tests pass. |
-| Store | ⏳ pending | — | `store_audit_logs` is already generic-shaped (entity_type / entity_id present) but uses `performed_at` not `created_at`, has `notes` not `reason`, and free-string action without namespacing. Same pattern as wallet PR1 — adopt mixin, backfill, contract test reused as-is. |
-| Chat | ⏳ pending | — | `chat_audit_log` (singular!) needs the most change: no entity_id today (chat-specific scope fields: channel_id/message_id/subject_member_id), JSONB `payload` instead of old/new_value split. The canonical shape captures the *audit* facts; chat-specific scope info migrates into `entity_type`/`entity_id` (e.g. type=`message`, id=message_id) and the payload spreads into `old_value`/`new_value` per action. |
+| Store | ✅ done 2026-05-24 | swimbuddz-backend `0b4f9ed` | StoreAuditLog inherits mixin. `log_audit` helper namespaces action (`store.<verb>`), parses actor_id best-effort, maps `notes`→`reason`. 14 callers unchanged (helper signature kept stable). Stage 1 adds nullable cols + new composite index; stage 2 converts entity_type enum→String, backfills, drops legacy + `store_audit_entity_type_enum`. Applied to dev DB (0 rows). 20/21 store integration tests pass (1 pre-existing failure unrelated). |
+| Chat | ✅ done 2026-05-24 | swimbuddz-backend `3ebd103` | ChatAuditLog inherits mixin; keeps `channel_id` / `subject_member_id` as chat-specific denormalized scope columns for admin filters; drops `message_id` (now in `entity_id` when entity_type=`message`) and `payload` (split per backfill). `log_action()` uses per-`ChatAuditAction` `_ENTITY_MAP` to derive entity_type + COALESCE-pick entity_id. Admin reader projects canonical→legacy `AuditLogItem` so the API contract stays stable. Stage 1 additive; stage 2 converts action enum→String, backfills per-action via CASE arms, drops legacy + `chat_audit_action_enum`. Applied to dev DB; 3 rows backfilled cleanly. 13/13 chat integration + 26/26 contract tests pass. |
 
-**Definition of done:** three sequenced PRs (wallet → store → chat),
-each: model→canonical, `migrate.sh`-generated migration + lossless
-compliance-grade backfill (row-count invariant), readers/writers
-updated, contract test for the canonical shape. **Never** hand-write
-the migrations (use `migrate.sh --manual` for data migrations).
+**Patterns proved (in order of impact):**
+- `libs/common/audit.py` is the single source of truth — services
+  just inherit `AuditLogMixin` and import `DOMAIN_*` / `make_action` /
+  `parse_uuid_or_none`.
+- Two-stage migration: stage 1 = additive nullable columns (safe
+  rollback boundary); stage 2 = backfill + ALTER NOT NULL + drop
+  legacy. Convert any enum→String **before** writing namespaced text
+  into the column.
+- Row-count invariant: pre-flight `COUNT(*)` compared post-backfill;
+  migration raises `RuntimeError` if any row failed to populate the
+  always-required canonical cols (domain / entity_type / entity_id /
+  created_at depending on service).
+- Service-specific extras (chat's `channel_id` /
+  `subject_member_id`) live on the concrete model, not the mixin —
+  pragmatic when admin filters need them as denormalized refs.
 
-**Reusable from wallet PR1 for store/chat:**
-- `libs/common/audit.py` is stable — store + chat just import.
-- `tests/libs/test_audit_mixin.py` is a pure introspection contract
-  test — any drift in the mixin (or its Pydantic schema) breaks it
-  before it ships to dependent services.
-- Migration shape: stage 1 add nullable cols, stage 2 backfill +
-  ALTER NOT NULL + drop old. For chat: the conversion of `payload`
-  → `old_value`/`new_value` is action-specific so the backfill needs
-  per-action `CASE` arms (see ChatAuditAction enum values).
+**Optional follow-up (later, not scoped here):** the canonical shape
+makes a cross-domain audit reader (e.g. "show everything this
+admin did across services") structurally feasible. Product-side
+decision when the need arises.
 
 ---
 
@@ -190,11 +197,11 @@ action required.
 
 ## Spawned task chips
 
-- **B4 wallet PR1** — open (see §4).
+- **B4 wallet PR1** — ✅ closed (see §4); all three B4 PRs landed.
 - **Middleware dead-branch fix** — ✅ already fixed directly in commit
   `7c69f1e` (the `requiredTier` lowest-tier correction + symmetric
   academy-lapsed→billing). The chip is **redundant — safe to dismiss.**
 
 ---
 
-_Last updated: 2026-05-24 (B4 wallet PR1 done; F5/F6/F7 8-PR sweep)._
+_Last updated: 2026-05-24 (B4 fully closed across wallet/store/chat; F5/F6/F7 8-PR sweep)._

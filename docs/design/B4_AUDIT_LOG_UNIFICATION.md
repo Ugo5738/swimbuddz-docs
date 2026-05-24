@@ -1,9 +1,10 @@
 # B4 — Audit-Log Unification (design note / scoping)
 
-> **Status:** scoped, not started. This is a standalone project (3
-> services, schema redesign, per-service migrations + compliance-grade
-> data backfill), deliberately *not* executed inline with the review
-> batch. This note makes it safe and actionable later.
+> **Status:** ✅ closed 2026-05-24 across all three services. Sequenced
+> PRs landed as wallet (`d32c9f6`) → store (`0b4f9ed`) → chat
+> (`3ebd103`). See [`docs/REVIEW_FOLLOWUPS.md`](../REVIEW_FOLLOWUPS.md)
+> §4 for the per-PR summary table. This note remains the canonical
+> design reference for the shape and the rationale.
 
 ## Problem
 
