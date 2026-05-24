@@ -28,7 +28,7 @@ hook; **migrate-on-touch**). Foundation `src/hooks/useApi.ts` shipped +
 unit-tested (11 cases). Reference migrations: `community/directory`,
 `community/tips`, `community/events` pages.
 
-**Sweep progress (2026-05-23, 8 PRs):**
+**Sweep progress (2026-05-23 → 2026-05-24, 12 PRs):**
 
 | PR | File(s) | Δ fetch | Δ any |
 |---|---|---:|---:|
@@ -40,22 +40,27 @@ unit-tested (11 cases). Reference migrations: `community/directory`,
 | `4c85937` | `admin/attendance` (memberId casts + 6 catch-any) | 0 | −8 |
 | `58ff743` | `admin/academy/programs/[id]/edit` (curriculum_json types, STEPS tuple) | 0 | −7 |
 | `87665b9` | `admin/sessions` cluster (`SessionFormModal` + `SessionPayload`/`SessionRideConfig`); **deleted dead 357-line `EditSessionForm.tsx`** | 0 | −16 |
-| **Total** | | **−4 files** | **−63 (116 → 53)** |
+| `e53b4d5` | `lib/registration.ts` (parseDateMs unknown; drop dead `(error as any)?.response.status`) | 0 | −3 |
+| `d0e7302` | `admin/pools/page.tsx` (2 catch any → unknown narrowing) | 0 | −2 |
+| `340d3d7` | `admin/dashboard/page.tsx` (4 raw fetches → Promise.all/apiGet; typed sort) | −1 | −2 |
+| `b26fd79` | `attendance/page.tsx` (hoist Route; type optional pickup-loc routes; catch unknown) | 0 | −3 |
+| **Total** | | **−5 files** | **−73 (116 → 43)** |
 
-Counts as of `87665b9`: **36 fetch files, 53 `any` usages.**
+Counts as of `b26fd79`: **34 fetch files, 43 `any` usages.**
 
-Three shared types hoisted (`SiteAsset`, `RideShareConfigEntry`,
-`SessionPayload + SessionRideConfig`). Four reusable migration shapes
-proven: useApi for client GETs · apiGet/apiPost/apiDelete + typed
-payload · drop no-op casts when the type already covers the access ·
-**delete dead code instead of typing it.**
+Patterns proven (in order of impact): useApi for client GETs ·
+apiGet/apiPost/apiDelete + typed payload · drop no-op casts when the
+type already covers the access · **delete dead code instead of typing
+it** · `unknown + instanceof Error` for catch narrowing · `apiPost`
+throws plain `Error` (no axios-style `.response.status` — string-match
+the message or use HTTP status text).
 
 **Top remaining `any` hotspots** (post-sweep, still migrate-on-touch):
 1. `lib/academy/types.ts` — 5 (schema-level `preferences?: any`,
    `rubric_json?: any`, `pickup_locations: any[]` — structural)
 2. `(member)/account/onboarding/page.tsx` — 4
-3. `components/admin/SessionDetailsModal.tsx` and the remaining ~40
-   files with 1-3 each.
+3. `admin/academy/programs/[id]/page.tsx` — 4
+4. ~40 files with 1-3 each.
 
 **Definition of done:** raw-`fetch()` component count and `any`-payload
 count trend to ~0 via migrate-on-touch; new code uses `useApi`
@@ -204,4 +209,4 @@ action required.
 
 ---
 
-_Last updated: 2026-05-24 (B4 fully closed across wallet/store/chat; F5/F6/F7 8-PR sweep)._
+_Last updated: 2026-05-24 (B4 fully closed across wallet/store/chat; F5/F6/F7 12-PR sweep → 34 fetch, 43 `any`)._
