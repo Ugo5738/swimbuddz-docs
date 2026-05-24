@@ -28,7 +28,7 @@ hook; **migrate-on-touch**). Foundation `src/hooks/useApi.ts` shipped +
 unit-tested (11 cases). Reference migrations: `community/directory`,
 `community/tips`, `community/events` pages.
 
-**Sweep progress (2026-05-23 → 2026-05-24, 12 PRs):**
+**Sweep progress (2026-05-23 → 2026-05-24, 16 PRs):**
 
 | PR | File(s) | Δ fetch | Δ any |
 |---|---|---:|---:|
@@ -44,23 +44,27 @@ unit-tested (11 cases). Reference migrations: `community/directory`,
 | `d0e7302` | `admin/pools/page.tsx` (2 catch any → unknown narrowing) | 0 | −2 |
 | `340d3d7` | `admin/dashboard/page.tsx` (4 raw fetches → Promise.all/apiGet; typed sort) | −1 | −2 |
 | `b26fd79` | `attendance/page.tsx` (hoist Route; type optional pickup-loc routes; catch unknown) | 0 | −3 |
-| **Total** | | **−5 files** | **−73 (116 → 43)** |
+| `4be377a` | `admin/sessions/utils.ts` (FastAPI error body shape) | 0 | −2 |
+| `558349c` | `lib/academy/types.ts` + `programs/[id]/page.tsx` + edit page (hoist CurriculumJson + PrepMaterials; drop 3 structural any from types.ts) | 0 | −7 |
+| `8434afe` | `lib/academy/api.ts` (preferences → Record<string, unknown>) | 0 | −2 |
+| `19df436` | `checkout/page.tsx` (intentPayload via Partial<CreatePaymentIntentRequest>; catch unknown) | 0 | −2 |
+| **Total** | | **−5 files** | **−88 (116 → 28)** |
 
-Counts as of `b26fd79`: **34 fetch files, 43 `any` usages.**
+Counts as of `19df436`: **34 fetch files, 28 `any` usages.**
 
 Patterns proven (in order of impact): useApi for client GETs ·
 apiGet/apiPost/apiDelete + typed payload · drop no-op casts when the
 type already covers the access · **delete dead code instead of typing
 it** · `unknown + instanceof Error` for catch narrowing · `apiPost`
 throws plain `Error` (no axios-style `.response.status` — string-match
-the message or use HTTP status text).
+the message or use HTTP status text) · **hoist structural JSON
+shapes** out of "freeform" `any` columns (`CurriculumJson`,
+`PrepMaterials`, `PaymentIntentRequest` via `Partial<components[…]>`).
 
 **Top remaining `any` hotspots** (post-sweep, still migrate-on-touch):
-1. `lib/academy/types.ts` — 5 (schema-level `preferences?: any`,
-   `rubric_json?: any`, `pickup_locations: any[]` — structural)
-2. `(member)/account/onboarding/page.tsx` — 4
-3. `admin/academy/programs/[id]/page.tsx` — 4
-4. ~40 files with 1-3 each.
+1. `(member)/account/onboarding/page.tsx` — 4 (form-state casts)
+2. `(member)/upgrade/academy/details/page.tsx` — 2 (skillAssessment casts)
+3. Long tail of ~20 files with 1-2 each.
 
 **Definition of done:** raw-`fetch()` component count and `any`-payload
 count trend to ~0 via migrate-on-touch; new code uses `useApi`
@@ -209,4 +213,4 @@ action required.
 
 ---
 
-_Last updated: 2026-05-24 (B4 fully closed across wallet/store/chat; F5/F6/F7 12-PR sweep → 34 fetch, 43 `any`)._
+_Last updated: 2026-05-24 (B4 fully closed across wallet/store/chat; F5/F6/F7 16-PR sweep → 34 fetch, 28 `any`)._
