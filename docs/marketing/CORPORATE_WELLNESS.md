@@ -261,6 +261,23 @@ Maintain a corporate pipeline spreadsheet (or use a CRM). Columns: Company, Cont
 
 - [ ] Exact pool partners confirmed for the next 2 cohorts (need addresses for the pitch)
 - [ ] Two corporate testimonials needed (currently placeholders) — secure these from first 2 corporate wins
-- [ ] Corporate landing page at `swimbuddz.com/corporate` — does it exist? If not, add to frontend backlog
+- [x] Corporate landing page at `swimbuddz.com/corporate` — shipped May 2026 (Phase 2); intake form posts to `POST /api/v1/corporate/leads`
 - [ ] PDF version of Part 1 — design in Canva (logo, brand colors, photos), export, host at `swimbuddz.com/corporate-wellness.pdf`
 - [ ] Email signature with calendar booking link (Cal.com / Calendly)
+
+---
+
+## Platform support (Phase 2 — May 2026)
+
+The internal admin + HR-facing tooling for this playbook now exists in the codebase. See [docs/reference/SERVICE_REGISTRY.md § Corporate Service](../reference/SERVICE_REGISTRY.md) for the full surface; quick links:
+
+- **Sales pipeline** — admin at `/admin/corporate/{contacts,deals,programs}`
+- **Marketing landing** — public at `swimbuddz.com/corporate` (intake form → `CorporateContact` with `source=inbound_web`)
+- **HR self-serve** — `/corporate-portal/` (magic-link sign-in for the primary contact)
+- **Outcome reports** — admin: `/admin/corporate/programs/{id}/report` · HR: `/corporate-portal/programs/{id}/report`
+- **Automated outreach** — admin per-contact: Outreach tab on the contact detail page (start / pause / resume / preview / send-now). Cron runs daily 07:00 UTC.
+
+When this doc's copy changes (subject lines, body text, pricing tiers, gap days), update the corresponding code:
+- Pricing tiers → `services/corporate_service/services/pricing.py` + frontend `src/lib/corporate/api.ts` (TIER_PRICE_KOBO)
+- Email 1/2/3 copy → `services/corporate_service/services/outreach_templates.py`
+- Outreach gap → `OUTREACH_GAP` in `services/corporate_service/services/outreach.py`

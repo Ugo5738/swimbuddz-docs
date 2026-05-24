@@ -282,8 +282,20 @@ These enums are used within a single service.
 | `wallet_events` | Wallet-related event log (Phase 3 stub) |
 | `member_reward_history` | Member reward earning history (Phase 3 stub) |
 | `family_wallet_links` | Linked family wallet relationships (Phase 4 stub) |
-| `corporate_wallets` | Corporate/organization wallets (Phase 5 stub) |
+| `corporate_wallets` | Corporate/organization wallets (Phase 5 stub; written by `corporate_service` via `/internal/wallet/corporate/create`) |
 | `corporate_wallet_members` | Corporate wallet member assignments (Phase 5 stub) |
+
+### Corporate Service
+
+Lives in its own DB schema (logical isolation only — same Postgres instance). All cross-service IDs are stored as plain UUIDs / strings without FK constraints.
+
+| Table | Description |
+|-------|-------------|
+| `corporate_contacts` | Companies / HR contacts in the sales pipeline. Primary contact info, industry/size, source, owner, soft-delete flag. |
+| `corporate_deals` | Sales pipeline opportunity tied to a contact. Stage (lead → contacted → intro → proposal_sent → negotiating → won/lost), expected employees / total kobo, next-action tracking, lost-reason. |
+| `corporate_programs` | A won deal turned into a sold cohort. `cohort_id`, `corporate_wallet_id`, status (draft → ready → active → completed → cancelled), pricing (`per_employee_kobo`, `total_kobo`, `discount_tier`), payment terms + deposit tracking, pilot-partner flag. |
+| `corporate_program_employees` | Manifest entry per employee. Email is unique within a program. Holds `member_id` + `member_auth_id` once resolved against `members_service`. Status: pending → invited → registered → enrolled (or opted_out). |
+| `corporate_touchpoints` | Outreach interaction log (email 1/2/3, intro call, demo, note, etc.) keyed on contact, optionally tied to a deal. Logging a touchpoint with a deal_id auto-updates `corporate_deals.last_touch_at`. |
 
 ---
 

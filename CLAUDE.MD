@@ -22,7 +22,7 @@ cd swimbuddz-backend && pytest tests/
 cd swimbuddz-frontend && npm test
 ```
 
-**Service Ports:** Gateway (8000) | Members (8001) | Sessions (8002) | Attendance (8003) | Communications (8004) | Payments (8005) | Academy (8006) | Events (8007) | Media (8008) | Transport (8009) | Store (8010) | AI (8011) | Volunteer (8012) | Wallet (8013) | Pools (8014) | Reporting (8015) | Chat (8016)
+**Service Ports:** Gateway (8000) | Members (8001) | Sessions (8002) | Attendance (8003) | Communications (8004) | Payments (8005) | Academy (8006) | Events (8007) | Media (8008) | Transport (8009) | Store (8010) | AI (8011) | Volunteer (8012) | Wallet (8013) | Pools (8014) | Reporting (8015) | Chat (8016) | Corporate (8017)
 
 > **Source of truth:** `swimbuddz-backend/docker-compose.yml`. Keep [docs/reference/SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md) in sync whenever ports or services change. Don't trust port lists anywhere else — always cross-check.
 
@@ -115,7 +115,7 @@ Before making changes, read these files:
 
 ### 2. Understanding the Codebase
 
-**Backend Services** (Ports 8000-8016):
+**Backend Services** (Ports 8000-8017):
 - `gateway_service` (8000) - API Gateway (single entry point, proxies to all services)
 - `members_service` (8001) - Member registration and profiles
 - `sessions_service` (8002) - Swim sessions and events
@@ -133,10 +133,11 @@ Before making changes, read these files:
 - `pools_service` (8014) - Pool registry, partnership CRM, submissions workflow
 - `reporting_service` (8015) - Analytics & reports (member insights, admin dashboards, seasonality)
 - `chat_service` (8016) - In-app real-time messaging with safeguarding moderation (Phase 1 in production: member + admin + internal routers, RLS + Realtime, frontend at `/account/chat`). See [docs/design/CHAT_SERVICE_DESIGN.md](./docs/design/CHAT_SERVICE_DESIGN.md).
+- `corporate_service` (8017) - Corporate wellness sales pipeline (CRM contacts/deals/touchpoints) and program orchestration (cohort linking, wallet provisioning, bulk employee enrollment). Admin API plus a public lead-capture endpoint (`/corporate/leads`), HR-facing portal endpoints (`/corporate/me/*`, magic-link auth), outcome reports (`/admin/corporate/programs/{id}/report`), and automated outreach (`corporate-worker` ARQ container). See [docs/marketing/CORPORATE_WELLNESS.md](./docs/marketing/CORPORATE_WELLNESS.md).
 
 **Service Communication Pattern:**
 ```
-Client → Gateway (8000) → Individual Service (8001-8016)
+Client → Gateway (8000) → Individual Service (8001-8017)
                 ↓
          Supabase Auth Validation (libs/auth)
                 ↓
@@ -332,6 +333,7 @@ The Model Context Protocol allows AI agents to interact with the SwimBuddz backe
 - Analytics & reporting (Reporting Service — member insights, admin dashboards, seasonality)
 - Photo/video galleries and site assets (Media Service)
 - In-app real-time messaging with safeguarding (Chat Service — Phase 1: member + admin + internal routers, RLS, Realtime, moderation)
+- Corporate wellness sales pipeline + program orchestration (Corporate Service — Phase 1: contacts, deals, touchpoints, programs, employee manifest, cohort/wallet/enrollment orchestration; admin-only). Phase 2 (May 2026) added: public lead form at `/corporate`, SwimBuddz Wrapped outcome reports (admin + HR-portal views, printable + email-to-HR), HR self-serve portal at `/corporate-portal` with magic-link auth, and automated 3-step outreach sequence with admin pause/resume/preview controls (cron via `corporate-worker`).
 - Admin dashboards for all domains
 
 ### Minimal Implementation (Models exist, limited routes)
@@ -713,7 +715,7 @@ try {
 **Backend won't start:**
 ```bash
 # Check if ports are in use
-lsof -i :8000-8016
+lsof -i :8000-8017
 
 # Restart Docker
 docker-compose down && docker-compose up --build
@@ -798,7 +800,7 @@ docker compose up gateway academy-service members-service
 docker compose logs -f <service_name>
 
 # Gateway available at localhost:8000
-# Individual services at localhost:8001-8016
+# Individual services at localhost:8001-8017
 ```
 
 ### Frontend Setup

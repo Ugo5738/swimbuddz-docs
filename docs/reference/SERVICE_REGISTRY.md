@@ -23,7 +23,8 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 | **pools_service** | 8014 | Production | Pool registry, partnership CRM, submissions workflow, assets/contacts/visits | `/admin/settings/pools/*`, public pool listings |
 | **reporting_service** | 8015 | Production | Analytics & reports: member insights, community analytics, admin dashboards, seasonality forecasting | `/account/insights`, `/admin/analytics`, `/admin/reports/*` |
 | **chat_service** | 8016 | In Development (Phase 1 backend) | Real-time messaging across cohorts, pods, events, trips, DMs; safeguarding enforcement. See [design doc](../design/CHAT_SERVICE_DESIGN.md) | `/account/chat/*`, `/admin/chat/*` (planned) |
-| **ledger_service** | 8017 | Planned (design approved) | Multi-tenant double-entry accounting: chart of accounts, journal entries, reconciliation, period close, FIRS e-invoicing. Designed as B2B-extractable from day 1. See [design doc](../design/LEDGER_SERVICE_DESIGN.md) | `/admin/finance/*` (planned) |
+| **corporate_service** | 8017 | Production (Phase 1) | Corporate wellness pipeline (CRM-style contacts/deals/touchpoints) and program orchestration (cohort linking, wallet provisioning, bulk employee enrollment). Admin-only API surface. See [marketing playbook](../marketing/CORPORATE_WELLNESS.md). | `/admin/corporate/*` (planned UI) |
+| **ledger_service** | 8018 | Planned (design approved) | Multi-tenant double-entry accounting: chart of accounts, journal entries, reconciliation, period close, FIRS e-invoicing. Designed as B2B-extractable from day 1. See [design doc](../design/LEDGER_SERVICE_DESIGN.md) | `/admin/finance/*` (planned) |
 | **identity_service** | — | Deprecated placeholder | Empty directory; authentication is handled by Supabase JWT via `libs/auth`. Not implementing — documented here so it isn't confused with a missing service. | N/A |
 
 ---
@@ -472,13 +473,49 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 ---
 
-### 18. Ledger Service (Port 8017) — Planned (design approved)
+### 18. Corporate Service (Port 8017) — Production (Phase 1)
+
+**Implementation:** `services/corporate_service/`
+
+**Purpose:** Owns the corporate wellness sales pipeline (CRM-style contacts, deals, touchpoints) and the orchestration of sold programs (cohort linking, wallet provisioning, bulk employee enrollment). Single source of truth for "Company X bought a 12-week cohort for N employees" — the `corporate_program_id` referenced by `academy_service.Cohort.corporate_program_id` and `sessions_service.SessionBooking.corporate_program_id` is owned here.
+
+**Status:** Phase 1 complete. Admin-only API at `/admin/corporate/*`: contacts CRUD, deal pipeline with WIN/LOSE transitions (winning a deal mints a draft `CorporateProgram`), touchpoint logging that auto-updates deal `last_touch_at`, program CRUD with auto-pricing from discount tier × headcount, employee manifest with bulk add + idempotency on email + match-against-members, and orchestration endpoints (`link-cohort`, `provision-wallet`, `enroll-all`) that call into `academy_service`, `wallet_service`, and `sessions_service` via service-role JWT. Pricing rules and the sales playbook live in [docs/marketing/CORPORATE_WELLNESS.md](../marketing/CORPORATE_WELLNESS.md).
+
+**Source of truth:** [docs/marketing/CORPORATE_WELLNESS.md](../marketing/CORPORATE_WELLNESS.md)
+
+**Implemented models:**
+- `CorporateContact` — company + primary HR contact
+- `CorporateDeal` — sales pipeline opportunity (stage: lead → contacted → … → won/lost)
+- `CorporateProgram` — won deal turned into a sold cohort (cross-service IDs: `cohort_id`, `corporate_wallet_id` — no FKs by architectural rule)
+- `CorporateProgramEmployee` — manifest entry (enrollment status: pending → invited → registered → enrolled)
+- `CorporateTouchpoint` — outreach log (email_intro / followup_1 / intro_call / etc.)
+
+**Cross-service orchestration helpers** (in `services/corporate_service/services/clients.py`):
+- `find_member_by_email(email)` — resolve employees against `members_service` via `/internal/members/search`
+- `provision_corporate_wallet(...)` — call `wallet_service` `/internal/wallet/corporate/create`
+- `get_cohort(cohort_id)` — verify a cohort exists via `academy_service` `/internal/academy/cohorts/{id}`
+- `get_cohort_session_ids(cohort_id)` — list session IDs to enroll into
+- `bulk_create_bookings(...)` — call `sessions_service` `/internal/sessions/bookings/bulk`
+
+**Frontend integration:** `/admin/corporate/*` (planned — Phase 2)
+
+**Phase 2 — landed (May 2026):**
+- Public marketing landing page `swimbuddz.com/corporate` with inbound lead form (POST `/api/v1/corporate/leads`, rate-limited 5/min, honeypot)
+- Outcome reporting (SwimBuddz Wrapped) — admin endpoint `GET /admin/corporate/programs/{id}/report` aggregates attendance + milestones via attendance_service + academy_service; printable admin view + email-to-HR action
+- HR self-serve portal at `/corporate-portal` — magic-link sign-in (no Supabase users; JWTs signed with the project's existing secret + `purpose=corp_session`), read-only access to company programs, employees, and the outcome report via `/api/v1/corporate/me/*`
+- Automated outreach sequence — 3-email playbook templates rendered server-side, ARQ cron (daily 07:00 UTC), admin start / pause / resume / preview / send-now controls; suppressed automatically when an inbound touchpoint is logged
+
+**Companion worker:** `swimbuddz_corporate_worker` (ARQ on Redis queue `arq:corporate`) — runs the daily outreach scheduler.
+
+---
+
+### 19. Ledger Service (Port 8018) — Planned (design approved)
 
 **Implementation:** `services/ledger_service/` (not yet scaffolded — Phase 0 in progress)
 
 **Purpose:** Multi-tenant double-entry accounting system. The single source of truth for money across SwimBuddz: every payment, refund, wallet top-up, Bubbles spend, store sale, academy enrollment, coach payout, and volunteer reward posts a journal entry here. Owns chart of accounts, balances, trial balance, P&L, balance sheet, period close, Paystack reconciliation, multi-currency, and FIRS-compliant e-invoicing.
 
-**Status:** Design approved. Architected as multi-tenant from day 1 so it can be extracted as a B2B accounting product for other African SMBs (gyms, schools, clubs) without rewriting — `organization_id` on every row, RLS, CoA seeded from vertical templates, no SwimBuddz-specific schema. Operational tables in `payments_service`, `wallet_service`, `store_service`, `academy_service`, etc. remain authoritative for *what happened in the business*; the ledger is authoritative for *what happened to the money*. AI features (anomaly detection, narrated close, NL queries) layer on top in phase 8 and never write entries directly. Port 8017.
+**Status:** Design approved. Architected as multi-tenant from day 1 so it can be extracted as a B2B accounting product for other African SMBs (gyms, schools, clubs) without rewriting — `organization_id` on every row, RLS, CoA seeded from vertical templates, no SwimBuddz-specific schema. Operational tables in `payments_service`, `wallet_service`, `store_service`, `academy_service`, etc. remain authoritative for *what happened in the business*; the ledger is authoritative for *what happened to the money*. AI features (anomaly detection, narrated close, NL queries) layer on top in phase 8 and never write entries directly. Port 8018 (moved from 8017 in May 2026 when corporate_service shipped on 8017).
 
 **Design doc:** [docs/design/LEDGER_SERVICE_DESIGN.md](../design/LEDGER_SERVICE_DESIGN.md)
 
@@ -494,7 +531,7 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 **Dependencies before Phase 1 ships:**
 - `LEDGER_DEFAULT_ORG_ID` env var seeded in `libs/common/config.py`
 - `libs/common/ledger_client.py` (parallel to `service_client.py`)
-- Gateway routing for `/ledger/*` → `ledger_service:8017`
+- Gateway routing for `/ledger/*` → `ledger_service:8018`
 
 ---
 
@@ -566,9 +603,10 @@ Each service must:
 - 8013: Wallet
 - 8014: Pools
 - 8015: Reporting
-- 8016: Chat (planned — see [docs/design/CHAT_SERVICE_DESIGN.md](../design/CHAT_SERVICE_DESIGN.md))
-- 8017: Ledger (planned — see [docs/design/LEDGER_SERVICE_DESIGN.md](../design/LEDGER_SERVICE_DESIGN.md))
-- 8018+: Available for new services
+- 8016: Chat (in development — see [docs/design/CHAT_SERVICE_DESIGN.md](../design/CHAT_SERVICE_DESIGN.md))
+- 8017: Corporate
+- 8018: Ledger (planned — see [docs/design/LEDGER_SERVICE_DESIGN.md](../design/LEDGER_SERVICE_DESIGN.md))
+- 8019+: Available for new services
 
 > **Important:** Before allocating a new port, cross-check `swimbuddz-backend/docker-compose.yml` — that is the source of truth. This registry must be updated whenever docker-compose changes.
 
@@ -576,11 +614,11 @@ Each service must:
 
 ## Quick Reference
 
-**Production Services:** gateway, members, sessions, attendance, communications, payments, academy, transport, ai, volunteer, wallet, pools, reporting
+**Production Services:** gateway, members, sessions, attendance, communications, payments, academy, transport, ai, volunteer, wallet, pools, reporting, corporate
 
 **Minimal/Incomplete Services:** events, media, store (have models but limited routes)
 
-**Planned:** chat (port 8016 — design approved, scaffolding pending); ledger (port 8017 — design approved, scaffolding pending)
+**Planned:** ledger (port 8018 — design approved, scaffolding pending)
 
 **Deprecated placeholder:** identity (empty; auth handled by Supabase)
 
@@ -592,7 +630,9 @@ Each service must:
 
 ---
 
-*Last updated: 2026-05-14 — added ledger_service (port 8017, planned) — multi-tenant double-entry accounting designed for SwimBuddz internal use and B2B extraction; see [LEDGER_SERVICE_DESIGN.md](../design/LEDGER_SERVICE_DESIGN.md).*
+*Last updated: 2026-05-22 — added corporate_service (port 8017, Phase 1 production) — corporate wellness sales pipeline + program orchestration; see [CORPORATE_WELLNESS.md](../marketing/CORPORATE_WELLNESS.md). Bumped ledger_service reservation to port 8018.*
+
+*2026-05-14 — added ledger_service (planned) — multi-tenant double-entry accounting designed for SwimBuddz internal use and B2B extraction; see [LEDGER_SERVICE_DESIGN.md](../design/LEDGER_SERVICE_DESIGN.md).*
 
 *2026-04-29 — documented flywheel metrics responsibilities under reporting_service (admin endpoints, cross-service prerequisites, acquisition_source).*
 

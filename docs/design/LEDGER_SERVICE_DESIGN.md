@@ -1,7 +1,7 @@
 # Ledger Service Architecture & Data Model Design
 
 > **Status:** Draft — Awaiting Review
-> **Service Port:** 8017
+> **Service Port:** 8018  (moved from 8017 in May 2026 when corporate_service shipped on 8017)
 > **Service Name:** `ledger_service`
 > **Date:** 2026-05-14
 > **Author:** Daniel + AI collaborator

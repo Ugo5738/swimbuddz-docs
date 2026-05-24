@@ -851,6 +851,9 @@ _Constraints:_ `uq_enrollment_installment_number` (UniqueConstraint)
 | `coach_notes_snapshot` | TEXT |  |  |  |
 | `evidence_media_id_snapshot` | UUID |  |  |  |
 | `score_snapshot` | INTEGER |  |  |  |
+| `override_of_event_id` | UUID |  | FK→milestone_review_events.id, idx |  |
+| `override_reason` | TEXT |  |  |  |
+| `ai_metadata` | JSONB |  |  |  |
 | `created_at` | DATETIME | NOT NULL |  |  |
 
 ### `milestones`
@@ -909,6 +912,7 @@ _Constraints:_ `uq_enrollment_installment_number` (UniqueConstraint)
 | `billing_type` | VARCHAR(12) | NOT NULL |  | one_time |
 | `curriculum_json` | JSON |  |  |  |
 | `prep_materials` | JSON |  |  |  |
+| `faq_json` | JSON |  |  |  |
 | `version` | INTEGER | NOT NULL |  | 1 |
 | `is_published` | BOOLEAN | NOT NULL |  | false |
 | `created_at` | DATETIME | NOT NULL |  |  |
@@ -1168,7 +1172,7 @@ _Constraints:_ `ck_family_no_self_link` (CheckConstraint), `uq_family_link` (Uni
 | `grant_metadata` | JSONB |  |  |  |
 | `created_at` | DATETIME | NOT NULL |  |  |
 
-_Constraints:_ `ck_grant_remaining_non_negative` (CheckConstraint), `ck_grant_remaining_lte_amount` (CheckConstraint), `ck_grant_amount_positive` (CheckConstraint)
+_Constraints:_ `ck_grant_amount_positive` (CheckConstraint), `ck_grant_remaining_non_negative` (CheckConstraint), `ck_grant_remaining_lte_amount` (CheckConstraint)
 
 ### `referral_codes`
 
@@ -1638,6 +1642,23 @@ _Constraints:_ `ck_wallet_balance_non_negative` (CheckConstraint)
 | `uploaded_by` | UUID | NOT NULL |  |  |
 | `created_at` | DATETIME | NOT NULL |  |  |
 | `updated_at` | DATETIME | NOT NULL |  |  |
+
+### `media_audit_logs`
+
+| Column | Type | Null | Key | Default |
+|--------|------|------|-----|---------|
+| `id` | UUID | NOT NULL | PK |  |
+| `domain` | VARCHAR(32) | NOT NULL | idx |  |
+| `entity_type` | VARCHAR(32) | NOT NULL |  |  |
+| `entity_id` | UUID | NOT NULL | idx |  |
+| `action` | VARCHAR(64) | NOT NULL | idx |  |
+| `actor_id` | UUID | NOT NULL | idx |  |
+| `actor_label` | VARCHAR(255) |  |  |  |
+| `old_value` | JSONB |  |  |  |
+| `new_value` | JSONB |  |  |  |
+| `reason` | TEXT |  |  |  |
+| `ip_address` | INET |  |  |  |
+| `created_at` | DATETIME | NOT NULL | idx |  |
 
 ### `media_items`
 
@@ -2139,6 +2160,24 @@ _Constraints:_ `positive_stock` (CheckConstraint), `valid_reserved` (CheckConstr
 
 ## volunteer_service
 
+### `session_template_volunteer_slots`
+
+| Column | Type | Null | Key | Default |
+|--------|------|------|-----|---------|
+| `id` | UUID | NOT NULL | PK |  |
+| `session_template_id` | UUID | NOT NULL | idx |  |
+| `role_id` | UUID | NOT NULL | FK→volunteer_roles.id, idx |  |
+| `slots_needed` | INTEGER | NOT NULL |  | 1 |
+| `opportunity_type` | VARCHAR(17) | NOT NULL |  |  |
+| `min_tier` | VARCHAR(6) | NOT NULL |  |  |
+| `qr_checkin_enabled` | BOOLEAN | NOT NULL |  | false |
+| `title_override` | VARCHAR(200) |  |  |  |
+| `description_override` | TEXT |  |  |  |
+| `cancellation_deadline_hours` | INTEGER | NOT NULL |  |  |
+| `is_active` | BOOLEAN | NOT NULL |  | true |
+| `created_at` | DATETIME | NOT NULL |  |  |
+| `updated_at` | DATETIME | NOT NULL |  |  |
+
 ### `volunteer_hours_log`
 
 | Column | Type | Null | Key | Default |
@@ -2180,6 +2219,29 @@ _Constraints:_ `positive_stock` (CheckConstraint), `valid_reserved` (CheckConstr
 | `metadata_json` | JSONB |  |  |  |
 | `qr_checkin_enabled` | BOOLEAN | NOT NULL |  | false |
 | `qr_token` | VARCHAR(64) |  | idx, uniq |  |
+| `created_at` | DATETIME | NOT NULL |  |  |
+| `updated_at` | DATETIME | NOT NULL |  |  |
+
+### `volunteer_opportunity_templates`
+
+| Column | Type | Null | Key | Default |
+|--------|------|------|-----|---------|
+| `id` | UUID | NOT NULL | PK |  |
+| `title` | VARCHAR(200) | NOT NULL |  |  |
+| `description` | TEXT |  |  |  |
+| `role_id` | UUID | NOT NULL | FK→volunteer_roles.id, idx |  |
+| `day_of_week` | INTEGER | NOT NULL |  |  |
+| `start_time` | TIME | NOT NULL |  |  |
+| `duration_minutes` | INTEGER | NOT NULL |  |  |
+| `location_name` | VARCHAR(200) |  |  |  |
+| `slots_needed` | INTEGER | NOT NULL |  | 1 |
+| `opportunity_type` | VARCHAR(17) | NOT NULL |  |  |
+| `min_tier` | VARCHAR(6) | NOT NULL |  |  |
+| `qr_checkin_enabled` | BOOLEAN | NOT NULL |  | false |
+| `cancellation_deadline_hours` | INTEGER | NOT NULL |  |  |
+| `auto_generate` | BOOLEAN | NOT NULL |  | false |
+| `is_active` | BOOLEAN | NOT NULL |  | true |
+| `last_materialised_through` | DATE |  |  |  |
 | `created_at` | DATETIME | NOT NULL |  |  |
 | `updated_at` | DATETIME | NOT NULL |  |  |
 
@@ -2747,6 +2809,117 @@ _Constraints:_ `uq_wallet_ecosystem_per_period_per_run` (UniqueConstraint)
 | `safeguarding_review_state` | VARCHAR(17) | NOT NULL |  |  |
 | `metadata` | JSONB | NOT NULL |  | {} |
 
+## corporate_service
+
+### `corporate_contacts`
+
+| Column | Type | Null | Key | Default |
+|--------|------|------|-----|---------|
+| `id` | UUID | NOT NULL | PK |  |
+| `company_name` | VARCHAR(255) | NOT NULL | idx |  |
+| `company_website` | VARCHAR(255) |  |  |  |
+| `industry` | VARCHAR(14) |  |  |  |
+| `company_size` | VARCHAR(11) |  |  |  |
+| `hq_location` | VARCHAR(255) |  |  |  |
+| `primary_contact_name` | VARCHAR(255) | NOT NULL |  |  |
+| `primary_contact_role` | VARCHAR(255) |  |  |  |
+| `primary_contact_email` | VARCHAR(255) | NOT NULL | idx |  |
+| `primary_contact_phone` | VARCHAR(50) |  |  |  |
+| `primary_contact_whatsapp` | VARCHAR(50) |  |  |  |
+| `source` | VARCHAR(13) | NOT NULL |  | cold_outbound |
+| `owner_auth_id` | VARCHAR(255) |  | idx |  |
+| `notes` | TEXT |  |  |  |
+| `is_active` | BOOLEAN | NOT NULL |  | true |
+| `created_at` | DATETIME | NOT NULL |  |  |
+| `updated_at` | DATETIME | NOT NULL |  |  |
+
+### `corporate_deals`
+
+| Column | Type | Null | Key | Default |
+|--------|------|------|-----|---------|
+| `id` | UUID | NOT NULL | PK |  |
+| `contact_id` | UUID | NOT NULL | FK→corporate_contacts.id, idx |  |
+| `title` | VARCHAR(255) | NOT NULL |  |  |
+| `stage` | VARCHAR(15) | NOT NULL | idx | lead |
+| `expected_employees` | INTEGER |  |  |  |
+| `expected_discount_tier` | VARCHAR(12) |  |  |  |
+| `expected_total_kobo` | INTEGER |  |  |  |
+| `expected_close_date` | DATE |  |  |  |
+| `actual_close_date` | DATE |  |  |  |
+| `next_action` | TEXT |  |  |  |
+| `next_action_due` | DATE |  |  |  |
+| `last_touch_at` | DATETIME |  |  |  |
+| `lost_reason` | VARCHAR(19) |  |  |  |
+| `lost_notes` | TEXT |  |  |  |
+| `owner_auth_id` | VARCHAR(255) |  | idx |  |
+| `notes` | TEXT |  |  |  |
+| `created_at` | DATETIME | NOT NULL |  |  |
+| `updated_at` | DATETIME | NOT NULL |  |  |
+
+### `corporate_program_employees`
+
+| Column | Type | Null | Key | Default |
+|--------|------|------|-----|---------|
+| `id` | UUID | NOT NULL | PK |  |
+| `program_id` | UUID | NOT NULL | FK→corporate_programs.id, idx |  |
+| `full_name` | VARCHAR(255) | NOT NULL |  |  |
+| `email` | VARCHAR(255) | NOT NULL | idx |  |
+| `phone` | VARCHAR(50) |  |  |  |
+| `member_id` | UUID |  | idx |  |
+| `member_auth_id` | VARCHAR(255) |  | idx |  |
+| `enrollment_status` | VARCHAR(10) | NOT NULL | idx | pending |
+| `invitation_sent_at` | DATETIME |  |  |  |
+| `registered_at` | DATETIME |  |  |  |
+| `enrolled_at` | DATETIME |  |  |  |
+| `notes` | TEXT |  |  |  |
+| `created_at` | DATETIME | NOT NULL |  |  |
+| `updated_at` | DATETIME | NOT NULL |  |  |
+
+_Constraints:_ `uq_corporate_program_employee_email` (UniqueConstraint)
+
+### `corporate_programs`
+
+| Column | Type | Null | Key | Default |
+|--------|------|------|-----|---------|
+| `id` | UUID | NOT NULL | PK |  |
+| `contact_id` | UUID | NOT NULL | FK→corporate_contacts.id, idx |  |
+| `deal_id` | UUID |  | FK→corporate_deals.id, idx, uniq |  |
+| `name` | VARCHAR(255) | NOT NULL |  |  |
+| `status` | VARCHAR(9) | NOT NULL | idx | draft |
+| `employee_count` | INTEGER | NOT NULL |  | 0 |
+| `discount_tier` | VARCHAR(12) | NOT NULL |  | full_price |
+| `per_employee_kobo` | INTEGER | NOT NULL |  |  |
+| `total_kobo` | INTEGER | NOT NULL |  |  |
+| `payment_terms` | VARCHAR(12) | NOT NULL |  | deposit_half |
+| `deposit_paid_kobo` | INTEGER | NOT NULL |  | 0 |
+| `balance_paid_kobo` | INTEGER | NOT NULL |  | 0 |
+| `cohort_id` | UUID |  | idx |  |
+| `corporate_wallet_id` | UUID |  | idx |  |
+| `expected_start_date` | DATE |  |  |  |
+| `actual_start_date` | DATE |  |  |  |
+| `expected_end_date` | DATE |  |  |  |
+| `actual_end_date` | DATE |  |  |  |
+| `is_pilot_partner` | BOOLEAN | NOT NULL |  | false |
+| `notes` | TEXT |  |  |  |
+| `created_at` | DATETIME | NOT NULL |  |  |
+| `updated_at` | DATETIME | NOT NULL |  |  |
+
+### `corporate_touchpoints`
+
+| Column | Type | Null | Key | Default |
+|--------|------|------|-----|---------|
+| `id` | UUID | NOT NULL | PK |  |
+| `contact_id` | UUID | NOT NULL | FK→corporate_contacts.id, idx |  |
+| `deal_id` | UUID |  | FK→corporate_deals.id, idx |  |
+| `type` | VARCHAR(16) | NOT NULL |  |  |
+| `direction` | VARCHAR(8) | NOT NULL |  | outbound |
+| `occurred_at` | DATETIME | NOT NULL | idx |  |
+| `summary` | VARCHAR(500) |  |  |  |
+| `outcome` | TEXT |  |  |  |
+| `next_action` | TEXT |  |  |  |
+| `logged_by_auth_id` | VARCHAR(255) |  |  |  |
+| `created_at` | DATETIME | NOT NULL |  |  |
+
 ---
 
-_146 tables across 16 services._
+_154 tables across 17 services._
