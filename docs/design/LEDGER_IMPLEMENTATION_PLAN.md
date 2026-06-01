@@ -1,6 +1,6 @@
 # Ledger Service — Phase 0 + Phase 1 Implementation Plan
 
-> **Status:** Backend complete (PR-0 → PR-3 built, tested, pushed); frontend pending
+> **Status:** Phase 0 + Phase 1 COMPLETE — backend (PR-0→PR-3) + frontend (P1.12), built, tested, pushed
 > **Scope:** Phase 0 (scaffolding) and Phase 1 (core ledger + `payments_service` integration) only.
 > **Companion:** [LEDGER_SERVICE_DESIGN.md](./LEDGER_SERVICE_DESIGN.md) is the source of truth for the data model, CoA, and integration mappings. This plan does not redefine them — it sequences the build and pins the exact files, signatures, and conventions to follow.
 > **Service port:** 8018
@@ -18,7 +18,7 @@ Branch `feature/ledger-service-scaffold` in `swimbuddz-backend` (pushed). Backen
 | PR-1 | Schema models + migration (**applied** to dev DB) + RLS + org-context dep | ✅ done |
 | PR-2 | Posting engine + internal route; CoA seed (**org seeded**); `payments_service` emitter + dead-letter (+ manual-approval emit) | ✅ done |
 | PR-3 | Role enforcement + finance-user mgmt; admin reads; trial balance / P&L; reversing entries; tests | ✅ done |
-| Frontend | `/admin/finance` Next.js pages (P1.12) | ⏳ pending |
+| Frontend | `/admin/finance` pages — reports, journal browser, manual entry, finance team (P1.12) | ✅ done |
 
 **RLS reality:** policies are enabled+forced but the `postgres` connection role has `BYPASSRLS`, so RLS is inert in single-tenant Phase 1 (nothing to isolate). App-level `org_id` filtering is the active guard. A non-`BYPASSRLS` role is a pre-B2B prerequisite.
 
