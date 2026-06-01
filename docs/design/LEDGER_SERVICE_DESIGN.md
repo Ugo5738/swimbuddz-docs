@@ -1,6 +1,6 @@
 # Ledger Service Architecture & Data Model Design
 
-> **Status:** Draft — Awaiting Review
+> **Status:** Draft — All open questions (A–E) resolved; awaiting final sign-off
 > **Service Port:** 8018  (moved from 8017 in May 2026 when corporate_service shipped on 8017)
 > **Service Name:** `ledger_service`
 > **Date:** 2026-05-14
@@ -313,6 +313,16 @@ invoice_lines
   account_id, journal_line_id (nullable)
 ```
 
+```
+invoice_sequences                   -- monotonic per-org-per-year numbering (see §13.1)
+  org_id (uuid)
+  fiscal_year (smallint)
+  prefix (text)                     -- e.g. 'SB'
+  next_value (bigint)               -- next sequence number to allocate
+  PRIMARY KEY (org_id, fiscal_year)
+  -- allocation: SELECT ... FOR UPDATE, increment, format, in the invoice's posting txn
+```
+
 ### 4.5 Audit & users
 
 ```
@@ -364,7 +374,7 @@ The SwimBuddz CoA uses the **sports_club** template:
 
 2000  Liabilities
   2100  Payables
-    2110  Accounts Payable
+    2110  Accounts Payable                  (maps_to: accounts_payable)
     2120  Coach Payouts Payable             (maps_to: coach_payouts_payable)
     2130  Refunds Payable                   (maps_to: refunds_payable)
   2200  Wallet & Customer Liabilities
@@ -376,6 +386,7 @@ The SwimBuddz CoA uses the **sports_club** template:
     2330  Deferred Revenue — Community      (maps_to: deferred_revenue_community)
     2340  Deferred Revenue — Session Bundles(maps_to: deferred_revenue_session_bundle)
     2350  Customer Deposits — Pre-orders    (maps_to: customer_deposits)
+    2360  Deferred Revenue — Events         (maps_to: deferred_revenue_events)
   2400  Tax Payable
     2410  VAT Output Payable                (maps_to: vat_output_payable)
     2420  WHT Payable                       (maps_to: wht_payable)
@@ -409,13 +420,15 @@ The SwimBuddz CoA uses the **sports_club** template:
 6000  Operating Expenses
   6100  Payment Processing Fees             (maps_to: expense_psp_fees)
   6200  Volunteer Rewards                   (maps_to: expense_volunteer_rewards)
-  6300  Marketing
+  6300  Marketing                           (maps_to: expense_marketing)
   6400  Software & Infrastructure
   6500  Office & Admin
   6900  Other Expenses
 ```
 
 **`maps_to`** is the indirection that lets emitters use stable refs across all orgs. The numeric codes can vary per customer; the refs cannot.
+
+> **PR-0 cross-check (2026-06-01):** building the machine-readable template (`services/ledger_service/coa_templates/sports_club.yaml`) and diffing its `maps_to` set against every ref used in §8 surfaced three refs that §8 relies on but this listing originally omitted: `accounts_payable` (2110; §8.3 inventory received, §8.5 driver pay), `expense_marketing` (6300; §8.2 welcome bonus + promo grants), and a missing account **2360 Deferred Revenue — Events** (`deferred_revenue_events`; §8.7). All three are now in both the template and this listing. The YAML is the executable source; this table is the human view — a validation step keeps them in sync.
 
 ---
 
@@ -576,7 +589,17 @@ The wallet's existing `WalletTransaction` table remains the single-entry Bubbles
 | Refund to wallet | DR (revenue or deferred account) / CR `bubbles_liability` |
 | Promotional expiry | DR `bubbles_liability_promo` / CR `revenue_bubbles_breakage` |
 
-**Bubbles split logic:** when a member spends Bubbles, the wallet must decide which "bucket" of Bubbles to deduct from (purchased vs promotional). Recommended: spend promotional first (FIFO within type), then purchased. The journal entry credits the matching liability sub-account. This is the only place the ledger and wallet are tightly coupled, and it's deliberate.
+**Bubbles split logic (DECIDED — see §19-B):** when a member spends Bubbles, the wallet deducts from the **promotional bucket first (FIFO by grant date), then the purchased bucket.** Rationale: promotional Bubbles carry expiry, so spending them first means members don't lose them. A spend *draws down* the Bubbles liability, so the entry **debits** the matching liability sub-account — `bubbles_liability_promo` for the promotional portion, `bubbles_liability` for the purchased portion — against a single revenue credit. A spend that straddles both buckets produces **two debit lines** (one per sub-account). This is the only place the ledger and wallet are tightly coupled, and it's deliberate.
+
+Worked example — member with 8 🫧 promo + 30 🫧 purchased spends 21 🫧 on a session (₦2,100):
+
+```
+DR bubbles_liability_promo     80,000   (8 🫧 promo, used first)
+DR bubbles_liability          130,000   (13 🫧 purchased, remainder)
+CR revenue_club_session       210,000   (₦2,100)
+```
+
+(After this spend: promo bucket 0 🫧, purchased bucket 17 🫧.)
 
 ### 8.3 `store_service` → ledger
 
@@ -678,7 +701,7 @@ Driven by `source_type`, not by emitter intent. The recognition worker is a serv
 |---|---|---|
 | Single session fee | At payment | At payment (point-in-time, no deferral) |
 | Session bundle (N sessions) | At payment | 1/N per session attended |
-| Academy cohort | At payment | Per block (28 days), straight-line over cohort duration |
+| Academy cohort | At payment | Per 28-day block (DECIDED §19-A). A block recognises once 28 calendar days elapse since cohort start — **time-based, not attendance-based**. 12-week cohort ≈ 3 blocks → 3 recognition entries. Aligns with `RecurringPayoutConfig` coach-pay blocks for clean per-block margin. |
 | Club membership (monthly) | At payment | Straight-line over month |
 | Club membership (quarterly / bi-annual / annual) | At payment | Straight-line over period |
 | Community membership (annual) | At payment | Straight-line over year |
@@ -745,7 +768,7 @@ Nigeria's e-invoicing mandate (FIRS Merchant Buyer Solution / MBS) requires near
 1. Triggering event (payment captured, service delivered, etc.) calls
    POST /orgs/{org_id}/invoices with line items + tax codes.
 2. Ledger:
-   a. Allocates invoice_number from the org's invoice series.
+   a. Allocates invoice_number from the org's invoice series (see numbering below).
    b. Computes tax per line via tax_codes.
    c. Posts the corresponding journal_entry atomically.
    d. Renders PDF, stores in Supabase Storage.
@@ -755,6 +778,24 @@ Nigeria's e-invoicing mandate (FIRS Merchant Buyer Solution / MBS) requires near
       - On reject: status=rejected, raw response stored, alert queue
 3. Customer-facing invoice URL includes IRN once available.
 ```
+
+**Invoice numbering (DECIDED — see §19-D):** `{ORG_PREFIX}-{YYYY}-{6-digit zero-padded sequence}`, e.g. `SB-2026-000123`.
+
+- `ORG_PREFIX` — configurable per org; default = first 2–3 letters of `legal_name`, uppercase (SwimBuddz → `SB`).
+- `YYYY` — the fiscal year of `issue_date`.
+- Sequence — resets to 1 at the start of each fiscal year; monotonic and unique per `(org_id, fiscal_year)`, which satisfies FIRS's monotonic-and-unique requirement.
+- Allocated from a dedicated table with row-level locking so concurrent issuance can't produce gaps or duplicates:
+
+```
+invoice_sequences
+  org_id (uuid)
+  fiscal_year (smallint)
+  prefix (text)
+  next_value (bigint)              -- next sequence number to allocate
+  PRIMARY KEY (org_id, fiscal_year)
+```
+
+Allocation is `SELECT ... FOR UPDATE` on the `(org_id, fiscal_year)` row, increment `next_value`, format, commit — inside the same transaction that posts the invoice's journal entry, so a rolled-back invoice doesn't burn a number. Credit notes draw from the same series (a credit note is just an invoice with opposite sign), keeping one unbroken sequence per year as FIRS expects.
 
 ### 13.2 What this changes upstream
 
@@ -821,8 +862,8 @@ Per the same principle as `chat_service`: **complete architecture, phased releas
 
 ### Phase 0 — Design & scaffolding (current)
 - This doc reviewed and accepted
-- Service scaffolded at `services/ledger_service/`, port 8017
-- Gateway routing for `/ledger/*` → `ledger_service:8017`
+- Service scaffolded at `services/ledger_service/`, port 8018
+- Gateway routing for `/ledger/*` → `ledger_service:8018`
 - CoA template (`sports_club.yaml`) drafted
 - `libs/common/ledger_client.py` skeleton + service-role auth contract agreed
 - `LEDGER_DEFAULT_ORG_ID` env-var wiring decided
@@ -858,6 +899,7 @@ Per the same principle as `chat_service`: **complete architecture, phased releas
 ### Phase 5 — Remaining service integrations + historical backfill
 - `store_service`, `academy_service`, `transport_service`, `volunteer_service`, `events_service`
 - Backfill from inception to present (one-shot replay of all `Payment`, `WalletTransaction`, `Order`, `Enrollment`, `CoachPayout` rows through the emitter)
+- **Outbox cutover (DECIDED §19-C):** this is the trigger point to move every emitter from synchronous HTTP to a per-emitter outbox-table pattern. By phase 5 the third+ money-moving service is integrating; that's when sync-HTTP coupling starts to bite. (Bring it forward if any lost-entry incident happens earlier.)
 - **Release:** full coverage; older finance reports re-runnable
 
 ### Phase 6 — Tax + invoicing (FIRS-ready, not yet live)
@@ -872,11 +914,12 @@ Per the same principle as `chat_service`: **complete architecture, phased releas
 - Credit notes
 - **Release:** compliant e-invoicing
 
-### Phase 8 — AI layer
+### Phase 8 — AI layer (built in `ai_service`, DECIDED §19-E)
+- Lives as a new capability in the existing `ai_service` (port 8011), **not** inside `ledger_service`. Reads ledger reports via API; never writes journal entries.
 - Anomaly detection on posted entries (z-score on per-account daily volume, flag outliers)
 - Auto-narration of P&L variances vs prior period
 - Natural-language query: "what did we earn from academy in April?"
-- AI never writes journal entries directly; it can propose, accountant posts.
+- AI can *propose* a journal entry (e.g. a suggested accrual or correction); an accountant reviews and posts it. The ledger stays deterministic.
 - **Release:** the "AI accountant" feature surface SwimBuddz finance interacts with
 
 ### Phase 9 — B2B productisation
@@ -941,28 +984,35 @@ Phases 1–4 are the minimum to fix SwimBuddz's internal accounting problem. Pha
 | 4 | FIRS e-invoicing | **Ledger emits FIRS-compliant invoices and tracks IRN.** Live submission is phased; structure is ready from phase 6. |
 | 5 | Multi-tenancy | **From day 1.** `org_id` + RLS + no SwimBuddz columns. |
 | 6 | Money types | **`bigint` minor units (kobo) for all amount columns in ledger tables.** Source services migrate over time. |
+| 7 | Academy recognition cadence | **Block-based (28-day).** Aligned to existing `RecurringPayoutConfig` blocks; ~3 entries per 12-week cohort; clean per-block margins. A block is "delivered" by calendar time (28 days elapsed), not by sessions attended. See §10.1. |
+| 8 | Bubbles-spend bucket order | **Promotional first (FIFO by grant date), then purchased.** Protects members from losing expiring promo Bubbles. See §8.2. |
+| 9 | Outbox pattern timing | **Phase 1 = synchronous HTTP** (existing `emit_rewards_event` pattern) + dead-letter table per emitter. Move to per-emitter outbox at the 3rd money-moving integration (≈ phase 5) or on any lost-entry incident. See §16 phase 5. |
+| 10 | Invoice numbering | **`{ORG_PREFIX}-{YYYY}-{6-digit zero-padded sequence}`** (e.g. `SB-2026-000123`). Org prefix configurable (default = first 2–3 letters of legal name, uppercase); sequence resets yearly; monotonic per (org, year); allocated from `invoice_sequences` with row-lock. See §13.1. |
+| 11 | AI accountant location | **`ai_service` (port 8011) capability.** Reads ledger via API, never writes entries. Keeps ledger deterministic. Built in phase 8. See §16 phase 8. |
 
-### Still open
+### Decision detail (A–E)
 
-**A. Recognition cadence for academy cohorts.**
+All previously-open questions are now resolved. Detail and rationale retained below.
 
-Block-based (28-day) matches `RecurringPayoutConfig` and keeps coach pay aligned with revenue recognition (good for margin reporting). Daily-straight-line is more precise but creates 84+ entries per enrollment. **Working assumption: block-based**, revisit if finance wants daily.
+**A. Recognition cadence for academy cohorts — DECIDED: block-based (28-day).**
 
-**B. Bubbles-spend liability bucket order — promotional FIFO or oldest-first across both buckets?**
+Block-based matches `RecurringPayoutConfig` and keeps coach pay aligned with revenue recognition (clean margin reporting per block). Daily straight-line was the alternative — more precise at month-end close but ~84 entries per enrollment and revenue rhythm misaligned with coach-pay rhythm. A block is "delivered" by calendar time (28 days elapsed since cohort start), **not** by sessions attended, so recognition is deterministic; attendance issues are handled as explicit adjustments. Revisit only if finance wants exact-to-the-day month-end numbers (→ daily straight-line worker).
 
-FIFO-within-promo means promotional Bubbles always spent first. Oldest-first across both buckets means a member who topped up before being granted a promo could see their purchased balance go before the promo expires. Both are defensible; **recommendation: promo first, then purchased**, because promotional Bubbles have expiry and we want them used. Revisit if a real customer complains.
+**B. Bubbles-spend liability bucket order — DECIDED: promotional first, then purchased.**
 
-**C. Outbox pattern — when?**
+When a member spends Bubbles, deduct promotional Bubbles first (FIFO by grant date), then purchased Bubbles. Rationale: promotional Bubbles carry expiry; spending them first means members don't lose them. The journal entry credits the matching liability sub-account (`bubbles_liability_promo` vs `bubbles_liability`). See §8.2 for the posting rule.
 
-Phase 1 uses synchronous HTTP (the existing `emit_rewards_event` pattern). Failure mode: if `ledger_service` is down when `payments_service` tries to post, the emitter retries with backoff; if it ultimately fails, an entry is written to a dead-letter table in the emitter's DB and a manual replay tool exists. This is acceptable for SwimBuddz volume. **Revisit when:** sustained ledger downtime causes lost entries in practice, or when the third money-moving service is integrated. Then move every emitter to an outbox-table pattern in the source DB.
+**C. Outbox pattern — DECIDED: synchronous HTTP in phase 1; outbox at 3rd integration or first incident.**
 
-**D. Per-org invoice numbering scheme.**
+Phase 1 uses synchronous HTTP (the existing `emit_rewards_event` pattern). Failure mode: if `ledger_service` is down when an emitter tries to post, the emitter retries with backoff; if it ultimately fails, an entry is written to a dead-letter table in the emitter's DB and a manual replay tool exists. Acceptable for SwimBuddz volume. **Move every emitter to an outbox-table pattern** when the third money-moving service is integrated (≈ phase 5) or on any real lost-entry incident, whichever comes first.
 
-FIRS does not mandate a specific scheme but requires it be monotonic and unique. Recommendation: `{org_prefix}-{YYYY}-{6-digit zero-padded sequence}` (e.g. `SB-2026-000123`). Configurable per org. Decision needed before phase 6.
+**D. Per-org invoice numbering scheme — DECIDED: `{ORG_PREFIX}-{YYYY}-{6-digit sequence}`.**
 
-**E. Where does "AI accountant" live operationally?**
+E.g. `SB-2026-000123`. Org prefix configurable per org (default = first 2–3 letters of legal name, uppercase). Sequence resets each fiscal year; monotonic and unique per (org, year), which satisfies FIRS. Allocated from a dedicated `invoice_sequences` table with row-level locking on allocation to prevent gaps/duplicates under concurrency. See §13.1.
 
-Two options: (1) a feature surface inside the `ledger_service` admin UI; (2) a separate `ai_service` (port 8011) capability that reads from ledger. Option 2 keeps the ledger pure and lets AI evolve independently. **Recommendation: option 2.** Phase 8 builds it as an `ai_service` capability.
+**E. Where the "AI accountant" lives — DECIDED: `ai_service` (option 2).**
+
+The AI layer is a new capability in the existing `ai_service` (port 8011, already home to cohort-complexity / coach-grading / coach-matching scoring). It reads ledger reports via API and never writes journal entries directly — it can *propose* an entry, but an accountant posts it. Keeps the ledger deterministic and audit-clean. Built in phase 8.
 
 ### Future-work triggers
 
@@ -990,17 +1040,19 @@ Two options: (1) a feature surface inside the `ledger_service` admin UI; (2) a s
 - [ ] Recognition rules (§10) signed off by Daniel
 - [ ] Phased rollout (§16) realistic and ordered correctly
 - [ ] FIRS phasing (§13, §16 phases 6–7) acceptable
-- [ ] Port 8017 reserved in `docs/reference/SERVICE_REGISTRY.md`
-- [ ] Open questions (§19) captured for implementation plan
+- [x] Port 8018 reserved in `docs/reference/SERVICE_REGISTRY.md`
+- [x] Open questions (§19) captured — all resolved (A–E decided 2026-06-01)
 
 Once accepted, next artefacts:
-1. `SERVICE_REGISTRY.md` update (add `ledger_service` at 8017)
-2. `DOCUMENTATION_INDEX.md` link
-3. Implementation plan (Phase 0 + Phase 1)
-4. CoA template file (`services/ledger_service/coa_templates/sports_club.yaml`)
-5. `libs/common/ledger_client.py` skeleton
-6. `Payment.amount` Float-to-bigint migration plan (separate, parallel track)
+1. ✅ `SERVICE_REGISTRY.md` update (added `ledger_service` at 8018)
+2. ✅ `DOCUMENTATION_INDEX.md` link
+3. ✅ Implementation plan (Phase 0 + Phase 1) — [LEDGER_IMPLEMENTATION_PLAN.md](./LEDGER_IMPLEMENTATION_PLAN.md)
+4. CoA template file (`services/ledger_service/coa_templates/sports_club.yaml`) — *scoped as task P0.6 in the impl plan*
+5. `libs/common/ledger_client.py` skeleton — *scoped as task P0.7 / P1.10 in the impl plan*
+6. `Payment.amount` Float-to-bigint migration plan (separate, parallel track) — *scoped in impl plan §8*
 
 ---
 
-*Last updated: 2026-05-14*
+*Last updated: 2026-06-01 — resolved open questions A–E (academy recognition = block-based; Bubbles spend = promo-first; outbox at phase 5; invoice numbering `{ORG_PREFIX}-{YYYY}-{6-digit}`; AI accountant in `ai_service`). Reconciled service port to 8018 (8017 taken by corporate_service).*
+
+*2026-05-14 — initial draft.*

@@ -116,6 +116,7 @@ swimbuddz/
 | [docs/design/NOTIFICATION_ARCHITECTURE.md](./docs/design/NOTIFICATION_ARCHITECTURE.md)         | In-app/email/SMS/push notification system design                         | Engineer          |
 | [docs/design/CHAT_SERVICE_DESIGN.md](./docs/design/CHAT_SERVICE_DESIGN.md)                     | In-app real-time chat service (cohorts, pods, events, DMs, safeguarding) | Engineer, Product |
 | [docs/design/LEDGER_SERVICE_DESIGN.md](./docs/design/LEDGER_SERVICE_DESIGN.md)                 | Multi-tenant double-entry accounting service (B2B-extractable, FIRS-ready) | Engineer, Finance |
+| [docs/design/LEDGER_IMPLEMENTATION_PLAN.md](./docs/design/LEDGER_IMPLEMENTATION_PLAN.md)       | Phase 0 + Phase 1 build plan for the ledger service (tasks, PRs, file refs)  | Engineer          |
 | [docs/design/REWARDS_ENGINE_DESIGN.md](./docs/design/REWARDS_ENGINE_DESIGN.md)                 | Event-driven Bubbles rewards engine                                      | Engineer, Product |
 | [docs/design/WALLET_SERVICE_DESIGN.md](./docs/design/WALLET_SERVICE_DESIGN.md)                 | Backend design for Bubbles closed-loop wallet                            | Engineer          |
 | [docs/design/WALLET_FRONTEND_PLAN.md](./docs/design/WALLET_FRONTEND_PLAN.md)                   | Frontend specs for Bubbles wallet UI                                     | Engineer          |
@@ -375,4 +376,4 @@ swimbuddz/
 
 ---
 
-_Last updated: 2026-05-14 — added LEDGER_SERVICE_DESIGN to design index._
+_Last updated: 2026-06-01 — added LEDGER_SERVICE_DESIGN and LEDGER_IMPLEMENTATION_PLAN to design index._
