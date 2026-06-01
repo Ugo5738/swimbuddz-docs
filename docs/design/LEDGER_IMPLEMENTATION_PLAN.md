@@ -391,4 +391,16 @@ No open questions remain for Phase 0 + Phase 1.
 
 ---
 
-*Last updated: 2026-06-01*
+## 12. Post-launch follow-ups (discovered during prod bring-up)
+
+Surfaced while bringing the ledger live in production (2026-06-01). Recorded so they aren't lost.
+
+1. **CoA template not shipped in the wheel — FIXED.** `pip install .` (the service Dockerfile build) packaged only `.py` files, so `coa_templates/*.yaml` was missing from `site-packages` and `seed_chart_of_accounts()` raised `FileNotFoundError` on a fresh environment (worked around in prod with `PYTHONPATH=/app`, which resolves the import to the Dockerfile's source-tree copy). Fixed by declaring the templates as setuptools `package-data` (`[tool.setuptools.package-data]` → `"services.ledger_service" = ["coa_templates/*.yaml"]`); verified the YAML now ships in the built wheel. **Any future packaged data file (e.g. other CoA verticals) must be added to that stanza.**
+
+2. **`resolve_org_id()` hard env-var coupling — OPEN (hardening).** Every finance request 503s if `LEDGER_DEFAULT_ORG_ID` is unset; an unset var (plus an unseeded org) caused the 2026-06-01 finance outage. Mitigated by storing the org id durably in the encrypted `.env.prod`. Proper fix: in single-tenant mode resolve the org from the single `ledger_organizations` row at startup and cache it (the env var becomes an optional override; **>1 org must fail loudly**, `0` → "not seeded"). Keeps `resolve_org_id` synchronous via a lifespan/startup cache.
+
+3. **Seeding runs via the *gateway* image, not `ledger-service`.** The ledger Dockerfile doesn't copy the top-level `scripts/` dir, so the seed/admin scripts aren't in that image. The gateway image carries `scripts/` + all services' code (it runs `migrate-prod.sh`), so the org seed runs there: `docker compose run --rm --no-deps gateway python scripts/seed/ledger_org.py`. Captured in the prod runbook.
+
+---
+
+*Last updated: 2026-06-02*
