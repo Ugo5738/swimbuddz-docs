@@ -860,6 +860,12 @@ SwimBuddz initial mapping:
 
 Per the same principle as `chat_service`: **complete architecture, phased releases.**
 
+> **Live status + prioritized completion plan:** see
+> [LEDGER_ROADMAP.md](./LEDGER_ROADMAP.md). Phases 0–1 are shipped; the roadmap
+> tracks the remaining build-out (recognition → emitters → reconciliation →
+> reports → tax/FIRS → AI → B2B) with status, acceptance, and effort. The
+> per-phase text below is the original plan.
+
 ### Phase 0 — Design & scaffolding (current)
 - This doc reviewed and accepted
 - Service scaffolded at `services/ledger_service/`, port 8018
