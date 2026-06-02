@@ -94,28 +94,65 @@ deferred-revenue report shows the remaining obligation.
 other service. Each emitter follows the proven `payments_service` pattern
 (`libs/common/ledger_client` + dead-letter + replay + tests).
 
-**Work (checklist):**
-- **`wallet_service`** (§8.2) — Bubbles **spends** (`DR bubbles_liability[_promo]
-  / CR revenue_*`, with the promo-first split §19-B), admin grants, welcome/promo
-  bonuses, refund-to-wallet, promo-expiry → `revenue_bubbles_breakage`. *(Fixes
-  the overstated liability.)*
-- **`payments_service`** (§8.1 remaining rows) — **refunds** (`DR revenue/deferred
-  / CR bank`), **coach payout paid** (`DR coach_payouts_payable / CR bank` on
-  `transfer.success`), **coach payout accrual** at block end (`DR cogs_coach_* /
-  CR coach_payouts_payable`).
-- **`store_service`** (§8.3) — COGS/inventory (`DR cogs_store / CR store_inventory`),
-  supplier receipt, refund reversal.
-- **`transport_service`** (§8.5) — driver pay accrual (`DR cogs_ride_driver / CR
-  accounts_payable`).
-- **`volunteer_service`** (§8.6) — reward Bubbles (`DR expense_volunteer_rewards /
-  CR bubbles_liability_promo`).
-- **`academy_service` / `events_service`** — delivery-based recognition entries
-  (pairs with R1).
+**Status (2026-06): emitter coverage functionally complete.** Tracing every money
+flow that exists in production today, the ledger now posts all of them. The
+"remaining emitters" below were mostly already covered by the wallet source-map
+(transport/events/store/volunteer all settle through Bubbles), and the genuine
+leftovers are blocked on *upstream* product gaps — not ledger code.
 
-**Acceptance:** every money-moving event in §8 posts; `bubbles_liability` matches
-outstanding Bubbles × ₦100; the P&L shows COGS + expenses; per-domain margin is
-computable. **Parallelizable** across services.
-**Depends on:** R1 for the recognition accounts/cadence on delivery-based products.
+**Done:**
+- ✅ **`wallet_service`** (§8.2) — Bubbles **spends** with the §19-B promo-first
+  split (`DR bubbles_liability[_promo] / CR revenue_*`), grants/welcome/promo
+  (`DR expense_marketing / CR bubbles_liability_promo`), penalty →
+  `revenue_penalty`, expiry → `revenue_bubbles_breakage`, refund-to-wallet.
+  *Fixes the overstated liability.* The spend source-map
+  (`("store","order")→revenue_store`, `("events","event")→revenue_events`,
+  `("transport","ride_booking")→revenue_transport`, academy/attendance) means
+  **every Bubbles-funded store/event/ride/club spend already posts** — those
+  services needed no emitter of their own.
+- ✅ **`payments_service`** (§8.1) — all 10 `PaymentPurpose`s map to a credit
+  account (cash-in); **refunds** (`DR revenue/deferred / CR bank`); **coach payout
+  accrual** (`DR cogs_coach_academy / CR coach_payouts_payable`) + **paid**
+  (`DR coach_payouts_payable / CR bank` on `transfer.success`).
+
+**Deferred — blocked on upstream gaps, not ledger work:**
+- ⬜ **`store_service` COGS** (§8.3) — *revenue already posts* (`STORE_ORDER` cash +
+  Bubbles `("store","order")`). COGS is blocked: `OrderItem` snapshots only the
+  sale price (no `unit_cost`), inventory carries no cost basis, and
+  `quantity_on_hand` is never decremented on sale. Crediting `store_inventory`
+  with no offsetting purchase booking would only drive a fictional negative asset.
+  **Needs first:** a cost snapshot on `OrderItem` + inventory-receipt booking
+  (`DR store_inventory / CR accounts_payable` at cost). Near-zero store volume
+  today → low priority.
+- ⬜ **`transport_service` driver pay** (§8.5) / **pool fees** (`cogs_pool_fees`,
+  §8.4) — *rider revenue already posts* (Bubbles rides). There is **no
+  driver/pool-settlement flow in the product** — those parties aren't paid out
+  through the system — so `cogs_ride_driver` / `cogs_pool_fees` have no source to
+  emit from. Product gap, not a ledger gap.
+- ⬜ **`volunteer_service`** (§8.6) — *liability already posts*: reward Bubbles flow
+  rewards-engine → wallet grant → `DR expense_marketing / CR bubbles_liability[_promo]`.
+  Routing volunteer rewards specifically to `expense_volunteer_rewards` is an
+  **expense-reclassification refinement** (identical P&L bottom line): the rewards
+  engine stamps every grant `service_source="rewards_engine"`, so it would need to
+  thread the originating `event_type` onto the grant txn (or tag the rule with an
+  expense account).
+- ⬜ **`events_service` deferred recognition** — events post revenue immediately at
+  RSVP (Bubbles); there is no cash `PaymentPurpose` and no `event_held` trigger.
+  Deferring event revenue to the event date is an R1-style add and only matters if
+  events grow material.
+
+**Hardening shipped with this pass:** unmapped wallet PURCHASE sources now log a
+loud warning instead of silently dropping revenue (the wallet emitter is log-only,
+no dead-letter yet — see follow-ups).
+
+**Acceptance (met for existing flows):** every money-moving event that exists in
+production posts; `bubbles_liability[_promo]` tracks outstanding Bubbles × ₦100;
+the P&L shows revenue + coach COGS + marketing/penalty/breakage. Store COGS and
+driver/pool pay remain ⬜ pending the upstream flows above.
+**Note:** `paystack_clearing` does **not** drain until **R3** (settlement ingest
+posts `DR bank + DR expense_psp_fees / CR paystack_clearing`); until then PSP fees
+are unexpensed and clearing accumulates. R3 is the next real money-flow item.
+**Depends on:** R1 for the recognition accounts/cadence.
 
 ### R3 — Settlement + reconciliation · design Phase 4, §11 · effort **M–L**
 
