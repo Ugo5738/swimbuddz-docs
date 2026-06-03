@@ -1,294 +1,242 @@
-# SwimBuddz Finance & Accounting System — Guide
+# SwimBuddz Finance System — A Plain-English Guide
 
-*A guide to the SwimBuddz ledger: what it is, what every screen and term means,
-and how to read, interpret, and use the books. Written for the founder and for
-an accountant reviewing the system.*
-
----
-
-## 1. The big picture
-
-SwimBuddz runs a **double-entry accounting ledger** that records every money
-movement in the platform as balanced journal entries. The operational apps
-(payments, wallet, store, academy, etc.) run the business; the **ledger records
-the accounting truth** on top of them, so you get real, auditable financial
-statements instead of guessing from raw payment rows.
-
-Two ideas underpin everything:
-
-- **Double-entry.** Every transaction touches at least two accounts, and the
-  total **debits always equal the total credits**. Because of this the books can
-  never silently lose money — they always balance. (The "Trial Balance" screen
-  shows you this balance at a glance.)
-- **Single source of financial truth.** Each operational service (a payment, a
-  Bubbles spend, a coach payout) *emits* a journal entry to the ledger. The
-  ledger is where you go for "what did we actually earn / owe / hold."
-
-The ledger is multi-tenant-capable but today runs a single organization
-(SwimBuddz).
-
-### Money units
-
-- Internally, all amounts are stored in **kobo** (₦1 = 100 kobo). This avoids
-  rounding errors. Every screen **displays Naira**.
-- **Bubbles** are SwimBuddz's in-app credit. **1 Bubble = ₦100** (= 10,000 kobo).
+*What the finance system does, what every screen means, and how to read the
+numbers — written so the founder can read it end to end, and the accountant can
+trust it. Worked examples use real SwimBuddz figures.*
 
 ---
 
-## 2. Concepts you need (plain English, with accountant notes)
+## 1. What this is, in one paragraph
 
-**Chart of accounts.** Every account belongs to one of five types:
+Every time money moves in SwimBuddz — a member pays, buys Bubbles, gets a refund,
+a coach gets paid — the system writes it into a **ledger**: a permanent, tamper-
+evident record of the business's money. The apps (payments, wallet, store…) run
+the business; the ledger quietly records the *accounting* truth underneath, so
+you can open a screen and see real answers: **What did we earn? What do we own?
+What do we owe? Where's our cash?** Without it, you'd be guessing from raw
+payment rows.
 
-| Type | Meaning | Examples |
-|---|---|---|
-| **Asset** | What you own or are owed | Bank, Paystack Clearing, Receivables, Store Inventory |
-| **Liability** | What you owe | Deferred Revenue, Bubbles Liability, Coach Payouts Payable |
-| **Equity** | The owners' stake + accumulated earnings | Owner's Capital, Retained Earnings |
-| **Revenue** | What you earn | Academy, Club, Community, Store, Events, Transport revenue |
-| **Expense** | What it costs you | Coach pay (COGS), PSP fees, Marketing |
+The golden rule it follows is **double-entry**: every transaction is written in
+two halves that must equal each other, so the books always balance and nothing
+can quietly go missing. You don't need to understand the mechanics — but it's why
+you can trust the totals.
 
-*(Accountant note: assets & expenses are debit-normal; liabilities, equity &
-revenue are credit-normal.)*
-
-**Cash ≠ revenue.** Collecting cash is not the same as earning it. If a member
-pays for a 12-month membership today, you've collected the cash but you'll
-*earn* it over the 12 months. The unearned part is a liability called **deferred
-revenue**.
-
-**Recognition.** The nightly process that converts **deferred revenue → earned
-revenue** as the service is delivered (straight-line over the membership/cohort
-term). After it runs, the P&L shows the portion you've genuinely earned.
-
-**Clearing account.** When a member pays via Paystack, the money isn't in your
-bank yet — Paystack holds it and settles it a day or two later. While it's "in
-transit," it sits in the **Paystack Clearing** account. When Paystack settles to
-your bank, the clearing account drains and the **bank** + **PSP fees** are
-recorded.
-
-**Bubbles (the wallet).** A closed-loop credit. **1 Bubble = ₦100.**
-- When a member **buys** Bubbles with cash, you now owe them service → a
-  **Bubbles Liability**.
-- When you **grant** free Bubbles (promos, welcome bonuses), it's a marketing
-  cost and a **promotional** Bubbles liability.
-- When a member **spends** Bubbles, you deliver service → **revenue**, and the
-  liability is drawn down.
-- The liability is split **purchased** (cash-backed) vs **promotional** (granted
-  free). Spends draw **promo-first** (design §19-B).
-
-**Periods.** Accounting months. Each can be **open** (postable), **soft-closed**
-(only adjusting entries allowed), or **hard-closed** (locked — nothing posts).
-
-**Idempotency.** Every emitted entry has a stable key, so the same event can
-never be booked twice — safe to retry, replay, or re-run.
+**Two units to know:**
+- Money is shown in **Naira (₦)**. (Internally it's stored in *kobo* — 100 kobo =
+  ₦1 — just to avoid rounding errors.)
+- **Bubbles** are the in-app credit. **1 Bubble = ₦100.**
 
 ---
 
-## 3. The screens — what each shows and how to use it
+## 2. The handful of ideas behind every screen
 
-All finance screens live under **`/admin/finance`** and require a finance role
-(separate from general admin — see *Finance Team* below).
+You only need these six to read everything:
 
-### `/admin/finance/reports` — the financial statements
+1. **Accounts.** Everything is sorted into buckets: what you **own** (bank, cash
+   in transit), what you **owe** (memberships you haven't delivered yet, Bubbles
+   people haven't spent), what you've **earned** (revenue), what it **cost**
+   (expenses), and your **stake** in the business (equity).
 
-This page stacks six statements. Each has an "as of" date or date range.
+2. **Collecting money ≠ earning it.** If someone pays ₦60,000 for a year's
+   membership today, you've *collected* ₦60,000 but you haven't *earned* it yet —
+   you owe them a year of service. The unearned part is a debt you owe, called
+   **deferred revenue**. You earn it bit by bit as the year passes. That bit-by-
+   bit earning is called **recognition**, and it runs automatically every night.
 
-#### Trial Balance
-- **Shows:** every account's net balance (as a debit or a credit) on a date, plus
-  a **Balanced** badge.
-- **Read it:** total debits must equal total credits — the badge confirms the
-  books are internally consistent. This is the accountant's first sanity check.
-- **Use it:** scan for any account with an unexpected balance.
+3. **Money "in transit."** When a member pays with a card, the money doesn't land
+   in your bank instantly — Paystack holds it for a day or two, then **settles** a
+   batch to your bank (after taking its fee). While it's in limbo it sits in a
+   **clearing** account ("collected, not yet in the bank").
 
-#### Profit & Loss (P&L)
-- **Shows:** revenue − expenses over a date range = **net income**, grouped by
-  domain or by account.
-- **Read it:** *Revenue* = what you earned (recognised, not just collected);
-  *Expense* = what it cost; *Net* = profit or loss. "By domain" splits it across
-  academy / club / community / store / etc.
-- **Use it:** set the range (e.g. this month); flip to "By domain" to see which
-  parts of the business make money.
+4. **Bubbles are a promise.** When someone buys Bubbles, you've taken their cash
+   but still owe them service — so Bubbles people hold are a **debt you owe**
+   (a liability). When they *spend* Bubbles, you deliver the service, so that's
+   when it becomes **revenue**.
 
-#### Balance Sheet
-- **Shows:** your financial position on a date. **Assets = Liabilities + Equity**
-  (the `A = L + E` badge).
-- **Read it:** *Assets* = what you own/are owed (bank, clearing, receivables);
-  *Liabilities* = what you owe (deferred revenue, Bubbles, payables); *Equity* =
-  owners' stake + accumulated earnings. The **"Current-Year Earnings
-  (unclosed)"** row is this year's profit that hasn't been formally closed into
-  retained earnings yet.
-- **Use it:** confirm it balances; your **equity total is your net worth**.
+5. **Reconciliation = "do the books match the bank?"** The system checks every
+   payout Paystack made against what's recorded in the books. Anything that
+   doesn't line up is flagged as a **break** for someone to look at.
 
-#### Cash Position
-- **Shows:** where your cash actually is — **settled in the bank** vs **in transit
-  at the PSP** (clearing).
-- **Read it:** *In bank* = money that has settled; *In transit (clearing)* =
-  collected but not yet paid out by Paystack; *Total* = both. In-transit drains
-  toward ₦0 as settlements are ingested.
-- **Use it:** a large in-transit balance means Paystack still owes you a payout.
-  After settlements are reconciled it should be ≈ ₦0.
+6. **Periods.** The books are organised by month. A month can be **open** (still
+   recording), **soft-closed** (only corrections allowed), or **hard-closed**
+   (locked forever). You close a month once you've reviewed it.
 
-#### Gross Margin by Domain
-- **Shows:** **revenue − COGS** (cost of the goods/services sold) per domain, with
-  a margin %.
-- **Read it:** for each area: revenue, the direct cost, the margin, and the %.
-  This is **gross** margin — it excludes overheads (rent, software, admin).
-- **Use it:** see which areas are profitable at the unit level (e.g. is the
-  academy's coach cost leaving healthy margin?).
+That's the whole mental model. Everything below is just these ideas on screens.
 
-#### Bubbles Liability
-- **Shows:** what you owe members in **unspent Bubbles**, split **purchased**
-  (bought with cash) vs **promotional** (granted free).
-- **Read it:** *Purchased* is a real cash-backed obligation; *Promotional* are
-  free Bubbles you've given out; *Total owed* is the full liability. Members can
-  still spend all of these on service.
-- **Use it:** ties to the Bubbles liability lines on the Balance Sheet.
+---
+
+## 3. Worked examples (real SwimBuddz numbers)
+
+The clearest way to "get it" is to follow real money through the system.
+
+### Example A — a member pays for community membership
+**Peter pays ₦5,000** for community membership (this is a real payment in your
+books).
+
+1. He pays by card. The ₦5,000 is **collected but not in your bank yet** → it sits
+   in *clearing*, and because membership is delivered over time, the ₦5,000 is
+   recorded as **deferred revenue** ("we owe Peter a year of community
+   membership"). Nothing is "earned" yet.
+2. **Each night**, the system earns a sliver of it. Community runs ~365 days, so
+   after ~4 months it has *recognised* roughly ₦1,650 as real **revenue** and
+   ₦3,350 is still **deferred** (still owed in service).
+3. A day or two later **Paystack settles** the cash to your bank (minus a small
+   fee), and the clearing balance for Peter's payment drains to zero.
+
+**Where you'd see it:** *Deferred Revenue* shows the ₦3,350 still owed; *P&L*
+shows the ₦1,650 earned; *Cash Position* shows the cash moving from "in transit"
+to "in bank."
+
+### Example B — Paystack settles a big batch (this actually happened)
+Over time SwimBuddz collected **₦734,100** by card. Paystack pays that out in
+batches. When the batches were reconciled:
+- **₦719,714 landed in your bank** (the net),
+- **₦19,249 was Paystack's fees** (now correctly recorded as an expense),
+- the **clearing account drained to ≈ ₦0** (the cash is no longer "in transit").
+
+**Where you'd see it:** *Cash Position* — "in transit" drops to ~₦0 and "in bank"
+holds the settled cash. The fees show up as an expense on the *P&L*.
+
+### Example C — Bubbles, bought and spent
+A member **tops up 50 Bubbles for ₦5,000**.
+- You now **owe ₦5,000** of service → the **Bubbles Liability** goes up ₦5,000.
+
+Later they **spend 10 Bubbles** on a session (10 × ₦100 = ₦1,000).
+- You delivered ₦1,000 of service → that's **₦1,000 of revenue**, and the Bubbles
+  Liability drops to ₦4,000 (they have 40 Bubbles left).
+
+**Where you'd see it:** *Bubbles Liability* shows what's still owed; the spend
+shows up as revenue on the *P&L*.
+
+**Today's real number:** members hold **439 Bubbles**, so the books show a
+**₦43,900** Bubbles liability — split **₦22,900 bought with cash** and **₦21,000
+given out free** (promos/welcome bonuses).
+
+### Example D — reconciliation catching a real problem
+When the books were matched to Paystack's payouts, **101 of 102** transactions
+matched perfectly. **One ₦5,000 payment** had settled at Paystack but was
+**missing from the books** (its record had been lost during development). The
+system flagged it as a **break**. We confirmed it was a real community payment,
+**booked the missing ₦5,000**, and the break cleared. That's the safety net
+working — it found the one needle in the haystack.
+
+### Example E — the whole picture today
+The books currently hold about **₦1.6 million** of total recorded activity, and
+they **balance to the kobo**. Every figure on every screen traces back to a
+dated, sourced entry you can open and inspect.
+
+---
+
+## 4. The screens, one by one
+
+Everything lives under **`/admin/finance`** and needs a finance login (separate
+from being an app admin — see *Finance Team*).
+
+### `/admin/finance/reports` — your financial statements
+Six reports stacked on one page. Pick a date (or date range) at the top of each.
+
+- **Trial Balance** — a list of every account's balance, with a **Balanced**
+  badge. This is the "are the books internally consistent?" check. If it says
+  *Balanced*, every naira is accounted for.
+- **Profit & Loss (P&L)** — **what you earned minus what it cost = profit (or
+  loss)** over a period. View it "by domain" to see which parts (academy, club,
+  store…) make money.
+- **Balance Sheet** — a snapshot of the business: what you **own**, what you
+  **owe**, and your **stake** (equity). It always balances (own = owe + stake).
+  The "Current-Year Earnings" line is this year's profit so far.
+- **Cash Position** — **where your cash is**: settled *in the bank* vs *in transit*
+  at Paystack. In-transit should trend to ~₦0 as payouts arrive.
+- **Gross Margin by Domain** — for each area, **revenue minus its direct cost**,
+  and the margin %. Tells you which areas are actually profitable per sale.
+- **Bubbles Liability** — **how much you owe members in unspent Bubbles**, split
+  bought-with-cash vs given-free.
 
 ### `/admin/finance/deferred-revenue`
-- **Shows:** money collected but **not yet earned** — what you still owe in
-  service — by category (academy, club, community, session bundles). Columns:
-  *Collected*, *Recognised* (earned so far), *Remaining*.
-- **Read it:** **Remaining** is the liability: service you've been paid for but
-  haven't fully delivered. It's recognised straight-line over each
-  membership/cohort term.
-- **Use it:** the totals here reconcile to the deferred-revenue liabilities on
-  the Balance Sheet.
+**Money you've collected but not yet earned** — memberships and cohorts you've
+been paid for but are still delivering. The "Remaining" column is what you still
+owe in service. As time passes it moves into earned revenue automatically.
 
 ### `/admin/finance/reconciliation`
-- **Shows:** proof that the books match the bank. Every Paystack **settlement
-  transaction** is matched to a journal entry; anything that settled but isn't in
-  the books — or doesn't tie out — becomes a **break**.
-- **Read it:** *Matched* / *Unmatched* counts; *Open breaks* + their total; and a
-  table of each break (type, reference, what the books say vs what the PSP
-  reported, and a detail note).
-- **Use it:** a break is a discrepancy to chase — e.g. a payment that settled at
-  Paystack but whose record was lost. Booking the missing entry clears it on the
-  next reconciliation pass. **An empty breaks list means the books tie to the
-  bank.**
+**Does the bank match the books?** Shows how many of Paystack's settled
+transactions matched your records, and lists any **breaks** (settled money that
+isn't booked, or doesn't tie out). An empty list means everything ties. A break
+is a to-do: investigate and book the missing piece.
 
 ### `/admin/finance/periods`
-- **Shows:** the accounting months and their status (open / soft-closed /
-  hard-closed).
-- **Use it:** once a month is reviewed, **soft-close** it (adjustments still
-  allowed) and later **hard-close** it (fully locked). This stops accidental or
-  fraudulent backdated edits.
+The **months** and their status. Close a month once reviewed — *soft-close*
+allows corrections, *hard-close* locks it. This protects the books from
+accidental backdated edits.
 
 ### `/admin/finance/journal-entries`
-- **Shows:** the raw ledger — every journal entry and its debit/credit lines.
-  The full audit trail.
-- **Use it:** drill into any transaction to see exactly what posted and why
-  (each entry records the source service, type, and reference).
+The **raw record** — every transaction and its two halves. This is the audit
+trail: any number on any report can be traced back to entries here.
 
-### `/admin/finance/invoices`  *(API available; UI screen pending)*
-- **Shows:** issued invoices with **gapless, audit-grade numbering**
-  (`SB-2026-000123`) — required for compliant invoicing (and FIRS-ready). You can
-  issue, list, fetch, and void invoices via the API today; the on-screen page is
-  the next addition.
+### `/admin/finance/invoices`  *(working via the system; on-screen page coming)*
+Formal invoices with proper **gapless numbering** (`SB-2026-000123`). Today the
+system can issue/list/cancel invoices; the clickable screen is the next addition
+(see §6 for who actually needs it).
 
 ### `/admin/finance/users` — Finance Team
-- **Shows:** who has finance access and their **role**: *viewer* (read reports),
-  *accountant* (post manual entries, void invoices), *admin*, *owner*.
-- **Important:** finance access is **separate from general SwimBuddz admin** — an
-  app admin does **not** automatically see the books. Add your accountant here as
-  a *viewer* or *accountant*.
+**Who can see the books**, and at what level (view-only, accountant, admin,
+owner). Note: this is **separate** from general SwimBuddz admin — add your
+accountant here to give them access.
 
 ---
 
-## 4. How money flows into the books
+## 5. The accountant's monthly checklist
 
-A reference for the accountant — what the system posts for each event
-(*DR* = debit, *CR* = credit):
-
-| Business event | Journal entry |
-|---|---|
-| Member pays online — academy / club / community | **DR** Paystack Clearing · **CR** Deferred Revenue *(then recognised over the term)* |
-| Member pays a single session fee | **DR** Paystack Clearing · **CR** Club Session Revenue *(earned at once)* |
-| Recognition runs (nightly) | **DR** Deferred Revenue · **CR** Revenue *(the elapsed portion)* |
-| Paystack settles a batch to the bank | **DR** Bank · **DR** PSP Fees · **CR** Paystack Clearing |
-| Member buys Bubbles (top-up) | **DR** Paystack Clearing · **CR** Bubbles Liability |
-| Free Bubbles granted (promo / welcome) | **DR** Marketing Expense · **CR** Bubbles Liability (Promo) |
-| Member spends Bubbles on a service | **DR** Bubbles Liability · **CR** Revenue (that domain) |
-| Refund disbursed | **DR** Revenue / Deferred · **CR** Bank |
-| Coach payout — accrue, then pay | **DR** Coach Pay (COGS) · **CR** Payable; then **DR** Payable · **CR** Bank |
-
-Notes:
-- **Online payments use the clearing account** because the cash isn't in the bank
-  yet. **Manual bank transfers** debit the bank directly.
-- Every entry is **idempotent** and **best-effort with a dead-letter**: if the
-  ledger is briefly unavailable when an event fires, the intended entry is parked
-  and **replayed** — it's never lost.
+1. **Trial Balance** says *Balanced*.
+2. **P&L** reviewed (by domain).
+3. **Balance Sheet** balances; deferred-revenue and Bubbles liabilities look
+   right.
+4. **Deferred Revenue** "Remaining" matches the Balance Sheet.
+5. **Reconciliation** breaks worked down to zero (resolved or explained).
+6. **Cash Position**: in-transit ≈ ₦0; bank matches the real bank statement.
+7. **Close the month** (soft, then hard once final).
 
 ---
 
-## 5. The monthly close — an accountant's checklist
+## 6. Do you need invoices yet — and for whom?
 
-1. **Trial Balance** — confirm it shows *Balanced*.
-2. **P&L** — review revenue vs expenses for the month (by domain).
-3. **Balance Sheet** — confirm `A = L + E`; sanity-check the deferred-revenue and
-   Bubbles liabilities.
-4. **Deferred Revenue** — the *Remaining* total should match the deferred lines
-   on the Balance Sheet.
-5. **Reconciliation** — work the **open breaks** to zero (resolve or document
-   each).
-6. **Cash Position** — clearing should be ≈ ₦0 (settlements ingested); the bank
-   balance should match your actual bank statement.
-7. **Periods** — **soft-close** the month; **hard-close** once everything's final.
+Short answer: **yes, but only for corporate (B2B) clients — not individual
+members.**
 
----
+- **Individual members** (academy/club/community/store) get an automatic
+  **Paystack receipt** when they pay. That's enough for a consumer; they don't
+  ask for a formal invoice, and Nigeria's e-invoicing rules don't require B2C
+  invoicing for a business your size yet.
+- **Corporate wellness clients** (companies buying programs for their staff) are
+  different: a company **needs a formal invoice** — with your business details, a
+  proper number, their company name — to pay you and to record the expense in
+  *their* books. They will ask for one. This is the real near-term need, and it's
+  where the gapless `SB-2026-…` numbering matters.
 
-## 6. Glossary
-
-- **Journal entry** — one recorded transaction; a set of balanced debit/credit
-  lines.
-- **Debit / Credit** — the two sides of every entry. Total debits = total credits.
-- **Kobo** — ₦1 = 100 kobo; the internal storage unit.
-- **Bubble** — in-app credit; **1 Bubble = ₦100**.
-- **Clearing account** — money collected via the PSP but not yet settled to the
-  bank ("in transit").
-- **PSP** — Payment Service Provider (Paystack).
-- **Settlement** — when Paystack pays a batch of collected transactions into your
-  bank, net of its fees.
-- **Deferred revenue** — cash collected for service not yet delivered; a
-  liability.
-- **Recognition** — converting deferred revenue into earned revenue over time.
-- **COGS** — Cost of Goods/Services Sold (e.g. coach pay, store cost) — the direct
-  cost of what you sold.
-- **Gross margin** — revenue − COGS (before overheads).
-- **Bubbles liability** — what you owe members in unspent Bubbles; split purchased
-  (cash-backed) vs promotional (granted).
-- **Reconciliation break** — a settled transaction that doesn't match a booked
-  entry (a discrepancy to investigate).
-- **Period** — an accounting month; open / soft-closed / hard-closed.
-- **Retained earnings** — accumulated profit from prior periods, in equity.
-- **Trial balance** — the list of every account's balance, used to confirm the
-  books balance.
-- **IRN / FIRS** — Nigeria's electronic-invoicing identifiers/authority (planned).
+**Recommendation:** when we build the invoices screen, aim it at **corporate** —
+issue an invoice against a corporate deal/program, view and print it, mark it
+paid/void. Member invoicing can wait (receipts already cover it), and full tax
+(VAT) invoicing waits until you've decided what's VAT-able and have FIRS
+credentials.
 
 ---
 
-## 7. What's built, and what's still on the roadmap
+## 7. What's done, and what's still ahead
 
-**Built and live:** double-entry posting for every money movement; nightly
-revenue recognition + period close; PSP settlement reconciliation (drain + line-
-item matching + breaks queue); the full statement set (trial balance, P&L,
-balance sheet, cash position, gross margin, deferred revenue, Bubbles liability);
-durable emit/replay (no entry can be silently dropped); invoice issuing with
-gapless numbering (API).
+**Done and live:** every money movement is recorded; nightly earning
+(recognition) and month-close; bank-matching reconciliation; the full report set
+(trial balance, P&L, balance sheet, cash, margin, deferred revenue, Bubbles
+liability); a safety net so no entry is ever silently lost; and invoice numbering.
 
-**On the roadmap / not yet built:**
-- **Invoices UI screen** (the issuing/numbering API exists; the page is next).
-- **VAT/WHT + FIRS e-invoicing** — deferred until the tax determinations (what's
-  VAT-able) and FIRS credentials are in hand; the invoice model already carries
-  the placeholders.
-- **Store COGS and driver/pool payouts** — waiting on upstream data (product cost
-  tracking; an in-app payout flow).
-- **Bubbles historical reconciliation** — correcting the historical Bubbles
-  liability + the per-Bubble rate is an in-progress activation.
-- **Strict row-level DB isolation** — a hardening step gated on B2B (multi-org).
+**Still ahead:**
+- The **invoices screen** (for corporate — see §6).
+- **VAT/tax invoicing & FIRS e-invoicing** — once you've set what's taxable and
+  have FIRS credentials.
+- **Store cost-of-sales and driver/pool payouts** — waiting on upstream data.
+- A **stricter database isolation** step — only needed if/when you sell this to
+  other organisations.
 
 ---
 
-*Questions about a specific number on a screen? Open
-`/admin/finance/journal-entries` and find the entry behind it — every figure
-traces back to a dated, sourced, balanced journal entry.*
+*Rule of thumb: if a number ever looks off, open `/admin/finance/journal-entries`
+and find the entry behind it. Every figure has a dated, sourced, balanced record.*
 
 *Last updated: 2026-06-03*
