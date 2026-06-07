@@ -20,7 +20,7 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 | **ai_service** | 8011 | Production | AI scoring: cohort complexity, coach grading, coach-cohort matching | Consumed by academy workflows (internal) |
 | **volunteer_service** | 8012 | Production | Volunteer roles, opportunities, scheduling, hours tracking, tiers, rewards | `/community/volunteers/*`, `/admin/community/volunteers/*` |
 | **wallet_service** | 8013 | Production | "Bubbles" closed-loop credit system, topups, transactions, grants, audit | `/account/wallet/*`, `/admin/wallet/*` |
-| **pools_service** | 8014 | Production | Pool registry, partnership CRM, submissions workflow, assets/contacts/visits | `/admin/settings/pools/*`, public pool listings |
+| **pools_service** | 8014 | Production | Pool registry, partnership CRM, submissions workflow, assets/contacts/visits; **weather module** — cached forecasts for pool locations (Open-Meteo) with an ARQ pre-fetch worker | `/admin/settings/pools/*`, public pool listings, session-card weather chips |
 | **reporting_service** | 8015 | Production | Analytics & reports: member insights, community analytics, admin dashboards, seasonality forecasting | `/account/insights`, `/admin/analytics`, `/admin/reports/*` |
 | **chat_service** | 8016 | In Development (Phase 1 backend) | Real-time messaging across cohorts, pods, events, trips, DMs; safeguarding enforcement. See [design doc](../design/CHAT_SERVICE_DESIGN.md) | `/account/chat/*`, `/admin/chat/*` (planned) |
 | **corporate_service** | 8017 | Production (Phase 1) | Corporate wellness pipeline (CRM-style contacts/deals/touchpoints) and program orchestration (cohort linking, wallet provisioning, bulk employee enrollment). Admin-only API surface. See [marketing playbook](../marketing/CORPORATE_WELLNESS.md). | `/admin/corporate/*` (planned UI) |
@@ -359,6 +359,8 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 
 **Migrations:** Yes (Alembic)
 
+**Companion worker:** `swimbuddz_volunteer_worker` (ARQ on Redis queue `arq:volunteer`) — runs the monthly Volunteer of the Month spotlight rotation just after a month closes.
+
 **Note:** Overview row existed previously but detail section was missing — added 2026-04-19.
 
 ---
@@ -415,6 +417,8 @@ Complete reference for all backend microservices in the SwimBuddz platform.
 **Database:** Full partnership CRM schema (migrations present)
 
 **Frontend Integration:** `/admin/settings/pools/*`; public pool listing surfaces
+
+**Weather module** (`services/pools_service/weather/`): cached multi-day hourly forecasts (Open-Meteo, swappable) for pool locations, so members/admins can plan around Lagos rainy-season sessions. A `WeatherSnapshot` table caches one row per normalized location; the `pools-worker` ARQ container pre-fetches every active pool's 14-day forecast every 3h (the "snapshot"), reading the `Pool` table in-process (no cross-service hop). Reads (`GET /weather?lat&lon`, `GET /weather/pools/{id}`, both accept `?date=`) serve the stored copy with a cache-aside fallback; admin `POST /admin/weather/refresh`, `GET /admin/weather/snapshots`. Hosted here rather than as a standalone service because pools owns the coordinates — see [design doc](../design/WEATHER_SERVICE_DESIGN.md). Companion worker on Redis queue `arq:pools`.
 
 **Note:** Historically undocumented in this registry — added 2026-04-19.
 
@@ -606,7 +610,7 @@ Each service must:
 - 8016: Chat (in development — see [docs/design/CHAT_SERVICE_DESIGN.md](../design/CHAT_SERVICE_DESIGN.md))
 - 8017: Corporate
 - 8018: Ledger (planned — see [docs/design/LEDGER_SERVICE_DESIGN.md](../design/LEDGER_SERVICE_DESIGN.md))
-- 8019+: Available for new services
+- 8019+: Available for new services (weather is a module inside pools_service on 8014, not a separate port)
 
 > **Important:** Before allocating a new port, cross-check `swimbuddz-backend/docker-compose.yml` — that is the source of truth. This registry must be updated whenever docker-compose changes.
 
