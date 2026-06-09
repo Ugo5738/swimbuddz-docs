@@ -3,7 +3,7 @@
 > **Status:** Draft — Awaiting Review
 > **Date:** 2026-06-03
 > **Author:** Daniel + AI collaborator
-> **Implements:** [Missed Session, Rescheduling & Make-Up Policy v1.0](../policy/MISSED_SESSION_AND_MAKEUP_POLICY.md)
+> **Implements:** [Missed Session, Rescheduling & Make-Up Policy v1.2](../policy/MISSED_SESSION_AND_MAKEUP_POLICY.md)
 > **Related:** [A1 Session Discriminator Refactor](./A1_SESSION_DISCRIMINATOR_REFACTOR.md) (dropped `ONE_ON_ONE`, 2026-05-17)
 
 ---
@@ -32,21 +32,23 @@ Every pivotal decision, locked with Daniel across design sessions (2026-06-02/03
 | D2 | Enforcement strength | **Inform (soft) for spacing; hard-gate the countable rules** | Spacing is judgement (coach-overridable); notice/outstanding-cap/window are objective. |
 | D3 | Feature vs model scope | **Make-ups-first feature; general-purpose availability model** | Don't paint the availability data into a make-up-only corner. |
 | D4 | Make-up model | **New `MakeupBooking` model** (do *not* extend `CohortMakeupObligation`) | The existing obligation is `cohort_id NOT NULL` + payout-coupled; can't represent 1:1; extending it = "god object" (CLAUDE.md anti-pattern). |
-| D5 | "Block" unit | **Lesson package / cohort term** (the bundle they paid for) | Grace + make-up window both reset per block. Anchor differs by learner type (see §5). |
+| D5 | "Block" unit | **Cohort term** (group or private cohort) | Grace + make-up window reset per block. 1:1 is a `CohortType.PRIVATE` cohort, so it uses the same cohort-term block as group (§3) — no separate package entity. |
 | D6 | Confirmation gate | **System pre-check → admin one-tap** | Coach pre-vetted by published availability; keeps policy §3 admin ownership; cuts compose→tap. |
-| D7 | v1 scope | **Both, phased — cohort first, then 1:1 on the same rails** | Cohort substrate exists → ship fast. 1:1 needs a rebuilt lesson primitive (dropped 2026-05-17). |
+| D7 | v1 scope | **Both, phased — cohort first, then 1:1 on the same rails** | Cohort substrate exists → ship fast. **1:1 is already a `CohortType.PRIVATE` cohort** (1 student, normal `COHORT_CLASS` sessions), so the same rails serve it — no separate 1:1 primitive needed (see §3). |
 
 ---
 
-## 3. The 1:1 gap (why phasing matters)
+## 3. 1:1 is a private cohort (correction)
 
-The policy's scope line is *"individual adult learners (Academy lessons **and 1:1** / make-up sessions)"* — but **pure 1:1 lessons are not currently a platform product**:
+> **Correction (2026-06-07):** an earlier draft of this section claimed 1:1 was "not a platform product" because the `ONE_ON_ONE` *session type* was dropped (A1 Phase 3.1, 2026-05-17). **That was wrong.** The A1 refactor *remodelled* 1:1, it didn't remove it.
 
-- `ONE_ON_ONE` session type was **dropped on 2026-05-17** (A1 Phase 3.1) as "aspirational" — *zero rows* ever used it. Live types: `COHORT_CLASS / CLUB / COMMUNITY / EVENT`.
-- There is **no individual lesson-package / purchase entity**. 1:1 lessons run off-platform today.
-- `CohortMakeupObligation` (the existing make-up machinery) is **cohort-bound and payout-coupled** — fine for cohort make-ups, useless for 1:1.
+The policy's scope line is *"individual adult learners (Academy lessons **and 1:1**)."* In the current architecture:
 
-So "build this for 1:1 learners" quietly means **bringing the 1:1 lesson product onto the platform.** Hence the phasing in §4.
+- **1:1 = `CohortType.PRIVATE`** — a cohort with **one student** (`capacity = 1`), member-paid. `SMALL_GROUP` and `CORPORATE` are siblings of it.
+- The **session layer is identical for every cohort type**: all run `SessionType.COHORT_CLASS` with `cohort_id` set (per the `CohortType` enum's own comment). The type only varies capacity/structure on the cohort row.
+- Therefore the make-up rails **already serve 1:1 with no extra work**: bookable-slots find the coach's `COHORT_CLASS` sessions (private included), confirm derives the block from `cohort_id` (= the private cohort term), and self-serve / completion / payout all apply unchanged.
+
+So there is **no separate 1:1 product to build** for make-ups. The only genuine 1:1 gaps are UI/UX, captured in §4 Phase 2. (The `MakeupLearnerType.ONE_ON_ONE` / `MakeupBlockKind.LESSON_PACKAGE` enum values added during the misread are now vestigial — 1:1 uses `COHORT_TERM`.)
 
 ---
 
@@ -67,10 +69,12 @@ Substrate already exists (`Enrollment`, `CohortMakeupObligation`, payout blocks)
 ### Phase 1.5 — Learner self-serve request (cohort)
 - Learner sees *their valid slots only*; requests one → `REQUESTED` + soft `HELD`; admin one-tap confirms. This is the actual admin-load relief.
 
-### Phase 2 — 1:1 lessons on the same rails
-- **sessions_service:** re-introduce `ONE_ON_ONE` session type (reverses A1 Phase 3.1).
-- **payments_service:** light `LessonPackage` entity (learner, sessions_total/used, expires_at) → the block anchor for 1:1 (D5).
-- Same availability + `MakeupBooking` + rules engine now serve 1:1. Full request→confirm self-serve.
+### Phase 2 — close the 1:1 UX gaps ✅ (shipped 2026-06-09)
+1:1 already works on the rails (§3) — what was missing was two UX affordances, **not a new product**. Both are now shipped:
+- **Cohort-type selector in the admin create-cohort form** ✅ — `academy/cohorts/new/_new/BasicsStep.tsx` now has a Group / Private / Small group / Corporate selector (frontend `CohortType` in `src/lib/academy/types.ts`); picking **Private** auto-sets capacity to 1. The API + model already accepted `type`. This unblocked the end-to-end 1:1 path.
+- **One-click open-slot make-up** ✅ — `POST /api/v1/makeups/open-slot` (`MakeupOpenSlotCreate`) creates a brand-new dedicated `COHORT_CLASS` session in a coach's open slot (cohort from `cohort_id`, else derived from the original session), attaches the coach as lead, and confirms the learner in via the shared confirm core. It **fails fast** before any session is built on an ineligible request (future-slot / outstanding-cap) and **refuses slots that overlap** a session the coach already runs (use the join path for that). The admin make-up screen's "open time" entries are now bookable buttons. (The *join an existing session* path was already one-click.)
+
+(No `ONE_ON_ONE` session type or `LessonPackage` entity is needed — those were artefacts of the §3 misread.)
 
 ---
 
@@ -81,7 +85,7 @@ Substrate already exists (`Enrollment`, `CohortMakeupObligation`, payout blocks)
 | Coach availability data (`availability_calendar`, `min_hours_between_sessions`) | **members_service** | Stub column already on `CoachProfile`. Coach editor lives here. |
 | `MakeupBooking` model + rules engine + bookable-slot compute | **sessions_service** | Policy §4 internal note already nominates sessions_service for the spacing check. A make-up *is* a session booking. |
 | Block source — cohort term | **academy_service** | Read via HTTP (cohort enrollment + end_date). |
-| Block source — 1:1 package (Phase 2) | **payments_service** | New `LessonPackage`; owns purchases/entitlements already. |
+| Block source — 1:1 | **academy_service** | Same as group: a 1:1 is a `CohortType.PRIVATE` cohort, so its block is that cohort's term — no separate package entity. |
 | Payout obligation (unchanged) | **payments_service** | `CohortMakeupObligation` stays the payout trigger; linked, not replaced (§9). |
 | Coach availability editor UI; admin approval queue; learner request UI | **frontend** | Coach area + `/admin/*` + learner account. |
 
@@ -203,7 +207,8 @@ Both kinds are **flagged (not removed)** for spacing against the learner's other
 | Reschedule-of-a-make-up | Same 24h/grace rules recurse; a forfeited make-up is gone |
 | Notifications v1 | Learner: confirmed + reminder. Admin: new-request ping. Defer the rest. |
 | Payment — **program fee** | Out of scope — the coaching/program fee is a paid commitment; a make-up re-delivers it at no extra charge ("already-paid time"). Not refunded. |
-| Payment — **per-session pool fee** (~₦3,500) | **Refunded to Bubbles** when the original session is excused / no-show-with-make-up, so it funds the make-up session's own pool fee — otherwise the learner pays the pool fee *twice* (missed session + make-up). Routed through the **accounted `session_booking` refund path** (reverses the pool-fee revenue and restores the Bubble liability), **never** the manual "Adjust Bubbles" tool (that path is invisible to the ledger and double-counts revenue). Until make-up *confirm* (Phase 1) triggers it automatically, an admin issues it via the booking **pool-fee-refund** action (`POST /sessions/bookings/{id}/refund-pool-fee`). |
+| Payment — **per-session pool fee** (amount varies by pool) | **Refunded to Bubbles** when the original session is excused / no-show-with-make-up, so it funds the make-up session's own pool fee — otherwise the learner pays the pool fee *twice* (missed session + make-up). Routed through the **accounted `session_booking` refund path** (reverses the pool-fee revenue and restores the Bubble liability), **never** the manual "Adjust Bubbles" tool (that path is invisible to the ledger and double-counts revenue). Until make-up *confirm* (Phase 1) triggers it automatically, an admin issues it via the booking **pool-fee-refund** action (`POST /sessions/bookings/{id}/refund-pool-fee`). |
+| Payment — pool fee on **forfeit** (no make-up) | **Pool-specific** (Daniel, 2026-06-07). On a forfeit (late cancel / no-show, no valid reason, no make-up), the member's pool fee follows *our* cost with that pool: **flat / committed fee** (`Pool.flat_session_fee_ngn`) → cost is sunk whether or not she swims → **keep it** (cost recovery, not a penalty). **Per-swimmer billing not charged for no-shows** (`Pool.price_per_swimmer_ngn`) → we incur no cost → **refund** to Bubbles via the accounted `session_booking` path (never "Adjust Bubbles"). Distinct from the per-session pool-fee row above — that avoids *double*-charging when a make-up is granted; this asks whether a cost was incurred at all. The forfeited *session* (coaching commitment) is the behavioural penalty either way. **For now** admin applies it per pool from the pricing fields; future enforcement reads `Pool` pricing automatically (ideally an explicit `bills_for_no_shows` flag — per-swimmer-*booked* ≠ per-swimmer-*attended*). |
 | Safeguarding | **Adults only.** Extending availability-booking to minors re-triggers the human-in-the-loop gate (Chat Safeguarding Policy). |
 
 ---
@@ -216,4 +221,4 @@ Both kinds are **flagged (not removed)** for spacing against the learner's other
 
 ---
 
-*Last updated: 2026-06-03*
+*Last updated: 2026-06-07*
