@@ -59,6 +59,12 @@ Locked with Daniel across the 2026-06-09 design session:
 
 ## 3. Scope & phasing
 
+> **Status (2026-06-10):** Phases 1, 1.5, 2, and 3 **shipped** — backend applied
+> to dev, 19 tests green — plus the booking-form UI. Remaining polish: hard
+> "named before check-in" + minor re-gate at the door (an attendance→sessions
+> guest fetch), auto-link on member registration, the comms nudge, paid-trial
+> pricing (O4), and the Phase 2 block / Phase 3 lead admin UIs.
+
 ### Phase 1 — Named guests (bring-a-friend)
 Community + Club sessions. `party_size` + `booking_guest` (named) + per-head fee
 (server-computed) + heads-based capacity + per-head attendance + the minor gate.
