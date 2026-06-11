@@ -24,3 +24,4 @@ __pycache__/
 # deps & stray artifacts
 node_modules/
 openapi.json
+contents/
