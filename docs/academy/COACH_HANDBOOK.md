@@ -366,9 +366,9 @@ Fall below standards? You'll get a review and improvement plan. Persistent issue
 4. Don't arrange your own replacement
 
 **If a learner misses:**
-- They follow the Missed Class Policy
-- Don't make private arrangements
-- Direct them to the app for catch-up steps
+- They follow the [Missed Session, Rescheduling & Make-Up Policy](../policy/MISSED_SESSION_AND_MAKEUP_POLICY.md)
+- Don't make private arrangements — rescheduling goes through SwimBuddz admin / the app
+- Your only calls are *am I free?* and *is the spacing OK?* — admin handles eligibility, booking, and messaging
 
 ---
 

@@ -87,6 +87,14 @@ Coach shall NOT:
 - Collect payments directly from learners unless explicitly authorized
 - Share SwimBuddz member information with third parties
 
+### 2.4 Scheduling, Rescheduling, and Session Spacing
+
+Coach acknowledges the [Missed Session, Rescheduling & Make-Up Policy](../policy/MISSED_SESSION_AND_MAKEUP_POLICY.md), which governs how individual learner sessions are rescheduled and made up. Under that policy:
+- Rescheduling, eligibility, booking, payment, and learner communication are handled by SwimBuddz administration. Coach's role is limited to confirming availability and the pedagogical suitability of a proposed slot.
+- A default minimum of **48 hours** spacing applies between a learner's sessions, with no back-to-back days unless Coach approves.
+
+Coach may set a **different spacing preference** at onboarding, recorded with SwimBuddz. Where set, that preference overrides the default for Coach's learners, and SwimBuddz administration applies it without further consultation. Coach shall not make private, off-platform scheduling arrangements with learners; all scheduling is conducted through SwimBuddz.
+
 ---
 
 ## 3. COMPENSATION

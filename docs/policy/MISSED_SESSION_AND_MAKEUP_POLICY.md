@@ -1,10 +1,10 @@
-# Missed Session, Rescheduling & Make-Up Policy — Version 1.1
+# Missed Session, Rescheduling & Make-Up Policy — Version 1.2
 
 > **Status:** Active — approved by Daniel (SwimBuddz owner)
 > **Effective date:** 2026-05-31
-> **Version:** 1.1
+> **Version:** 1.2
 > **Applies to:** Individual adult learners (Academy lessons and 1:1 / make-up sessions)
-> **Last updated:** 2026-06-03
+> **Last updated:** 2026-06-07
 
 > **Scope note:** This policy fulfils the "Missed Class Policy" referenced in [Coach Handbook §7.5](../academy/COACH_HANDBOOK.md). It covers the **individual learner**. To move a whole pod's weekly session, see [Pod Operations](../club/POD_OPERATIONS.md). For a coach who needs to miss a session, see Coach Handbook §7.5.
 
@@ -89,6 +89,7 @@ Use the [Reliable Partner voice](../company/VOICE_AND_TONE.md): efficient, warm,
 **Internal notes (not learner-facing):**
 
 - **Confirmed defaults (Daniel, 2026-05-31):** 24h notice window, 1 grace/block, 14-day make-up window, 1 outstanding make-up, 48h spacing minimum. Sensible starting points — revisit once there's real usage data.
+- **Pool fee on forfeit (pool-specific — Daniel, 2026-06-07):** when a session is forfeited (no make-up), whether the learner's per-session pool fee is returned depends on *our* cost with that pool — **flat / committed fee → keep it** (cost is sunk; cost recovery), **per-swimmer not billed for no-shows → refund it** to Bubbles via the accounted `session_booking` path (`POST /sessions/bookings/{id}/refund-pool-fee`), never the "Adjust Bubbles" tool. The forfeited *session* is the behavioural penalty either way; the pool fee just follows cost. Source fields: `Pool.flat_session_fee_ngn` vs `Pool.price_per_swimmer_ngn` (pools_service). Detail + future enforcement: [Availability & Make-Up Design §10](../design/AVAILABILITY_AND_MAKEUP_SCHEDULING_DESIGN.md).
 - **Per-coach overrides:** a coach's spacing preference, captured at onboarding under [Coach Agreement §2.4](../academy/COACH_AGREEMENT.md), overrides the 48h default for that coach's learners. Admin applies it without asking.
 - **Future platform enforcement** (today this is manual / WhatsApp-era):
   - *Spacing check at booking* → `sessions_service` warns or blocks a booking < 48h from the learner's existing session (or on a back-to-back day) unless coach-overridden.

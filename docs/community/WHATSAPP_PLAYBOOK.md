@@ -311,7 +311,7 @@ Volunteer tiers and recognition levels are defined in [VOLUNTEER_ROLES.md](./VOL
 | Promoted to Tier 2 (Core) | "🔆 [Name] is now a Core volunteer. 20+ hours, 80+ reliability. Can now take on Session Lead, Safety, Mentor roles."         |
 | Promoted to Tier 3 (Lead) | "⭐ [Name] is now a Lead volunteer. 50+ hours, 90+ reliability. The backbone."                                               |
 
-Also post **Volunteer of the Month** in the last week of each month, in both the Volunteers group and the main Community group.
+Also post **Volunteer of the Month** after the month closes, in both the Volunteers group and the main Community group. The public site rotation is calculated from the closed month's logged volunteer hours/activity and keeps the winner featured for the next display month.
 
 **Why:** Recognition is the reward loop. The tier system only works if people see others being recognised — otherwise Bronze/Silver/Gold are just numbers in a doc. Public shout-outs also create aspiration: newer volunteers see what's possible.
 

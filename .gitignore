@@ -20,3 +20,7 @@ ngrok
 __pycache__/
 *.pyc
 *.pyo
+
+# deps & stray artifacts
+node_modules/
+openapi.json

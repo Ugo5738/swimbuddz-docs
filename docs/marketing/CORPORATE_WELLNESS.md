@@ -3,7 +3,7 @@
 **Owner:** Daniel
 **Audience:** HR / People Ops / Wellness leads at Lagos employers
 **Purpose:** Sell 5-15 employee swim cohort packages as B2B revenue
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-31
 
 This doc has two halves: an **outward-facing pitch** (the content you send to HR contacts, also exportable to PDF) and an **internal playbook** (how we sell, price, deliver, and measure outcomes).
 
@@ -75,7 +75,7 @@ Optional add-ons:
 
 - **Free corporate "Intro to Water" assessment session** for staff considering the program (one per company, 90 min, on us)
 - Branded merchandise (caps, towels) at cost
-- Quarterly SwimBuddz Wrapped report for HR (attendance, milestones, employee testimonials — useful for internal wellness storytelling)
+- Quarterly SwimBuddz Wrapped report for HR (attendance, milestones, employee testimonials — useful for internal wellness storytelling and employer-brand content for LinkedIn)
 
 ### Pilot offer (limited)
 
@@ -201,6 +201,25 @@ Daniel
 
 **Stop after 3. If no reply after the 3rd, mark as cold and revisit in 6 months.**
 
+## LinkedIn prospecting & founder-led warming
+
+LinkedIn is where this buyer lives (Head of People / Wellness / Office Manager all list their title there). But its value is **top-of-funnel and credibility — not closing.** LinkedIn-originated conversations migrate to WhatsApp / call / in-person to close, exactly like the email track. Use LinkedIn for three things, in priority order:
+
+**1. Targeting + warm-path mapping (highest value).**
+For each target company, use LinkedIn search to find the *exact* decision-maker by name (`"Head of People" / "Wellness" / "People Ops" + [Company]`), then check **mutual connections**. That mutual is your warm forward — and a warm forward is worth 100x a cold message (see Track B in the cohort enrollment playbook). Convert "cold" targets (Andela, Paystack, Access, Carbon, Bamboo, MTN) into warm-intro targets this way *before* sending anything.
+
+**2. Founder-led content to warm the ground.**
+The sales cycle is 9–13 weeks. Founder thought-leadership content running in the background means that when the intro lands, the buyer already recognizes the founder ("I've seen your posts") — credibility before the first call. It also builds the "evidence-based, structured, professional" tone the conservative bank buyers need, and generates some inbound from wellness-minded HR. See [FOUNDER_LINKEDIN_PLAYBOOK.md](./FOUNDER_LINKEDIN_PLAYBOOK.md) for the content plan and the corporate-warming post.
+
+**3. The employer-brand selling point (use this IN the pitch).**
+Companies love posting "investing in our people" content — and a swim cohort is far better LinkedIn content than a gym-reimbursement announcement. Sell this explicitly to content-conscious tech buyers: graduation photos, milestone stories, and the SwimBuddz Wrapped report become employer-brand content their team can post and that actually performs.
+
+**Critical division — don't send HR to the founder's personal profile as the brochure.** The founder's personal LinkedIn intentionally leads with an AI-engineer identity (it carries other work). For corporate credibility, route buyers to **SwimBuddz-branded assets**: the company Page, `swimbuddz.com/corporate`, the pitch PDF, and Wrapped reports. The personal profile's job here is **warm-path discovery + content reach**, not closing.
+
+**Do NOT:** cold-InMail-pitch HR (it's a cold email in a worse format), or run LinkedIn ads (premature — HR-title CPMs are brutal and B2B wellness ads don't convert without an established brand; same logic as "don't run paid ads yet" in the cohort playbook).
+
+> **Note:** This LinkedIn track is **manual and personal by nature** — it sits *outside* the automated `corporate-worker` email sequence (Email 1/2/3). Use it to *feed* warm intros into that sequence, not to replace it.
+
 ## Intro call structure (20 mins)
 
 | Time      | Section                                                                                          | Goal                   |
@@ -264,6 +283,8 @@ Maintain a corporate pipeline spreadsheet (or use a CRM). Columns: Company, Cont
 - [x] Corporate landing page at `swimbuddz.com/corporate` — shipped May 2026 (Phase 2); intake form posts to `POST /api/v1/corporate/leads`
 - [ ] PDF version of Part 1 — design in Canva (logo, brand colors, photos), export, host at `swimbuddz.com/corporate-wellness.pdf`
 - [ ] Email signature with calendar booking link (Cal.com / Calendly)
+- [ ] Build a warm-path map (LinkedIn) for the top 10 corporate targets — decision-maker name + a mutual connection for each
+- [ ] Stand up the founder LinkedIn content cadence (see [FOUNDER_LINKEDIN_PLAYBOOK.md](./FOUNDER_LINKEDIN_PLAYBOOK.md)) — ~2 posts/week, ≥1 corporate-warming post/month
 
 ---
 
