@@ -565,6 +565,18 @@ Each program/cohort is scored on complexity dimensions specific to its category.
 4. **Category and complexity can adjust within the band**
 5. **Coaches do not negotiate individually** (system is transparent and standardized)
 
+> **Implementation (2026-06-23): fixed per-class rate.** A coach earns a fixed
+> amount per class delivered = `cohort_price × band% ÷ total_classes`, frozen
+> when the payout config is created (`total_classes` = the cohort's planned
+> class count, so cadence — 1×/wk vs 2×/wk — is handled correctly and make-ups/
+> extensions never dilute the rate). A class is "delivered" only when the coach
+> marks the student **present/late**; a make-up recovers a missed class at the
+> same rate, capped at `total_classes` per student. **Two coaches:** the band
+> is one shared pool split **70/30 (lead/assistant)**, applied from the active
+> roster at payout time (1 coach → full pay). Pending payouts recompute against
+> final attendance before they're paid. Full spec:
+> [COACH_PAYOUT_REDESIGN.md](../design/COACH_PAYOUT_REDESIGN.md).
+
 ### 6.2 What SwimBuddz Retains
 
 SwimBuddz's share (35-65%) covers:

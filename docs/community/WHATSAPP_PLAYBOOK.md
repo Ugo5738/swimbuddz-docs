@@ -1,6 +1,6 @@
 # SwimBuddz Community WhatsApp Playbook
 
-_Last updated: 2026-05-04_
+_Last updated: 2026-06-15_
 
 ## Purpose
 
@@ -229,6 +229,113 @@ Rotate through these. Mix swimming-related and personal questions to keep it fre
 23. Would you be interested in [specific event idea]? (Use for gauging interest)
 24. What brought you to this group?
 25. If you could add one thing to our sessions, what would it be?
+
+### More Questions (Expansion Pack — added 2026-06-15)
+
+A second, larger batch (69 questions) for when the lists above start to feel familiar. Deduped against everything above _and_ the Spotlight questions. Roughly 60 of these need zero swim experience, so they work for community members who don't swim regularly (the Curious, Paused, and Social members). Keep emojis out of the question text — the post template adds its own. Seasonal ones are tagged with when to use them.
+
+#### Water, Without the Pressure
+
+- What's your earliest memory of being in water — pool, beach, the back of a bucket bath, anywhere?
+- If you can't swim, or barely can — what's actually stopping you? No judgement, real talk.
+- Be honest: are you a tiptoe-in-slowly person or a jump-straight-in person? Has that ever changed?
+- What's something about the ocean or the lagoon that lowkey scares you, even a little?
+- Who taught you to swim — or who's been trying to? Tag them.
+- Growing up, was your family a "don't go near that water" family or a "go play" family?
+- Have you ever surprised yourself in water — done something you didn't think you had in you?
+- Beach day with the group: are you in the water, on the sand with the snacks, or supervising from the shade?
+
+#### Lagos Life
+
+- Which is the bigger Lagos lie: "I'm 5 minutes away" or "there's no traffic right now"?
+- Be honest — how long after you say "I'm leaving now" do you actually leave?
+- Light just went and the gen won't start. What's the first thing you reach for?
+- Island or mainland — and what's the one thing that would make you cross to the other side?
+- First rain of the season catches you outside — are you dancing in it or sprinting for cover? _(rainy season)_
+- Cold drink of choice after a long, hot Lagos day — and no, water doesn't count.
+- Harmattan or rainy season — which Lagos weather are you actually built for? _(use Nov–Feb)_
+- What's a Lagos spot you'd take a visitor to that's on zero tourist lists?
+
+#### Body, Energy & Rest (no gym required)
+
+- Be honest — how many hours of sleep did you actually get last night, and are you proud or ashamed?
+- What's a tiny thing that instantly resets your mood after a draining Lagos day?
+- When your body says "rest today," what does resting actually look like — couch and food, dead asleep, or somehow still doing chores?
+- What's one way you move your body that doesn't feel like exercise — kitchen dancing, long walks, chasing a kid?
+- Your real hydration plan in this heat — water, zobo, coconut water, or something questionable?
+- Cold shower, warm bath, or you'd rather fight someone — what does your body actually want at day's end?
+- One free, no-guilt hour just to recharge today — how are you spending it?
+
+#### Quiet Wins & Brave Moments
+
+- What's a small win this week you're quietly proud of but probably wouldn't mention to anyone?
+- What's something that terrified you the first time, but you're so glad you didn't chicken out of?
+- When's the last time you did something for the very first time as a full-grown adult?
+- What's the bravest thing you did this past year that nobody clapped for?
+- What's something you used to believe about yourself that turned out to be completely wrong?
+- What's the kindest thing a total stranger has ever done for you in Lagos?
+- What's one thing past-you would be genuinely proud of present-you for?
+
+#### Quick Hits & Would-You-Rather
+
+- Jump straight in and get the shock over with, or tiptoe in inch by inch and suffer the whole way?
+- Pick one superpower: never get tired swimming, or never sit in Lagos traffic again. Go.
+- Pool in your backyard but it's freezing, or a five-star pool that's always an hour's drive away — which one?
+- Be honest — look incredibly graceful in the water, or actually be fast but splash like a washing machine?
+- Beach day with terrible waves and perfect company, or perfect water but everyone's grumpy?
+- Fill in the blank: I'd get in the pool right now if someone handed me ______.
+- Rate your relationship with cold water, 1 (I scream) to 10 (head first, no fear). Drop your number.
+- Finish it: a perfect Lagos Saturday is 50% swimming and 50% ______.
+
+#### Hot Takes & Friendly Fights
+
+- Jollof or fried rice — pick ONE for life and defend it like your honour depends on it.
+- Pineapple on suya — genius, or a crime against humanity?
+- Settle it: "shawarma" or "shawama"? And don't lie about how you really say it.
+- Beach day or pool day — pick your side and tell us why the other one is wrong.
+- "The pool is for relaxing, not exercise" — discuss. (Floating is a full workout, actually.)
+- Owambe, or a quiet night in with two close friends — which is the real perfect Saturday?
+- "Weekends are for staying in bed, not being productive" — where do you stand?
+- What food does everyone love that you secretly think is just... fine? Brave answers only.
+
+#### Dreams & Where You're Headed
+
+- If you woke up tomorrow already great at one thing, zero practice required — what are you picking?
+- If you let yourself be a total beginner at something with no shame, what would it be?
+- Fill in the blank: by December I want to be the kind of person who ______. _(use in Jan/Feb)_
+- What's something you could do before that you'd love to get back?
+- What's the dream you're a little embarrassed to admit you still have?
+- Name one thing you want to be braver about this year. _(use in January)_
+- What did little-you want to be when you grew up — and how far off are you, really?
+
+#### Way-Back-When
+
+- What game did your street or compound play growing up that today's kids have never even heard of?
+- What's something your parents always said that you swore you'd never repeat — and now catch yourself saying?
+- What's a smell that instantly drops you back to being eight years old?
+- Be honest: what childhood snack would you still demolish a whole pack of right now?
+- What's a dish only one specific person in your family knew how to make properly?
+- Cartoon, jingle, or theme song from back then that you can STILL sing word-for-word?
+- Which childhood fear feels absolutely hilarious now that you're grown?
+- Who was your childhood hero — and would they still impress you today?
+
+#### This Is Us (the group)
+
+- Be honest: did you join for the swimming, the people, or the vibes?
+- Who's the first person you actually talked to in here — and have you two met in real life yet?
+- We're all on one big road trip bus — what's your job: aux cord, snacks, navigation, or asleep in the back?
+- Be real — what almost stopped you from joining, and what made you do it anyway?
+- Newest members, drop a wave and one totally random fact about you. Everyone else — make them feel at home.
+- Shout out one person here who made you feel welcome when you were brand new.
+- Tag someone you'd want on your team if SwimBuddz did a treasure hunt around Lagos.
+- If this group had an unofficial "mum" who keeps everyone in line, who's getting the title?
+
+#### Working the expanded bank
+
+- **Open with the easy wins.** Lead with Quick Hits / Hot Takes (jollof vs fried rice, cold-water 1–10). They pull replies fast and teach quieter members it's safe to answer. Save the reflective Quiet Wins / Dreams ones for once there's momentum.
+- **Alternate the temperature.** One playful/silly week, one warmer/personal week. Two deep ones back-to-back kills reply rate; two silly ones makes it feel like a quiz.
+- **Use the tag-builders** ("who taught you to swim," "shout out who welcomed you," "who's the group mum") every 2–3 weeks — those are your "@Temi this is so you" moments.
+- **Mind the seasonal tags.** The December/January and weather questions land hardest at the right time — don't drop a January-goals question in June.
 
 ---
 

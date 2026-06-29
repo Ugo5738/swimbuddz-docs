@@ -235,8 +235,9 @@ Companies love posting "investing in our people" content — and a swim cohort i
 ## Pricing & negotiation rules
 
 - **Hold the line at ₦150k retail.** Discounts only as documented bulk tiers (10% at 5+, 15% at 10+).
-- **Pilot offer is the lever** — first 5 corporate partners get added perks (no setup fees, free intro session) instead of price drops.
+- **Pilot offer is the lever** — first 5 corporate partners get added perks (waived setup fee + free intro session) instead of price drops. *Two caveats: (1) a "waived setup fee" only persuades if a standard setup/onboarding fee actually exists — define one (e.g. ₦25–50k for employee manifest setup, scheduling, and the HR outcome report) so waiving it is a real concession, not an empty line; (2) the free intro session is NOT free to us (≈ one pool slot + coach time) — budget it as customer-acquisition cost.*
 - **Never go below ₦127.5k** even at 20+ employees. Below that, coach economics break.
+- **These tiers only work at partner-pool rates.** They assume a per-swimmer pool cost of ~₦3,000/session (≈₦36k/student over 12 sessions). At premium-pool rates (~₦10k/hr ≈ ₦240k/student) every tier is underwater — pool alone exceeds the fee. Confirm the pool rate before quoting. Full cost model: [PRICING_STRATEGY.md](../club/PRICING_STRATEGY.md).
 - **Payment terms:** prefer 50% deposit / 50% at week 6. Don't accept net-90 from any company without an established commercial relationship.
 - **Include in writing:** start date, employee names, pool location, refund policy (no refund after week 2; partial refund week 1).
 
