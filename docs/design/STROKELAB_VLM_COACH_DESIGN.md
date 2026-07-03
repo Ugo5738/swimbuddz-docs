@@ -7,6 +7,8 @@
 [AI_SWIM_ANALYZER_DESIGN.md](./AI_SWIM_ANALYZER_DESIGN.md) (stroke-rate / body-roll /
 breath numbers). The funnel, auth, storage and infra in
 [STROKELAB_PUBLIC_ANALYZER_DESIGN.md](./STROKELAB_PUBLIC_ANALYZER_DESIGN.md) still hold.
+The coaching rubric is now anchored by
+[STROKELAB_TI_COACHING_KNOWLEDGE_BANK.md](./STROKELAB_TI_COACHING_KNOWLEDGE_BANK.md).
 
 ---
 
@@ -403,8 +405,10 @@ component (gate/segment/collate/underwater) ignores it and is unaffected — the
 **End-to-end flow:**
 
 ```
-Frontend (swimbuddz-analyzer page.tsx): a required Sprint/Distance/General segmented
-  control (General preselected → zero added friction) + optional level/focus/goal.
+Frontend (swimbuddz-analyzer page.tsx): Distance is the active public choice and
+  submits the TI-informed efficiency model. Sprint remains visible but disabled
+  as "coming soon"; General is hidden from the public selector. The API enum still
+  accepts sprint/distance/general for compatibility and future activation.
     │  publicAnalyzer.ts createPublicAnalysis(): fd.append("discipline", …) etc.
     ▼
 API  routers/public.py create_public_analysis_job  (+ member path routers/analyze.py):
@@ -579,8 +583,10 @@ the value is teased without the accuracy debt.
 2. **Cost ceiling → $0.06/clip**, worker-enforced. Over-budget clips drop to
    representative-only + skip holistic and emit a "not analyzed (budget)" info card,
    never a fake verdict.
-3. **Discipline input → REQUIRED single control, General preselected.** Zero added
-   friction; motivated users switch it. Drives the goal-aware grading.
+3. **Discipline input → Distance live, Sprint coming soon.** The public selector
+   defaults to Distance so the live path uses the TI-informed efficiency model.
+   Sprint stays visible but inactive until the sprint-specific rubric is ready;
+   General remains an accepted backend value but is not shown publicly.
 4. **Optional fields → discipline-only MVP**, `focus_area` as the fast-follow
    (cheapest big UX win — "you asked about your breathing"), `level` after.
 5. **`goal_text` retention/consent → adopted.** Length-clamp ≤200, never logged,
