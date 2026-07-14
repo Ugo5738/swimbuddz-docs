@@ -91,7 +91,7 @@ swimbuddz/
 
 | Domain        | README                                                 | Key Documentation                                  |
 | ------------- | ------------------------------------------------------ | -------------------------------------------------- |
-| **Community** | [docs/community/README.md](./docs/community/README.md) | Events, social swimming, WhatsApp, tier boundaries |
+| **Community** | [docs/community/README.md](./docs/community/README.md) | Annual activity calendar, events, social swimming, WhatsApp, tier boundaries |
 | **Club**      | [docs/club/README.md](./docs/club/README.md)           | Training sessions, peer leaders, pricing strategy  |
 | **Academy**   | [docs/academy/README.md](./docs/academy/README.md)     | Programs, cohorts, curriculum, coaches, milestones |
 | **Store**     | [docs/store/README.md](./docs/store/README.md)         | E-commerce, products, orders, supplier system      |
@@ -125,6 +125,9 @@ swimbuddz/
 
 | Document                                                                                                             | Description                                                     | Audience        |
 | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | --------------- |
+| [docs/marketing/CORPORATE_WELLNESS.md](./docs/marketing/CORPORATE_WELLNESS.md)                                       | Corporate wellness offer, sales playbook, pilot economics       | Founder, Sales  |
+| [docs/marketing/INTRO_TO_WATER_PILOT_OUTLINE.md](./docs/marketing/INTRO_TO_WATER_PILOT_OUTLINE.md)                   | HR-friendly one-page outline for the company-sponsored pilot    | Founder, HR     |
+| [docs/marketing/corporate_pitch/SwimBuddz_Corporate_Wellness_Pitch.pdf](./docs/marketing/corporate_pitch/SwimBuddz_Corporate_Wellness_Pitch.pdf) | Forwardable corporate wellness pitch deck                       | HR, Sales       |
 | [docs/marketing/swimbuddz_social_media_playbook.docx](./docs/marketing/swimbuddz_social_media_playbook.docx)         | Growth strategy: IG + TikTok, funnel, launch plan, DM scripts   | Marketer        |
 | [docs/marketing/swimbuddz_content_calendar.xlsx](./docs/marketing/swimbuddz_content_calendar.xlsx)                   | 12-week content calendar with captions and metrics tracker      | Marketer        |
 | [docs/marketing/swimbuddz_content_templates.docx](./docs/marketing/swimbuddz_content_templates.docx)                 | Caption templates by pillar, filming briefs, WhatsApp repurpose | Marketer        |

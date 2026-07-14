@@ -30,7 +30,15 @@ The Community Layer serves casual swimmers who want social connection and flexib
 
 ## Documentation Files
 
-Currently, this folder contains Community Layer-specific documentation. Files will be added as Community features are developed and documented.
+Current Community Layer documentation:
+
+- **[ANNUAL_ACTIVITY_CALENDAR.md](./ANNUAL_ACTIVITY_CALENDAR.md)** - Annual operating calendar across Community, Club, and Academy; online talks; website visibility; private pod rules
+- **[COMMUNITY_EXPERIENCE_DESIGN.md](./COMMUNITY_EXPERIENCE_DESIGN.md)** - Community tier strategy, member buckets, WhatsApp-first value, conversion flows
+- **[WHATSAPP_PLAYBOOK.md](./WHATSAPP_PLAYBOOK.md)** - WhatsApp Community structure, weekly rhythm, prompts, moderation, prospect group rules
+- **[TIER_BOUNDARY_POLICY.md](./TIER_BOUNDARY_POLICY.md)** - Tier access rules, open meetups, and warm boundary handling
+- **[POOL_AMBASSADOR_PROGRAM.md](./POOL_AMBASSADOR_PROGRAM.md)** - Poolside prospect engagement, volunteer scripts, and conversion tracking
+- **[VOLUNTEER_ROLES.md](./VOLUNTEER_ROLES.md)** - Volunteer roles, tiers, recognition, and reliability model
+- **[SUNSCREEN_GUIDE.md](./SUNSCREEN_GUIDE.md)** - Community-facing sunscreen and swim skincare guide
 
 ### Planned Documentation
 

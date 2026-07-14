@@ -3,7 +3,7 @@
 **Owner:** Daniel
 **Audience:** HR / People Ops / Wellness leads at Lagos employers
 **Purpose:** Sell 5-15 employee swim cohort packages as B2B revenue
-**Last updated:** 2026-05-31
+**Last updated:** 2026-07-14
 
 This doc has two halves: an **outward-facing pitch** (the content you send to HR contacts, also exportable to PDF) and an **internal playbook** (how we sell, price, deliver, and measure outcomes).
 
@@ -71,10 +71,12 @@ Most wellness perks expire at the office door. Once an employee learns to swim, 
 | **5-9 (recommended)** | **₦135,000 (10% off)** | ₦675k - ₦1.215M |
 | 10+                   | ₦127,500 (15% off)     | ₦1.275M+        |
 
+Pricing includes coaching, curriculum, onboarding, HR reporting, and pool access at a confirmed standard partner pool. Premium, island, private, or exclusive-use venues are quoted separately or added as a venue surcharge.
+
 Optional add-ons:
 
-- **Free corporate "Intro to Water" assessment session** for staff considering the program (one per company, 90 min, on us)
-- Branded merchandise (caps, towels) at cost
+- **Company-sponsored "Intro to Water" pilot** for staff considering the program (2-hour beginner-friendly session, priced by headcount/location)
+- Starter swim kits and branded merchandise (caps, goggles, swimwear, towels) quoted separately
 - Quarterly SwimBuddz Wrapped report for HR (attendance, milestones, employee testimonials — useful for internal wellness storytelling and employer-brand content for LinkedIn)
 
 ### Pilot offer (limited)
@@ -82,7 +84,7 @@ Optional add-ons:
 The first 5 corporate partners get a **pilot package**:
 
 - No setup or admin fees
-- 1 free intro session for ≥10 staff
+- Preferred pricing on the first company-sponsored Intro to Water pilot
 - Outcome report shared with HR at week 6 and week 12
 - Optional employer co-branding on graduation certificates
 
@@ -235,11 +237,91 @@ Companies love posting "investing in our people" content — and a swim cohort i
 ## Pricing & negotiation rules
 
 - **Hold the line at ₦150k retail.** Discounts only as documented bulk tiers (10% at 5+, 15% at 10+).
-- **Pilot offer is the lever** — first 5 corporate partners get added perks (waived setup fee + free intro session) instead of price drops. *Two caveats: (1) a "waived setup fee" only persuades if a standard setup/onboarding fee actually exists — define one (e.g. ₦25–50k for employee manifest setup, scheduling, and the HR outcome report) so waiving it is a real concession, not an empty line; (2) the free intro session is NOT free to us (≈ one pool slot + coach time) — budget it as customer-acquisition cost.*
+- **Pilot offer is the lever** — first 5 corporate partners get added perks (waived setup fee + preferred Intro to Water pilot pricing) instead of price drops. A "waived setup fee" only persuades if a standard setup/onboarding fee actually exists — define one (e.g. ₦25–50k for employee manifest setup, scheduling, and the HR outcome report) so waiving it is a real concession, not an empty line.
+- **Do not casually promise a free corporate intro session.** The first test session should normally be company-sponsored: HR removes cost/friction for employees, but SwimBuddz does not absorb the full delivery cost unless it is a deliberate, capped customer-acquisition spend.
 - **Never go below ₦127.5k** even at 20+ employees. Below that, coach economics break.
-- **These tiers only work at partner-pool rates.** They assume a per-swimmer pool cost of ~₦3,000/session (≈₦36k/student over 12 sessions). At premium-pool rates (~₦10k/hr ≈ ₦240k/student) every tier is underwater — pool alone exceeds the fee. Confirm the pool rate before quoting. Full cost model: [PRICING_STRATEGY.md](../club/PRICING_STRATEGY.md).
+- **These tiers are all-inclusive only at standard partner-pool rates.** They assume a per-swimmer pool cost around ₦3,000-5,000/session (≈₦36k-₦60k/student over 12 sessions). At island/premium-pool rates around ₦7,000-10,000/session (≈₦84k-₦120k/student over 12 sessions), the corporate discount tiers get tight or underwater. Confirm the pool rate before quoting. Full cost model: [PRICING_STRATEGY.md](../club/PRICING_STRATEGY.md).
 - **Payment terms:** prefer 50% deposit / 50% at week 6. Don't accept net-90 from any company without an established commercial relationship.
 - **Include in writing:** start date, employee names, pool location, refund policy (no refund after week 2; partial refund week 1).
+
+## Pool and venue pricing policy
+
+Default to a simple all-inclusive price only when the cohort uses a confirmed standard partner pool. HR buyers prefer one clean number, but that number must not hide a venue loss.
+
+- **Standard/mainland partner pool:** include pool access inside the per-employee cohort price and the corporate pilot quote.
+- **Island or premium partner pool:** quote a premium tier or add a visible venue surcharge.
+- **Private/exclusive-use pool:** quote separately after confirming lane/pool hire, access rules, lifeguard coverage, and minimum booking duration.
+- **Employer-preferred venue:** either pass the venue cost through at cost, ask the employer to pay the venue directly, or re-price the full package.
+
+Do not promise a location-specific price before confirming the pool fee, session duration, lane availability, and whether the pool charges per person, per hour, per lane, or per session.
+
+## Company-sponsored Intro to Water pilot economics
+
+Use this as the default first-step offer when HR is interested but not ready to commit to the full 12-week cohort. The positioning is: **low-friction for employees, convenient for HR, paid/sponsored by the company, and measurable via a short report.**
+
+### What the pilot includes
+
+- 2-hour beginner-friendly water-confidence session
+- Professional coach coverage
+- Pool coordination and attendance handling
+- Simple post-session feedback form
+- Short HR summary: attendance, employee feedback, and interest in continuing
+
+### Cost floor
+
+For planning, assume the premium/island pool case unless the pool is already locked:
+
+| Cost line | Assumption | Cost |
+| --- | --- | --- |
+| Pool access | ₦10k per person/hour × 2 hours | ₦20k/person |
+| Coach fee | ₦30k per 10 employees | ₦3k/person at 10 employees |
+| Direct cost | Pool + coach only | ₦23k/person |
+
+Mainland pools may come in lower (e.g. ₦7k per person/hour → ₦14k/person for pool access), but do not build the offer around the lower figure until the location is confirmed.
+
+### Quote guidance
+
+- **Default quote:** ₦300,000 all-inclusive for up to 10 employees; ₦30,000 per additional employee.
+- **Higher-margin / premium-location quote:** ₦350,000 for up to 10 employees; ₦35,000 per additional employee.
+- **Do not quote below:** ₦250,000 for up to 10 employees unless there is a specific strategic reason and the pool rate is confirmed.
+
+At ₦300k for 10 employees, the premium-location direct cost is ~₦230k, leaving ~₦70k for coordination, admin, reporting, contingency, and margin. This is thin but acceptable as a front-door corporate pilot. At ₦350k, the pilot has healthier margin and should be used when the company has budget or the pool/logistics are more demanding.
+
+### How to describe it externally
+
+Use **"company-sponsored Intro to Water pilot"** rather than **"free intro session."** Free is only true from the employee's perspective if the company pays. The sales point is that HR reduces the burden on employees while SwimBuddz handles the operational work.
+
+## Gear and equipment policy
+
+Keep gear separate from core program pricing unless the buyer explicitly asks for an all-inclusive bundle. This keeps the base offer easier to approve and avoids penalising employees who already own suitable swim gear.
+
+### Minimum participant kit
+
+- Proper swimwear
+- Towel and change of clothes
+- Swim cap and goggles are strongly recommended for the 12-week program
+
+For a one-off Intro to Water pilot, do not make premium gear a blocker. Participants can attend with basic swimwear, but the pre-session note should clearly recommend goggles and a cap for comfort, hygiene, and better learning.
+
+### Optional corporate gear add-ons
+
+| Item | When to offer | Planning price |
+| --- | --- | --- |
+| Standard swim cap | Useful for hygiene and group identity | ₦15,000/person |
+| Co-branded company + SwimBuddz swim cap | Employer-brand / graduation / team photos | ₦25,000-₦30,000/person |
+| Goggles | Strongly recommended for 12-week cohorts | ₦20,000/person |
+| Full-body swimwear | Optional for comfort/modesty; do not require by default | ₦30,000/person |
+| Fins | Optional; only if the coach recommends for the program level | Quote separately |
+
+Coach/teaching equipment such as noodles, kickboards, pull buoys, and other teaching aids should be treated as SwimBuddz/coach/venue operating equipment, not mandatory employee purchases, unless the company requests personal kits.
+
+### Bundle guidance
+
+- **Pilot comfort kit:** cap + goggles; quote only if the company wants employees fully equipped for the first session.
+- **12-week starter kit:** cap + goggles, with swimwear optional.
+- **Employer-brand kit:** co-branded cap + optional towel/merch for photos and internal comms.
+
+When possible, frame gear as a convenience and employer-brand add-on, not a prerequisite to participate. HR cares about lowering friction; avoid turning the pilot into a shopping list before employees have experienced the value.
 
 ## Internal handoff after a sale
 

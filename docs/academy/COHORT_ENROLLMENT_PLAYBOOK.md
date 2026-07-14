@@ -98,7 +98,7 @@ The offer: SwimBuddz 12-Week Adult Swim Program for [Company] employees.
 - Lagos pool, professional coaches
 - 5+ employees: 10% discount → ₦135k/employee
 - 10+ employees: 15% discount → ₦127.5k/employee
-- Optional: 1 free corporate "intro to water" assessment session for staff
+- Optional: company-sponsored "Intro to Water" pilot for interested staff
 
 Why swim instead of gym:
 - Lower injury rate (zero impact)
@@ -171,6 +171,8 @@ This is high-trust, low-cost. Even if it only lands 2-3 enrollments, it's pure m
 ## Track D — Free assessment event (Day 14-21)
 
 One Saturday between Day 14 and Day 21, run a **free 90-minute "Intro to Water" assessment session.**
+
+> **Important distinction:** This is a public consumer lead-gen event, not the corporate wellness pilot. Corporate Intro to Water sessions should normally be **company-sponsored paid pilots** because the company is using the session as an employee benefit and SwimBuddz carries real pool, coach, coordination, and reporting costs. See [CORPORATE_WELLNESS.md](../marketing/CORPORATE_WELLNESS.md#company-sponsored-intro-to-water-pilot-economics).
 
 ### What it is
 

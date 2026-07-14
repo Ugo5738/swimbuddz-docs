@@ -7,6 +7,13 @@
       "runtimeArgs": ["-l", "-c", "cd swimbuddz-frontend && npm run dev"],
       "port": 3000,
       "autoPort": false
+    },
+    {
+      "name": "analyzer",
+      "runtimeExecutable": "/bin/zsh",
+      "runtimeArgs": ["-l", "-c", "cd swimbuddz-analyzer && npm run dev -- -p 3100"],
+      "port": 3100,
+      "autoPort": false
     }
   ]
 }

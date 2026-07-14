@@ -97,10 +97,12 @@ Most wellness perks expire at the office door. Once an employee learns to swim, 
 | **5 – 9 (recommended)** | **₦135,000 (10% off)** | ₦675k – ₦1.215M |
 | 10+                   | ₦127,500 (15% off)     | ₦1.275M+        |
 
+Pricing includes coaching, curriculum, onboarding, HR reporting, and pool access at a confirmed standard partner pool. Premium, island, private, or exclusive-use venues are quoted separately.
+
 ### Optional add-ons
 
-- **Free corporate "Intro to Water" assessment session** — one per company, 90 min, on us
-- Branded merchandise (caps, towels) at cost
+- **Company-sponsored "Intro to Water" pilot** — 2-hour beginner-friendly water-confidence session, priced by headcount/location
+- Starter swim kits and branded merchandise (caps, goggles, swimwear, towels), quoted separately
 - Quarterly SwimBuddz Wrapped report for HR (attendance, milestones, employee testimonials)
 
 ### Pilot offer (limited)
@@ -108,7 +110,7 @@ Most wellness perks expire at the office door. Once an employee learns to swim, 
 The first 5 corporate partners get the pilot package:
 
 - No setup or admin fees
-- 1 free intro session for ≥10 staff
+- Preferred pricing on the first company-sponsored Intro to Water pilot
 - Outcome report shared with HR at week 6 and week 12
 - Optional employer co-branding on graduation certificates
 

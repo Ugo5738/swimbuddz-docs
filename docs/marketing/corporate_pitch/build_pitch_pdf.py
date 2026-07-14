@@ -470,13 +470,19 @@ def build(output_path: Path, company: Optional[str] = None):
         )
     )
     story.append(pricing_table)
+    story.append(
+        Paragraph(
+            "Pricing includes coaching, curriculum, onboarding, HR reporting, and pool access at a confirmed standard partner pool. Premium, island, private, or exclusive-use venues are quoted separately.",
+            s["small"],
+        )
+    )
 
     story.append(Paragraph("Optional add-ons", s["h2"]))
     story.append(
         bullet_list(
             [
-                '<b>Free corporate "Intro to Water" assessment session</b> — one per company, 90 min, on us',
-                "Branded merchandise (caps, towels) at cost",
+                '<b>Company-sponsored "Intro to Water" pilot</b> — 2-hour beginner-friendly water-confidence session, priced by headcount/location',
+                "Starter swim kits and branded merchandise (caps, goggles, swimwear, towels), quoted separately",
                 "Quarterly SwimBuddz Wrapped report for HR (attendance, milestones, employee testimonials)",
             ],
             s["bullet"],
@@ -494,7 +500,7 @@ def build(output_path: Path, company: Optional[str] = None):
         bullet_list(
             [
                 "No setup or admin fees",
-                "1 free intro session for ≥10 staff",
+                "Preferred pricing on the first company-sponsored Intro to Water pilot",
                 "Outcome report shared with HR at week 6 and week 12",
                 "Optional employer co-branding on graduation certificates",
             ],
