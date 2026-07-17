@@ -10,6 +10,27 @@ The SwimBuddz Intro to Water Pilot is a company-sponsored first experience for e
 
 Instead of asking a company to commit to a full 12-week swim cohort upfront, the pilot gives employees one low-pressure session to experience the value first. After that, only the genuinely interested employees move toward a longer program.
 
+## Why swimming
+
+Swimming is one of the few wellness activities that combines physical wellbeing, mental decompression, personal confidence, and practical water-safety value in one experience.
+
+For HR, the value is strongest when it is framed around outcomes:
+
+- Supports physical wellbeing through low-impact cardio, mobility, and recovery.
+- Helps employees decompress beyond the usual office, gym, or screen routine.
+- Builds confidence and water-safety skills they keep beyond work.
+- Includes adults who avoid water from fear, embarrassment, or limited access.
+
+For many adults, especially in Lagos, the issue is not just fitness. A lot of capable professionals never learned to swim properly, avoid water quietly, or carry real anxiety around pools, beaches, and boat trips. Helping employees begin that journey gives them more than a workout. It gives them a skill they keep, a fear they can reduce, and a healthier activity they can carry into their family and personal life.
+
+The water also creates a different kind of recovery from the usual gym or office wellness activities. It is low-impact, beginner-friendly when coached properly, and gives employees a clear sense of progress even in one session: breathing better, floating for the first time, feeling safer, or simply realising they can learn.
+
+## Why this pilot
+
+Most wellness initiatives struggle when employees have to commit before they feel the value. The pilot solves that by making the first step easy, sponsored, and low-pressure.
+
+HR gets a practical way to test interest before approving a full program, while employees get a safe first experience that helps them decide whether they want to continue. The result is a cleaner participation signal: people are not signing up because of an announcement; they are choosing the next step after experiencing the activity.
+
 ## Why it works for HR
 
 - **Low friction for employees:** the company sponsors the first experience, so employees can try it with little or no personal cost.
@@ -38,7 +59,7 @@ Instead of asking a company to commit to a full 12-week swim cohort upfront, the
 
 - Pool coordination
 - Professional coach coverage
-- Session flow and safety structure
+- Session flow, safety structure, and teaching aids such as kickboards, pool noodles, or float supports where needed
 - Pre-session guidance on what to bring
 - Post-session feedback collection
 - Short HR summary after the session

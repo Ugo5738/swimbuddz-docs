@@ -126,7 +126,7 @@ swimbuddz/
 | Document                                                                                                             | Description                                                     | Audience        |
 | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | --------------- |
 | [docs/marketing/CORPORATE_WELLNESS.md](./docs/marketing/CORPORATE_WELLNESS.md)                                       | Corporate wellness offer, sales playbook, pilot economics       | Founder, Sales  |
-| [docs/marketing/INTRO_TO_WATER_PILOT_OUTLINE.md](./docs/marketing/INTRO_TO_WATER_PILOT_OUTLINE.md)                   | HR-friendly one-page outline for the company-sponsored pilot    | Founder, HR     |
+| [docs/marketing/intro_to_water_pilot/INTRO_TO_WATER_PILOT_OUTLINE.md](./docs/marketing/intro_to_water_pilot/INTRO_TO_WATER_PILOT_OUTLINE.md) | HR-friendly one-page outline for the company-sponsored pilot    | Founder, HR     |
 | [docs/marketing/corporate_pitch/SwimBuddz_Corporate_Wellness_Pitch.pdf](./docs/marketing/corporate_pitch/SwimBuddz_Corporate_Wellness_Pitch.pdf) | Forwardable corporate wellness pitch deck                       | HR, Sales       |
 | [docs/marketing/swimbuddz_social_media_playbook.docx](./docs/marketing/swimbuddz_social_media_playbook.docx)         | Growth strategy: IG + TikTok, funnel, launch plan, DM scripts   | Marketer        |
 | [docs/marketing/swimbuddz_content_calendar.xlsx](./docs/marketing/swimbuddz_content_calendar.xlsx)                   | 12-week content calendar with captions and metrics tracker      | Marketer        |
