@@ -1,6 +1,6 @@
 # SwimBuddz Tier Boundary Policy
 
-*Last updated: April 2026*
+_Last updated: April 2026_
 
 ## Purpose
 
@@ -17,6 +17,7 @@ This document defines how SwimBuddz handles members from different tiers (Commun
 ## Session Types and Access Rules
 
 ### Academy Sessions
+
 **Access: Enrolled cohort members only**
 
 - Only members enrolled in the specific cohort can attend
@@ -24,22 +25,28 @@ This document defines how SwimBuddz handles members from different tiers (Commun
 - Academy has a curriculum — dropping into week 7 doesn't work pedagogically and is unfair to the cohort
 
 **If a non-enrolled member shows up:**
+
 > "The academy runs in cohorts — everyone starts together and progresses together. The next cohort starts [date]. Want me to put you on the list?"
 
 ### Club Sessions
+
 **Access: Active club members only**
 
-- Only members with an active club membership (quarterly, 6-month, or annual) can participate in the structured session
+- Only members with effective Club access can participate in the structured
+  session. That access may come from a direct Club payment, an active Academy
+  entitlement, or the one-month post-Academy graduation bridge.
 - Community members may swim at the same pool at the same time, but they are not part of the club session
 - They don't join the warm-up, don't do the challenge block, don't get tracked on the leaderboard
 - No "just this once" exceptions — consistency protects the value for paying club members
 
 **If a community member tries to join the session:**
+
 > "Hey, great to see you! The club session is for club members — we've got a structured programme going and the group is on week [X] of their cycle. You're welcome to swim on your own while we're here, and if you want to join the group properly, I can connect you with [founder] about signing up. We'd love to have you."
 
 **Why this matters:** If community members get the club experience for N20k/year, no one will pay N42.5k/quarter. The boundary protects the product.
 
 ### Community / Open Sessions
+
 **Access: Any active member at any tier**
 
 - Community, Club, and Academy members can all attend
@@ -48,6 +55,7 @@ This document defines how SwimBuddz handles members from different tiers (Commun
 - This is the release valve — when a community member says "I want to swim with everyone," point them here
 
 ### Open Meetups (Monthly)
+
 **Access: Any active member at any tier + guests**
 
 - The one session where all tiers swim together
@@ -83,7 +91,7 @@ This document defines how SwimBuddz handles members from different tiers (Commun
 
 ### Scenario 5: Club member wants to attend an academy session for extra coaching
 
-**Don't allow as a drop-in.** Academy coaching is part of the cohort experience. If a club member wants skill development, they can enroll in the next academy cohort. Academy and club memberships can be held simultaneously.
+**Don't allow as a drop-in.** Academy coaching is part of the cohort experience. If a Club member wants skill development, they can enroll in the next Academy cohort. Once Academy is active, it includes Club access; a separate Club payment is not required during that entitlement.
 
 ### Scenario 6: Someone shows up who isn't a member at all
 
@@ -96,6 +104,7 @@ This document defines how SwimBuddz handles members from different tiers (Commun
 ## How Pod Leads Enforce Boundaries
 
 ### Do:
+
 - Be warm and welcoming — they showed up, that's a good sign
 - Be clear and firm — no ambiguity about what's allowed
 - Always offer the next step — never just say "no"
@@ -103,6 +112,7 @@ This document defines how SwimBuddz handles members from different tiers (Commun
 - Flag repeat boundary-testers to the SwimBuddz team
 
 ### Don't:
+
 - Make exceptions ("just this once" destroys the model)
 - Be confrontational or gatekeepy
 - Discuss pricing at the pool — redirect to the founder or website
@@ -114,16 +124,17 @@ This document defines how SwimBuddz handles members from different tiers (Commun
 
 The app should enforce these rules at the sign-in level:
 
-| Session Type | Community | Club | Academy (enrolled) | Academy (not enrolled) | Non-member |
-|-------------|-----------|------|--------------------|----------------------|------------|
-| Academy Session | ❌ | ❌ | ✅ | ❌ | ❌ |
-| Club Session | ❌ | ✅ | ✅ (if also club member) | ❌ | ❌ |
-| Open / Community Session | ✅ | ✅ | ✅ | ❌ | ❌ |
-| Open Meetup | ✅ | ✅ | ✅ | ❌ | ❌ (guest list) |
+| Session Type             | Community | Club | Academy (enrolled)                      | Academy (not enrolled) | Non-member      |
+| ------------------------ | --------- | ---- | --------------------------------------- | ---------------------- | --------------- |
+| Academy Session          | ❌        | ❌   | ✅                                      | ❌                     | ❌              |
+| Club Session             | ❌        | ✅   | ✅ (Club inherited from active Academy) | ❌                     | ❌              |
+| Open / Community Session | ✅        | ✅   | ✅                                      | ❌                     | ❌              |
+| Open Meetup              | ✅        | ✅   | ✅                                      | ❌                     | ❌ (guest list) |
 
 **When a member is blocked from signing in, the app should:**
+
 1. Show a friendly message explaining why
-2. Show what they *can* do (upcoming open sessions, upgrade path)
+2. Show what they _can_ do (upcoming open sessions, upgrade path)
 3. Never use language like "access denied" or "unauthorized"
 
 **Example app messages:**
