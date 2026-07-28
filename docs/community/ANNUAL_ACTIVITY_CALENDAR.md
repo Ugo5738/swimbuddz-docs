@@ -601,6 +601,34 @@ Public cards should answer:
 
 Do not overload public cards with operational details. Logged-in/detail pages can show more.
 
+### Platform Implementation Status
+
+The first website calendar slice was implemented in July 2026:
+
+- `GET /api/v1/calendar` is a gateway-owned read model that combines existing
+  Sessions and Events records. It does not create a third calendar source of
+  truth.
+- `/calendar` is the public Community view for prospects and members.
+- `/account/calendar` is the signed-in view with Community, Club, and Academy
+  filters.
+- Club pod and Academy cohort privacy is inherited from the existing
+  session-access evaluator. The browser does not decide whether a private
+  session is visible.
+- The mobile view uses an agenda layout; desktop supports month and agenda
+  views.
+- Calendar records retain the activity timezone so globally distributed
+  Academy cohorts can be represented without assuming Lagos time.
+
+Still to add:
+
+- admin operations calendar combining drafts, volunteer tasks, assessments,
+  and follow-up work;
+- location, online/physical, free/paid, and activity-type filters;
+- RSVP and payment status directly on calendar items;
+- downloadable calendar feeds (`.ics`) and Google/Apple Calendar links;
+- recurring annual-calendar templates that create draft source records for
+  admin approval.
+
 ---
 
 ## Product Implications
@@ -632,7 +660,9 @@ This calendar suggests the platform eventually needs an event model that support
 | `location_type` | online, physical, hybrid |
 | `privacy_mode` | normal, private_venue, anonymous_attendees, no_media, explicit_media_consent |
 
-This is not an immediate engineering requirement, but it should guide future Events/Calendar product work.
+The first calendar read model now exists. This broader taxonomy should guide
+the next Events/Calendar schema work rather than being forced into the initial
+feed prematurely.
 
 ---
 

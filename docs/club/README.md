@@ -35,6 +35,7 @@ The Club Layer serves committed swimmers with performance goals who want structu
 - **[POD_OPERATIONS.md](./POD_OPERATIONS.md)** - How Club pods are constituted, named, and run (size, naming, lifecycle, backend model)
 - **[POD_LEAD_GUIDE.md](./POD_LEAD_GUIDE.md)** - What a Pod Lead does at and around the Saturday session (formerly PEER_LEADER_GUIDE.md)
 - **[PRICING_STRATEGY.md](./PRICING_STRATEGY.md)** - Club membership fees, transition bridges, Pod Lead perks
+- **[SESSION_COSTING_AND_LOCATION_PRICING.md](./SESSION_COSTING_AND_LOCATION_PRICING.md)** - Operating areas, effective-dated pool/refreshment rates, session budget snapshots, and location pricing
 
 ### Planned Documentation
 

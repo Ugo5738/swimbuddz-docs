@@ -92,6 +92,7 @@ swimbuddz/
 | Domain        | README                                                 | Key Documentation                                  |
 | ------------- | ------------------------------------------------------ | -------------------------------------------------- |
 | **Community** | [docs/community/README.md](./docs/community/README.md) | Annual activity calendar, events, social swimming, WhatsApp, tier boundaries |
+| **Session costing** | [docs/club/SESSION_COSTING_AND_LOCATION_PRICING.md](./docs/club/SESSION_COSTING_AND_LOCATION_PRICING.md) | Operating areas, pool and refreshment rates, session budget snapshots, and location pricing |
 | **Club**      | [docs/club/README.md](./docs/club/README.md)           | Training sessions, peer leaders, pricing strategy  |
 | **Academy**   | [docs/academy/README.md](./docs/academy/README.md)     | Programs, cohorts, curriculum, coaches, milestones |
 | **Store**     | [docs/store/README.md](./docs/store/README.md)         | E-commerce, products, orders, supplier system      |
