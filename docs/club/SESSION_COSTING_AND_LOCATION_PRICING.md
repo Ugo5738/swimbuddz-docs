@@ -1,6 +1,6 @@
 # Session Costing and Location Pricing
 
-_Status: proposed architecture for implementation_
+_Status: phase 1, quote engine, and session snapshots implemented; reconciliation pending_
 
 _Last updated: July 2026_
 
@@ -327,6 +327,31 @@ Services continue to communicate over HTTP. A pool or cost table must not
 foreign-key directly into another service's tables.
 
 ## Implementation Sequence
+
+### Current implementation
+
+The July 2026 implementation provides:
+
+- `operating_areas` and `pools.operating_area_id`;
+- effective-dated, activity-scoped `pool_rates`;
+- effective-dated `operating_cost_rates` at global, area, or pool scope;
+- rate resolution by activity, date, day, time band, area hierarchy, and
+  charging basis;
+- an admin catalogue at `/admin/pools/pricing`;
+- operating-area selection in the Pool Registry;
+- an editable quote workflow in the session create/edit form;
+- session-owned cost-line snapshots, expected attendance, margin method,
+  margin value, estimated cost, and booking price.
+
+The same pool and start time can produce different quotes for Community, Club,
+and Academy because every rate has an `activity_scope`. Rates with `all` apply
+as fallbacks; activity-specific rates win when both match.
+
+The current session snapshot is stored on the session record as structured cost
+lines rather than separate snapshot and line tables. This is sufficient for the
+first admin workflow and preserves history when catalogue rates change. Formal
+snapshot versioning, event costing, actual expenses, and ledger reconciliation
+remain later phases.
 
 ### Phase 1: geography and rate catalogue
 

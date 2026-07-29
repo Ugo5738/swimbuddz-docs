@@ -79,11 +79,13 @@ pools-worker (ARQ cron on queue arq:pools, every 3h)
 pools-service (FastAPI, :8014) — weather module mounted alongside pool routes
    ├─ GET /weather?lat&lon[&date]          ── cache-aside read
    ├─ GET /weather/pools/{pool_id}[&date]  ── by-pool read (resolve coords from Pool on miss)
+   ├─ GET /weather/pools/{pool_id}/window-summary?starts_at&ends_at
+   │                                      ── canonical window interpretation
    ├─ POST /admin/weather/refresh          ── run the pre-fetch inline
    └─ GET  /admin/weather/snapshots        ── debug/health
 ```
 
-Module layout (`services/pools_service/weather/`): `models.py` (WeatherSnapshot), `schemas.py`, `provider.py` (provider abstraction + Open-Meteo), `snapshot_service.py` (cache-aside + storage), `refresh.py` (direct Pool query + orchestration), `routers.py` (member + admin), `tests/`.
+Module layout (`services/pools_service/weather/`): `models.py` (WeatherSnapshot), `schemas.py`, `provider.py` (provider abstraction + Open-Meteo), `snapshot_service.py` (cache-aside + storage), `summary.py` (canonical window aggregation and interpretation), `refresh.py` (direct Pool query + orchestration), `routers.py` (member + admin), `tests/`.
 
 ### Provider abstraction
 `provider.py` defines a `WeatherProvider` protocol with one method, `fetch_forecast(...) -> ForecastData`, and an `OpenMeteoProvider`. `get_provider()` selects by config. Parsing (`parse_open_meteo`) is split from the HTTP call so it's unit-testable without a network.
@@ -130,6 +132,7 @@ See [API_ENDPOINTS.md](../../swimbuddz-backend/docs/API_ENDPOINTS.md#weather-poo
 
 - `GET /api/v1/weather?lat&lon[&date]` — member, cached forecast for coordinates.
 - `GET /api/v1/weather/pools/{pool_id}[&date]` — member, cached forecast for a pool.
+- `GET /api/v1/weather/pools/{pool_id}/window-summary?starts_at&ends_at` — member, provider-independent summary for an inclusive time window. This is the canonical owner of WMO labels, condition classification, rain thresholds, and explanation text used by both session cards and communications emails.
 - `POST /api/v1/admin/weather/refresh` — admin, run the pre-fetch inline.
 - `GET /api/v1/admin/weather/snapshots` — admin, list cached snapshots.
 

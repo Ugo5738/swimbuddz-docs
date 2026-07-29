@@ -4,7 +4,7 @@
 
 All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*` routes are service-to-service (service-role JWT, not gateway-exposed).
 
-**903 operations across 100 tags.**
+**962 operations across 102 tags.**
 
 ## academy
 
@@ -259,6 +259,24 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | PUT | `/api/v1/payments/admin/payouts/{payout_id}/fail` | Fail Payout |
 | POST | `/api/v1/payments/admin/payouts/{payout_id}/initiate-transfer` | Initiate Transfer |
 | PUT | `/api/v1/payments/admin/payouts/{payout_id}/recalculate` | Recalculate Payout |
+
+## admin-pool-pricing
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/pools/pricing/areas` | List Operating Areas |
+| POST | `/api/v1/admin/pools/pricing/areas` | Create Operating Area |
+| PATCH | `/api/v1/admin/pools/pricing/areas/{area_id}` | Update Operating Area |
+| DELETE | `/api/v1/admin/pools/pricing/areas/{area_id}` | Deactivate Operating Area |
+| GET | `/api/v1/admin/pools/pricing/cost-rates` | List Operating Cost Rates |
+| POST | `/api/v1/admin/pools/pricing/cost-rates` | Create Operating Cost Rate |
+| PATCH | `/api/v1/admin/pools/pricing/cost-rates/{rate_id}` | Update Operating Cost Rate |
+| DELETE | `/api/v1/admin/pools/pricing/cost-rates/{rate_id}` | Deactivate Operating Cost Rate |
+| GET | `/api/v1/admin/pools/pricing/pool-rates` | List Pool Rates |
+| POST | `/api/v1/admin/pools/pricing/pool-rates` | Create Pool Rate |
+| PATCH | `/api/v1/admin/pools/pricing/pool-rates/{rate_id}` | Update Pool Rate |
+| DELETE | `/api/v1/admin/pools/pricing/pool-rates/{rate_id}` | Deactivate Pool Rate |
+| POST | `/api/v1/admin/pools/pricing/quote` | Quote Session Cost |
 
 ## admin-pool-related
 
@@ -809,6 +827,9 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/events/{event_id}` | Get Event |
 | PATCH | `/api/v1/events/{event_id}` | Update Event |
 | DELETE | `/api/v1/events/{event_id}` | Delete Event |
+| GET | `/api/v1/events/{event_id}/invites` | List Event Invites |
+| POST | `/api/v1/events/{event_id}/invites` | Add Event Invites |
+| DELETE | `/api/v1/events/{event_id}/invites/{member_id}` | Remove Event Invite |
 | POST | `/api/v1/events/{event_id}/rsvp` | Create Or Update Rsvp |
 | GET | `/api/v1/events/{event_id}/rsvps` | List Event Rsvps |
 
@@ -829,6 +850,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 |--------|------|---------|
 | GET | `/api/v1/internal/academy/coaches/{coach_member_id}/cohort-ids` | List Cohort Ids For Coach |
 | GET | `/api/v1/internal/academy/cohorts` | List Cohorts Internal |
+| POST | `/api/v1/internal/academy/cohorts/check-enrollments/batch` | Check Cohort Enrollments Batch Internal |
 | GET | `/api/v1/internal/academy/cohorts/{cohort_id}` | Get Cohort Internal |
 | GET | `/api/v1/internal/academy/cohorts/{cohort_id}/check-enrollment/{member_id}` | Check Cohort Enrollment Internal |
 | GET | `/api/v1/internal/academy/cohorts/{cohort_id}/enrolled-students` | Get Cohort Enrolled Students Internal |
@@ -853,6 +875,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/members/coaches/{member_id}/readiness` | Get Coach Readiness Data |
 | GET | `/api/v1/internal/members/joined-tier` | Get Members Who Joined Tier |
 | GET | `/api/v1/internal/members/pods` | List Pods Internal |
+| POST | `/api/v1/internal/members/pods/rosters/batch` | Get Pod Rosters Batch Internal |
 | GET | `/api/v1/internal/members/pods/{pod_id}` | Get Pod Internal |
 | GET | `/api/v1/internal/members/search` | Search Members |
 | GET | `/api/v1/internal/members/{member_id}` | Get Member By Id |
@@ -868,6 +891,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/payments/paystack/recipients` | Internal Paystack Create Recipient |
 | POST | `/api/v1/internal/payments/paystack/resolve-account` | Internal Paystack Resolve Account |
 | GET | `/api/v1/internal/payments/paystack/verify/{reference}` | Internal Verify Paystack Reference |
+| POST | `/api/v1/internal/payments/recurring-payouts/cohorts/{cohort_id}/extend` | Internal Extend Recurring Payouts |
 | POST | `/api/v1/internal/payments/{reference}/annotate-refund` | Annotate Refund Obligation |
 | POST | `/api/v1/internal/reporting/generate-snapshot` | Trigger Snapshot Generation |
 | POST | `/api/v1/internal/sessions/bookings/bulk` | Bulk Create Bookings |
@@ -888,6 +912,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/sessions/member/{member_auth_id}/session-commitments` | List Member Session Commitments |
 | GET | `/api/v1/internal/sessions/range-stats` | Get Session Range Stats |
 | GET | `/api/v1/internal/sessions/scheduled` | Get Scheduled Sessions |
+| POST | `/api/v1/internal/sessions/summaries/batch` | Get Session Summaries Batch |
 | GET | `/api/v1/internal/sessions/{session_id}` | Get Session By Id |
 | GET | `/api/v1/internal/sessions/{session_id}/access` | Get Member Session Access |
 | GET | `/api/v1/internal/sessions/{session_id}/bookings/by-member/{member_id}` | Get Booking For Session Member |
@@ -923,6 +948,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 |--------|------|---------|
 | POST | `/api/v1/internal/volunteer/ensure-profile` | Ensure Volunteer Profile |
 | POST | `/api/v1/internal/volunteer/log-hours` | Internal Log Hours |
+| GET | `/api/v1/internal/volunteer/media-vault-assignments` | Get Media Vault Assignments |
 | GET | `/api/v1/internal/volunteer/member-summary/{member_auth_id}` | Get Member Volunteer Summary |
 | POST | `/api/v1/internal/volunteer/opportunities/cancel-for-context` | Cancel Opportunities For Context |
 | POST | `/api/v1/internal/volunteer/opportunities/from-session-template` | Materialise From Session Template |
@@ -1054,6 +1080,48 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/media/objects/sign` | Sign Object |
 | POST | `/api/v1/internal/media/objects/upload` | Upload Object |
 | POST | `/api/v1/internal/media/objects/verify` | Verify Object |
+
+## media-vaults
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/media/vaults` | List Vaults |
+| POST | `/api/v1/media/vaults` | Create Vault |
+| GET | `/api/v1/media/vaults/guest/{token}` | Get Guest Vault |
+| POST | `/api/v1/media/vaults/guest/{token}/batches` | Create Guest Batch |
+| POST | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/initiate` | Initiate Guest Upload |
+| DELETE | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/{item_id}` | Abort Guest Upload |
+| POST | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/{item_id}/complete` | Complete Guest Upload |
+| GET | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/{item_id}/parts` | Resume Guest Parts |
+| POST | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/{item_id}/parts` | Sign Guest Parts |
+| GET | `/api/v1/media/vaults/{vault_id}` | Get Vault |
+| PATCH | `/api/v1/media/vaults/{vault_id}` | Update Vault |
+| GET | `/api/v1/media/vaults/{vault_id}/bandwidth` | Bandwidth Summary |
+| POST | `/api/v1/media/vaults/{vault_id}/batches` | Create Member Batch |
+| POST | `/api/v1/media/vaults/{vault_id}/batches/{batch_id}/uploads/initiate` | Initiate Member Upload |
+| DELETE | `/api/v1/media/vaults/{vault_id}/batches/{batch_id}/uploads/{item_id}` | Abort Member Upload |
+| POST | `/api/v1/media/vaults/{vault_id}/batches/{batch_id}/uploads/{item_id}/complete` | Complete Member Upload |
+| GET | `/api/v1/media/vaults/{vault_id}/batches/{batch_id}/uploads/{item_id}/parts` | Resume Member Parts |
+| POST | `/api/v1/media/vaults/{vault_id}/batches/{batch_id}/uploads/{item_id}/parts` | Sign Member Parts |
+| GET | `/api/v1/media/vaults/{vault_id}/exports` | List Exports |
+| POST | `/api/v1/media/vaults/{vault_id}/exports` | Create Export |
+| POST | `/api/v1/media/vaults/{vault_id}/exports/{export_id}/download` | Authorize Export Download |
+| GET | `/api/v1/media/vaults/{vault_id}/grants` | List Grants |
+| POST | `/api/v1/media/vaults/{vault_id}/grants` | Create Grant |
+| POST | `/api/v1/media/vaults/{vault_id}/grants/sync-volunteers` | Sync Volunteer Grants |
+| DELETE | `/api/v1/media/vaults/{vault_id}/grants/{grant_id}` | Revoke Grant |
+| GET | `/api/v1/media/vaults/{vault_id}/guest-links` | List Guest Links |
+| POST | `/api/v1/media/vaults/{vault_id}/guest-links` | Create Guest Link |
+| DELETE | `/api/v1/media/vaults/{vault_id}/guest-links/{link_id}` | Revoke Guest Link |
+| GET | `/api/v1/media/vaults/{vault_id}/items` | List Vault Items |
+| PATCH | `/api/v1/media/vaults/{vault_id}/items` | Bulk Review Items |
+| PATCH | `/api/v1/media/vaults/{vault_id}/items/{item_id}` | Review Item |
+| POST | `/api/v1/media/vaults/{vault_id}/items/{item_id}/download` | Authorize Item Download |
+| POST | `/api/v1/media/vaults/{vault_id}/items/{item_id}/preview/generate` | Request Item Preview |
+| POST | `/api/v1/media/vaults/{vault_id}/items/{item_id}/takedown` | Request Takedown |
+| POST | `/api/v1/media/vaults/{vault_id}/publish` | Publish Items |
+| PATCH | `/api/v1/media/vaults/{vault_id}/takedowns/{takedown_id}` | Resolve Takedown |
+| POST | `/api/v1/media/vaults/{vault_id}/transfers/{transfer_id}/complete` | Complete Transfer Measurement |
 
 ## members
 
@@ -1399,6 +1467,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 |--------|------|---------|
 | GET | `/api/v1/weather` | Get Weather |
 | GET | `/api/v1/weather/pools/{pool_id}` | Get Weather For Pool |
+| GET | `/api/v1/weather/pools/{pool_id}/window-summary` | Get Weather Window Summary For Pool |
 
 ## weekly-digest
 

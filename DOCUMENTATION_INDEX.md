@@ -95,6 +95,7 @@ swimbuddz/
 | **Session costing** | [docs/club/SESSION_COSTING_AND_LOCATION_PRICING.md](./docs/club/SESSION_COSTING_AND_LOCATION_PRICING.md) | Operating areas, pool and refreshment rates, session budget snapshots, and location pricing |
 | **Club**      | [docs/club/README.md](./docs/club/README.md)           | Training sessions, peer leaders, pricing strategy  |
 | **Academy**   | [docs/academy/README.md](./docs/academy/README.md)     | Programs, cohorts, curriculum, coaches, milestones |
+| **Modular Academy pathways** | [docs/academy/MODULAR_CURRICULUM_PATHWAY.md](./docs/academy/MODULAR_CURRICULUM_PATHWAY.md) | Stackable foundation and stroke modules, prerequisite credit, sales model, and rollout |
 | **Store**     | [docs/store/README.md](./docs/store/README.md)         | E-commerce, products, orders, supplier system      |
 
 ### Company, Brand & Strategy

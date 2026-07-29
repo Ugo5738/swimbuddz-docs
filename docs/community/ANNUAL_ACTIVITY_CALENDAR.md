@@ -154,6 +154,63 @@ Academy sessions are cohort-only. Public events can promote an Academy cohort, e
 
 ---
 
+## Buddz Cup and the Quarter-End Community Meet
+
+Do not schedule a separate Buddz Cup on the morning of another full quarterly
+event. Make it one quarter-end meet with two deliberately different blocks.
+
+### Block 1: Club and Academy Performance
+
+This is the structured morning block for active Club members and eligible
+Academy alumni:
+
+- warm-up and safety briefing;
+- friendly timed swims or personal-best attempts;
+- pod relays and mixed Academy-alumni relays;
+- simple points, officiating, and coach observation;
+- no requirement to present it as a formal competitive gala.
+
+This block is where Club practice produces visible progress. Community-only
+members do not automatically enter technical races because annual Community
+membership is not a substitute for training, readiness, or safety clearance.
+They may enter a separately approved novice or fun category when the event
+design supports it.
+
+### Block 2: Community Festival
+
+The later block opens the day into the wider SwimBuddz Community, invited
+guests, and prospects:
+
+- controlled open-swim lanes or zones grouped by confidence;
+- fun, low-skill relays and games with explicit safety rules;
+- food, conversation, music, photos, and member stories;
+- awards from the performance block;
+- a try-water or assessment booking station, not an unplanned free lesson;
+- Bring-a-Buddy and Community-to-Club calls to action.
+
+The Community part is the **belonging, celebration, and acquisition layer**.
+It lets non-Club members share the culture and celebrate progress without
+giving away Club training or placing unassessed guests into technical
+competition.
+
+### One Day, Separate Access
+
+Use one venue and one event identity, but operate separate registration:
+
+- performance-block eligibility;
+- Community-festival ticket or RSVP;
+- guest and prospect capacity;
+- swimmer confidence/safety declaration;
+- media consent;
+- food and non-swimmer headcount.
+
+Wristbands, check-in lists, or booking entitlements should distinguish the
+blocks. Awards can close the shared day. This format also prevents Buddz Cup,
+Bring-a-Buddy Day, and the quarter-end meet from competing for the same
+weekend, budget, volunteers, and audience.
+
+---
+
 ## Access And Privacy Levels
 
 The website calendar should support access and visibility separately.
@@ -603,19 +660,33 @@ Do not overload public cards with operational details. Logged-in/detail pages ca
 
 ### Platform Implementation Status
 
-The first website calendar slice was implemented in July 2026:
+The website calendar and its publishing workflow were expanded in July 2026:
 
 - `GET /api/v1/calendar` is a gateway-owned read model that combines existing
   Sessions and Events records. It does not create a third calendar source of
   truth.
-- `/calendar` is the public Community view for prospects and members.
-- `/account/calendar` is the signed-in view with Community, Club, and Academy
-  filters.
+- admins create and publish training records from `/admin/sessions`;
+- admins create and publish talks, open swims, assessments, social events,
+  public Club listings, quarterly meets, and Wrapped from
+  `/admin/community/events`;
+- draft records stay out of the public calendar;
+- `/calendar` shows all public Community, Club, and Academy audience records,
+  not only Community records;
+- `/account/calendar` adds eligible member-only and invite-only items;
+- audience (`community`, `club`, `academy`) is separate from visibility
+  (`public`, `members_only`, `invite_only`) and attendance access;
+- a public Academy assessment can therefore be labelled Academy while remaining
+  visible to prospects;
+- a public Club listing can show a location at a high level without exposing a
+  private session roster or venue;
 - Club pod and Academy cohort privacy is inherited from the existing
   session-access evaluator. The browser does not decide whether a private
   session is visible.
-- The mobile view uses an agenda layout; desktop supports month and agenda
-  views.
+- the default List view shows the next 12 months without requiring week-by-week
+  calendar navigation;
+- the Month view supports visual date browsing;
+- filters cover audience, Online, Open Swim, Social, Assessment, location,
+  Public, Members-only, and Invite-only;
 - Calendar records retain the activity timezone so globally distributed
   Academy cohorts can be represented without assuming Lagos time.
 
@@ -623,11 +694,25 @@ Still to add:
 
 - admin operations calendar combining drafts, volunteer tasks, assessments,
   and follow-up work;
-- location, online/physical, free/paid, and activity-type filters;
 - RSVP and payment status directly on calendar items;
 - downloadable calendar feeds (`.ics`) and Google/Apple Calendar links;
 - recurring annual-calendar templates that create draft source records for
   admin approval.
+
+### Why the Calendar Can Be Empty
+
+The calendar is a publication surface, not a hard-coded annual poster. It only
+shows source records that:
+
+- fall within the requested date range;
+- are published or scheduled;
+- are visible to the current visitor;
+- pass the server-owned tier, cohort, pod, or invitation rules.
+
+An empty calendar therefore means no eligible Sessions or Events have been
+published for that period. The annual planning table in this document does not
+automatically create database records. Admin must create the real dated
+activity, confirm its venue and capacity, then publish it.
 
 ---
 
