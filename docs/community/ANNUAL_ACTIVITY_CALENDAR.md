@@ -291,7 +291,7 @@ Do not make every one a heavy public webinar. Mix formats:
 |---|---:|---|---|
 | Public Water Room talks | 8 | Prospects + full community | Education, awareness, lead nurturing |
 | Member-only conversations | 2 | Existing members | Retention, feedback, belonging |
-| Academy/Club conversion session | 1 | Academy prospects, students, graduates | Move people to the next step |
+| Academy/Club conversion session | 1 | Academy prospects + graduates | Move people to the next step |
 | Online Wrapped / town hall | 1 | Everyone | Reflection, proof, renewal, next-year reveal |
 
 ### Default Online Meeting Format
@@ -361,20 +361,20 @@ Track:
 
 ## Annual Online Topic Map
 
-| Month | Topic | Audience | Suggested speaker | Resource pack | CTA |
-|---|---|---|---|---|---|
-| January | Build Your Swim Year | Everyone | Founder + Club member | Goal worksheet, SwimBuddz journey map | Set swim goal, join community, RSVP to open swim |
-| February | Learning To Swim As An Adult | Prospects | Academy coach + adult beginner | Fear-of-water guide, beginner FAQ | Book free/paid assessment |
-| March | Swimming For Fitness And Stress | Prospects + members | Coach or health/wellness guest | Weekly swim habit guide | Join Academy or Club |
-| April | Water Safety And Adult Learn-To-Swim | Public | Coach + safety guest | Water safety checklist, assessment guide | Attend Intro-to-Water assessment |
-| May | Skin, Hair, Chlorine, And Gear | Community + prospects | Dermatologist/skin expert + member | Gear checklist, skincare routine | Store/community engagement |
-| June | Staying Consistent In Rainy Season | Members | Founder + Pod Lead | Rainy season swim plan | Retention, RSVP, pod check-ins |
-| July | Member Stories: Beginner To Swimmer | Prospects + members | 2-3 members/alumni | Transformation story pack | Academy waitlist, Club inquiry |
-| August | Beach And Open-Water Confidence | Members + prospects | Coach + experienced swimmer | Open-water safety primer | RSVP to beach/pool social |
-| September | Back To Routine: Pick Your Path | Prospects + members | Founder | Community/Club/Academy path guide | Enroll, join Club, join community |
-| October | Club Life: Training, Pods, PBs | Community + Club prospects | Pod Leads + Club member | Pod guide, Club FAQ | Club conversion |
-| November | Swimming For Busy Professionals | Prospects + corporate leads | Founder + corporate member | Corporate wellness one-pager | Corporate/premium Academy inquiry |
-| December | SwimBuddz Wrapped Online | Everyone | Founder + members | Year highlights, next-year calendar | Renew, refer, RSVP to Wrapped party |
+| Month | Topic | Type | Audience | Suggested speaker | Resource pack | CTA |
+|---|---|---|---|---|---|---|
+| January | Build Your Swim Year | Public Water Room talk | Prospects + full community | Founder + Club member | Goal worksheet, SwimBuddz journey map | Set swim goal, join community, RSVP to open swim |
+| February | Learning To Swim As An Adult | Public Water Room talk | Prospects + full community | Academy coach + adult beginner | Fear-of-water guide, beginner FAQ | Book free/paid assessment |
+| March | Swimming For Fitness And Stress | Public Water Room talk | Prospects + full community | Coach or health/wellness guest | Weekly swim habit guide | Join Academy or Club |
+| April | Water Safety And Adult Learn-To-Swim | Public Water Room talk | Prospects + full community | Coach + safety guest | Water safety checklist, assessment guide | Attend Intro-to-Water assessment |
+| May | Skin, Hair, Chlorine, And Gear | Public Water Room talk | Prospects + full community | Dermatologist/skin expert + member | Gear checklist, skincare routine | Store/community engagement |
+| June | Staying Consistent In Rainy Season | Member-only community conversation | Existing members | Founder + Pod Lead | Rainy season swim plan | Retention, RSVP, pod check-ins |
+| July | Member Stories: Beginner To Swimmer | Member-only community conversation | Existing members | 2-3 members/alumni | Transformation story pack | Share progress, mentor newer members, strengthen retention |
+| August | Beach And Open-Water Confidence | Public Water Room talk | Prospects + full community | Coach + experienced swimmer | Open-water safety primer | RSVP to beach/pool social |
+| September | Back To Routine: Pick Your Path | Public Water Room talk | Prospects + full community | Founder | Community/Club/Academy path guide | Enroll, join Club, join community |
+| October | Club Life: Training, Pods, PBs | Academy/Club conversion session | Academy prospects + graduates | Pod Leads + Club member | Pod guide, Club FAQ | Choose a Club location and continue training |
+| November | Swimming For Busy Professionals | Public Water Room talk | Prospects + full community | Founder + corporate member | Corporate wellness one-pager | Corporate/premium Academy inquiry |
+| December | SwimBuddz Wrapped Online | Online Wrapped / town hall | Everyone | Founder + members | Year highlights, next-year calendar | Renew, refer, RSVP to Wrapped party |
 
 ### Topic Design Notes
 
@@ -383,6 +383,30 @@ Track:
 - April works well for adult learn-to-swim and water safety positioning.
 - May is useful for non-swimming value: gear, skin, hair, confidence, and lifestyle.
 - October should make the Club visible without making private pods public.
+
+This assignment produces the intended annual mix exactly: eight public Water
+Room talks, two member-only conversations, one Academy/Club conversion
+session, and one online Wrapped/town hall.
+
+---
+
+## Community Excursion
+
+Pilot one excursion in 2027 rather than turning it into a monthly commitment.
+The recommended format is a **Community excursion with an optional Club water
+track**:
+
+- the main programme must be enjoyable for swimmers and non-swimmers;
+- any open-water, kayaking, or higher-risk activity is a separately supervised
+  track with eligibility and safety controls;
+- capacity, transport, deposit, consent, media preference, safety lead, and a
+  weather fallback must be confirmed before publication;
+- Sunday 21 November 2027 is the proposed pilot date because it avoids regular
+  Saturday Club and Academy delivery and sits before Wrapped.
+
+Treat it as Community when the primary job is belonging and shared experience.
+Treat it as Club-only only when the activity itself requires verified swimming
+competence.
 
 ---
 
@@ -669,6 +693,15 @@ The website calendar and its publishing workflow were expanded in July 2026:
 - admins create and publish talks, open swims, assessments, social events,
   public Club listings, quarterly meets, and Wrapped from
   `/admin/community/events`;
+- admins manage recurring event templates and controlled workbook imports from
+  `/admin/community/events/planning`;
+- event templates support weekly, monthly, quarterly, and annual rules, date
+  preview, and idempotent draft generation;
+- the controlled `Calendar Import` worksheet can be uploaded for validation and
+  selective import; external keys prevent repeat uploads from duplicating
+  events;
+- generated and imported Events always start as drafts. An admin must confirm
+  venue/link, price, capacity, visibility, and access before publishing;
 - draft records stay out of the public calendar;
 - `/calendar` shows all public Community, Club, and Academy audience records,
   not only Community records;
@@ -696,8 +729,33 @@ Still to add:
   and follow-up work;
 - RSVP and payment status directly on calendar items;
 - downloadable calendar feeds (`.ics`) and Google/Apple Calendar links;
-- recurring annual-calendar templates that create draft source records for
-  admin approval.
+- multi-tier OR access for a single event. Until then, cross-tier Community
+  events use Community access, while their title and description explain the
+  Club or Academy block.
+
+### How Admins Add Calendar Items
+
+Use the source that owns the activity:
+
+1. **One-off Community event:** open `/admin/community/events`, choose a preset
+   or create an event, save it as a draft, confirm the details, then publish.
+2. **Recurring Community event:** open
+   `/admin/community/events/planning`, create a recurring template, preview the
+   dates, generate drafts for a bounded date range, then review and publish them
+   from Admin Events.
+3. **Annual Excel plan:** upload the reviewed `.xlsx` file in the Excel Import
+   tab, inspect row warnings and errors, select the rows to use, and import them
+   as drafts.
+4. **Club training:** create or generate Session records from Admin Sessions;
+   do not import weekly Club training as Events.
+5. **Academy teaching:** let the cohort/session generator own learner sessions;
+   only public assessments, open days, graduations, and conversion activities
+   should become Events.
+
+The planning workbook should contain a controlled `Calendar Import` sheet. Do
+not upload the raw daily Community, Club, and Academy tabs directly: they also
+contain WhatsApp prompts, payment deadlines, pod check-ins, and delivery notes
+that do not belong on the website calendar.
 
 ### Why the Calendar Can Be Empty
 
