@@ -2,7 +2,7 @@
 
 _Status: product and curriculum decision record_
 
-_Last updated: July 2026_
+_Last updated: August 2026_
 
 ## Purpose
 
@@ -108,17 +108,18 @@ Recommended cadence:
 
 | Activity | Cadence |
 |---|---|
-| Free assessment clinic | Monthly in active locations; 4-6 weeks before major intakes |
-| F1 Water Confidence and Safety | Monthly where minimum demand is met |
+| Free assessment clinic | 4-6 weeks before the three major intakes; an extra clinic only when a location has a confirmed foundation start |
+| F1 Water Confidence and Safety | Optional monthly start where minimum demand is met |
 | F2-F4 foundation continuation | Rolling from the preceding foundation group |
 | Freestyle Foundation | At least quarterly, with extra starts when demand supports it |
 | Breaststroke/Backstroke modules | Alternating or demand-triggered by location |
-| Full beginner pathway | Jan, Apr, Jul, Oct anchor cohorts |
+| Full beginner pathway | January, May, and September major cohorts |
 | Private or premium pathway | Scheduled against coach and pool capacity |
 
-The quarterly anchor cohorts provide operational rhythm. Monthly foundation
-starts create more entry points without forcing the entire Academy into
-continuous enrollment.
+The three major cohorts provide the current operational rhythm. Optional
+monthly foundation starts create more entry points without forcing the entire
+Academy into continuous enrollment or advertising an assessment with no viable
+class behind it.
 
 ## Cohort Design
 
@@ -295,7 +296,8 @@ Pilot in one location before changing every Academy offer:
 
 1. Map the current Beginner-to-50m curriculum into F1-F4 and S1.
 2. Define pass criteria and safety gates for every competency.
-3. Run monthly assessments and one monthly F1 start.
+3. Run assessments before the three major cohorts; pilot an additional monthly
+   F1 start only when minimum demand and pool/coach capacity are confirmed.
 4. Keep the full 12-week pathway as the main product.
 5. Offer Breaststroke Foundation only to assessed or foundation-credited
    learners.

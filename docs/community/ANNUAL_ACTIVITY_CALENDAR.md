@@ -2,7 +2,7 @@
 
 > **Status:** Strategy and operating design
 > **Owner:** Daniel
-> **Last updated:** July 13, 2026
+> **Last updated:** August 11, 2026
 > **Related:** [Community Experience Design](./COMMUNITY_EXPERIENCE_DESIGN.md), [WhatsApp Playbook](./WHATSAPP_PLAYBOOK.md), [Tier Boundary Policy](./TIER_BOUNDARY_POLICY.md), [Member Gatherings & Community Drop-Ins](../design/MEMBER_GATHERINGS_AND_COMMUNITY_DROPIN_DESIGN.md), [Pod Operations](../club/POD_OPERATIONS.md), [Pod Lead Guide](../club/POD_LEAD_GUIDE.md), [Academy README](../academy/README.md), [Seasonality Model](../company/SEASONALITY_MODEL.md), [Adult Learning Principles](../company/ADULT_LEARNING_PRINCIPLES.md)
 
 ---
@@ -79,7 +79,7 @@ Community is the umbrella.
 - WhatsApp Community
 - public website calendar
 - open swim meetups
-- online Water Room talks
+- Beyond the Pool online talks
 - social events
 - Bring-a-Buddy days
 - annual Wrapped event
@@ -139,7 +139,7 @@ Academy sessions are cohort-only. Public events can promote an Academy cohort, e
 | Question of the Week | Community | Members | Weekly | Low-friction engagement |
 | Weekend Swim Prompt | Community | Members | Weekly | Organic member-led swims |
 | Open Swim Meetup | Community / all tiers | Members + guests | Monthly | Acquisition and conversion |
-| Water Room Online Talk | Community / prospects | Public or members-only | Monthly | Education, lead nurturing, trust |
+| Online Talk: Beyond the Pool | Community / prospects | Public or members-only | Monthly, first Thursday | Education, lead nurturing, trust |
 | Bring-a-Buddy Day | Community / prospects | Members + invited guests | Quarterly | Referral acquisition |
 | Community Social | Community | Members + guests | Quarterly | Retention and relationship depth |
 | Pod Challenge Day | Club | Club members | Monthly | Progress, retention, pod identity |
@@ -209,6 +209,41 @@ blocks. Awards can close the shared day. This format also prevents Buddz Cup,
 Bring-a-Buddy Day, and the quarter-end meet from competing for the same
 weekend, budget, volunteers, and audience.
 
+### Counted Club Sessions And Meet Rule
+
+For Q1-Q3, a quarter contains **12 counted Club training sessions** followed by
+a separate quarter-end meet on the next Saturday. The meet is not Club Session
+13. Its first block demonstrates the outcome of the 12-session training cycle;
+its second block is a Community event that creates belonging, referrals, and
+renewal energy.
+
+This distinction matters for pricing, attendance, make-ups, and member
+expectations:
+
+- the Club package pays for 12 training sessions;
+- the meet has its own event budget and ticket/entitlement rules;
+- an eligible Club package can include or discount the meet without converting
+  it into an extra training session;
+- Community-only members can opt into the Community block at the published
+  event price, but do not receive Club race eligibility automatically.
+
+### Q4 Annual Exception
+
+Q4 has only 12 Saturdays between 2 October and the 18 December year-close, so
+it does not add a separate thirteenth-date meet:
+
+| Date | Club treatment | Community treatment |
+|---|---|---|
+| 2 Oct-27 Nov | Club Sessions 1-9 | Normal Community rhythm continues separately. |
+| 4 Dec, morning | Club Session 10/12 and performance check; finish by 11:00 | SwimBuddz Wrapped runs later, recommended 15:00-20:00. |
+| 11 Dec | Club Session 11/12 with lighter recovery/technique emphasis | No competing major Community event. |
+| 18 Dec | Club Session 12/12 and final PB review | Transition into the Community Year-Close Hangout. |
+
+The firm rule is: **Wrapped is the annual capstone, not the Q4 quarter meet;
+18 December closes the Club training quarter and then becomes a Community
+crossover.** This avoids claiming 13 Club sessions, prevents two December gala
+events from competing, and preserves the first-Saturday Wrapped tradition.
+
 ---
 
 ## Access And Privacy Levels
@@ -217,7 +252,7 @@ The website calendar should support access and visibility separately.
 
 | Visibility | Who can see it | Who can attend | Use cases |
 |---|---|---|---|
-| Public | Anyone | Anyone who registers or is approved | Water Room talks, open days, free assessments, public socials |
+| Public | Anyone | Anyone who registers or is approved | Beyond the Pool talks, open days, free assessments, public socials |
 | Public-listed, members-only | Anyone can see title | Active members only | Monthly open swim, community socials |
 | Member-visible | Logged-in active members | Eligible members by tier/location | Club location sessions, members-only talks |
 | Location-visible | Members in a location | Members in that location | Yaba Club, Ikoyi Club, London cohort socials |
@@ -248,8 +283,8 @@ The calendar should have predictable anchors:
 
 | Cadence | Activity |
 |---|---|
-| Weekly | WhatsApp rhythm, Club pod sessions, Academy cohort sessions, weekend recaps |
-| Monthly | Water Room talk, Club pod challenge, Academy/prospect activation, Open Swim or social |
+| Weekly | Wednesday website article/distribution, WhatsApp rhythm, Club pod sessions, Academy cohort sessions, weekend recaps |
+| Monthly | Beyond the Pool talk, Club pod challenge, Academy/prospect activation, Open Swim or social |
 | Quarterly | Bring-a-Buddy Day, Buddz Cup/friendly relay, community social, Club pod review |
 | Annual | SwimBuddz Wrapped, annual calendar reveal, major awards, renewal/referral campaign |
 
@@ -263,7 +298,7 @@ Use a simple four-week structure every month.
 
 | Week | Default activity | Primary layer | Notes |
 |---|---|---|---|
-| Week 1 | Online Water Room + monthly theme launch | Community / prospects | Usually Thursday evening. Public most months. |
+| Week 1 | Beyond the Pool online talk + monthly theme launch | Community / prospects | First Thursday evening. Public most months. |
 | Week 2 | Club pod challenge weekend | Club | Location-specific; mostly weekends, but weekday pods can run their own version. |
 | Week 3 | Academy/prospect activation | Academy | Assessment, clinic, open Q&A, cohort info session, or graduation bridge. |
 | Week 4 | All-community open swim, social, or Bring-a-Buddy | Community / all tiers | Mostly weekends. This is the public-energy moment. |
@@ -289,9 +324,9 @@ Do not make every one a heavy public webinar. Mix formats:
 
 | Format | Count per year | Audience | Purpose |
 |---|---:|---|---|
-| Public Water Room talks | 8 | Prospects + full community | Education, awareness, lead nurturing |
-| Member-only conversations | 2 | Existing members | Retention, feedback, belonging |
-| Academy/Club conversion session | 1 | Academy prospects + graduates | Move people to the next step |
+| Public Online Talks | 8 | Prospects + full community | Education, awareness, lead nurturing |
+| Member-only Online Talks | 2 | Existing members | Retention, feedback, belonging |
+| Academy/Club conversion Online Talk | 1 | Academy prospects + graduates | Move people to the next step |
 | Online Wrapped / town hall | 1 | Everyone | Reflection, proof, renewal, next-year reveal |
 
 ### Default Online Meeting Format
@@ -363,17 +398,17 @@ Track:
 
 | Month | Topic | Type | Audience | Suggested speaker | Resource pack | CTA |
 |---|---|---|---|---|---|---|
-| January | Build Your Swim Year | Public Water Room talk | Prospects + full community | Founder + Club member | Goal worksheet, SwimBuddz journey map | Set swim goal, join community, RSVP to open swim |
-| February | Learning To Swim As An Adult | Public Water Room talk | Prospects + full community | Academy coach + adult beginner | Fear-of-water guide, beginner FAQ | Book free/paid assessment |
-| March | Swimming For Fitness And Stress | Public Water Room talk | Prospects + full community | Coach or health/wellness guest | Weekly swim habit guide | Join Academy or Club |
-| April | Water Safety And Adult Learn-To-Swim | Public Water Room talk | Prospects + full community | Coach + safety guest | Water safety checklist, assessment guide | Attend Intro-to-Water assessment |
-| May | Skin, Hair, Chlorine, And Gear | Public Water Room talk | Prospects + full community | Dermatologist/skin expert + member | Gear checklist, skincare routine | Store/community engagement |
-| June | Staying Consistent In Rainy Season | Member-only community conversation | Existing members | Founder + Pod Lead | Rainy season swim plan | Retention, RSVP, pod check-ins |
-| July | Member Stories: Beginner To Swimmer | Member-only community conversation | Existing members | 2-3 members/alumni | Transformation story pack | Share progress, mentor newer members, strengthen retention |
-| August | Beach And Open-Water Confidence | Public Water Room talk | Prospects + full community | Coach + experienced swimmer | Open-water safety primer | RSVP to beach/pool social |
-| September | Back To Routine: Pick Your Path | Public Water Room talk | Prospects + full community | Founder | Community/Club/Academy path guide | Enroll, join Club, join community |
-| October | Club Life: Training, Pods, PBs | Academy/Club conversion session | Academy prospects + graduates | Pod Leads + Club member | Pod guide, Club FAQ | Choose a Club location and continue training |
-| November | Swimming For Busy Professionals | Public Water Room talk | Prospects + full community | Founder + corporate member | Corporate wellness one-pager | Corporate/premium Academy inquiry |
+| January | Build Your Swim Year | Public Online Talk | Prospects + full community | Founder + Club member | Goal worksheet, SwimBuddz journey map | Set swim goal, join community, RSVP to open swim |
+| February | Learning To Swim As An Adult | Public Online Talk | Prospects + full community | Academy coach + adult beginner | Fear-of-water guide, beginner FAQ | Book free/paid assessment |
+| March | Swimming For Fitness And Stress | Public Online Talk | Prospects + full community | Coach or health/wellness guest | Weekly swim habit guide | Join Academy or Club |
+| April | Water Safety And Adult Learn-To-Swim | Public Online Talk | Prospects + full community | Coach + safety guest | Water safety checklist, assessment guide | Attend Intro-to-Water assessment |
+| May | Skin, Hair, Chlorine, And Gear | Public Online Talk | Prospects + full community | Dermatologist/skin expert + member | Gear checklist, skincare routine | Store/community engagement |
+| June | Staying Consistent In Rainy Season | Member-only Online Talk | Existing members | Founder + Pod Lead | Rainy season swim plan | Retention, RSVP, pod check-ins |
+| July | Member Stories: Beginner To Swimmer | Member-only Online Talk | Existing members | 2-3 members/alumni | Transformation story pack | Share progress, mentor newer members, strengthen retention |
+| August | Beach And Open-Water Confidence | Public Online Talk | Prospects + full community | Coach + experienced swimmer | Open-water safety primer | RSVP to beach/pool social |
+| September | Back To Routine: Pick Your Path | Public Online Talk | Prospects + full community | Founder | Community/Club/Academy path guide | Enroll, join Club, join community |
+| October | Club Life: Training, Pods, PBs | Academy/Club Conversion Online Talk | Academy prospects + graduates | Pod Leads + Club member | Pod guide, Club FAQ | Choose a Club location and continue training |
+| November | Swimming For Busy Professionals | Public Online Talk | Prospects + full community | Founder + corporate member | Corporate wellness one-pager | Corporate/premium Academy inquiry |
 | December | SwimBuddz Wrapped Online | Online Wrapped / town hall | Everyone | Founder + members | Year highlights, next-year calendar | Renew, refer, RSVP to Wrapped party |
 
 ### Topic Design Notes
@@ -384,9 +419,10 @@ Track:
 - May is useful for non-swimming value: gear, skin, hair, confidence, and lifestyle.
 - October should make the Club visible without making private pods public.
 
-This assignment produces the intended annual mix exactly: eight public Water
-Room talks, two member-only conversations, one Academy/Club conversion
-session, and one online Wrapped/town hall.
+Every session uses **Beyond the Pool** as the event brand and **Online Talk** as
+the calendar category. This assignment produces the intended annual mix
+exactly: eight public Online Talks, two member-only Online Talks, one
+Academy/Club conversion Online Talk, and one online Wrapped/town hall.
 
 ---
 
@@ -416,24 +452,36 @@ This is the recommended default annual rhythm.
 
 | Month | Week 1 | Week 2 | Week 3 | Week 4 | Primary job |
 |---|---|---|---|---|---|
-| January | Build Your Swim Year online talk | Club reset challenge | Academy assessment | New Year open swim | Goal-setting and acquisition |
-| February | Adult beginner online talk | Pod challenge | Free assessment | Bring-a-Buddy open day | Beginner conversion |
-| March | Fitness and stress online talk | Location Club challenge | Academy Q&A | Community social | Habit building |
-| April | Water safety online talk | Club endurance day | Learn-to-swim assessment | Open swim | Safety and Academy enrollment |
-| May | Skin/gear online talk | Pod relay weekend | Academy clinic | Social hangout | Lifestyle value |
+| January | Build Your Swim Year online talk | Club reset challenge | Final placement for acquired Cohort 1 learners | New Year open swim | Goal-setting and Cohort 1 start |
+| February | Adult beginner online talk | Pod challenge | Foundation pathway information session | Bring-a-Buddy open day | Beginner education without an unnecessary intake event |
+| March | Fitness and stress online talk | Location Club challenge | Cohort 1 graduation/Club bridge | Quarter-end meet and Community crossover | Habit proof and retention |
+| April | Water safety online talk | Club endurance day | Cohort 2 acquisition assessment | Open swim | Safety and May enrollment |
+| May | Skin/gear online talk | Pod relay weekend | Cohort 2 starts | Social hangout | Lifestyle value and learner onboarding |
 | June | Rainy season consistency talk | Short-format Club challenge | Member check-ins | Low-pressure meetup | Retention |
 | July | Member stories online talk | Pod retention challenge | Alumni Q&A | Mid-year social | Proof and warmth |
-| August | Beach/open-water talk | Location Club challenge | Beach safety clinic | Beach or pool social | Seasonal community energy |
-| September | Back-to-routine online talk | Pod kickoff/rebalance | Academy intake event | Bring-a-Buddy open day | Acquisition and reset |
+| August | Beach/open-water talk | Location Club challenge | Cohort 3 acquisition assessment | Beach or pool social | Seasonal community energy and September enrollment |
+| September | Back-to-routine online talk | Pod kickoff/rebalance | Cohort 3 starts | Quarter-end meet and Community crossover | Acquisition and reset |
 | October | Club life online talk | Buddz Cup qualifier | Stroke clinic or Club Q&A | Independence swim/social | Club conversion |
-| November | Busy professionals online talk | Premium/location Club event | Corporate demo/assessment | Big open day | High-intent acquisition |
-| December | Wrapped online | Club finals/fun relays | Awards prep and volunteer recognition | SwimBuddz Wrapped party | Retention, renewal, referrals |
+| November | Busy professionals online talk | Premium/location Club event | First January 2028 acquisition assessment | Community excursion | High-intent acquisition and belonging |
+| December | Wrapped online | Q4 Sessions 10-12 | Second January 2028 acquisition assessment | Wrapped and year-close crossover | Retention, renewal, referrals |
 
 ---
 
 ## Detailed Week-By-Week Operating Template
 
 Use this pattern to plan every month.
+
+### Every Wednesday: Education Distribution
+
+This is an operations/content item rather than an RSVP event. Every Wednesday:
+
+1. Publish one useful educational article on the website.
+2. Distribute it through Instagram Stories.
+3. Save evergreen educational Stories to the **Learn** Highlight.
+
+Keep this visible in the internal annual calendar and content operations view,
+but do not import 52 duplicate records into the public event calendar. The
+article itself is the public website object.
 
 ### Week 1: Theme Launch + Online Talk
 
@@ -443,7 +491,9 @@ Use this pattern to plan every month.
 
 - Monday: announce monthly theme in Community group.
 - Tuesday: publish website event page or reminder.
-- Wednesday: post speaker/resource teaser.
+- Wednesday: publish the weekly article, distribute it through Instagram
+  Stories, save evergreen material to the Learn Highlight, and post the
+  speaker/resource teaser.
 - Thursday: host online talk.
 - Friday: post recap and CTA.
 - Weekend: reference the talk at swim sessions.
@@ -552,7 +602,7 @@ Activities can hold any day of the week, but the default should be:
 
 | Activity | Best day |
 |---|---|
-| Online Water Room | Thursday evening |
+| Beyond the Pool Online Talk | First Thursday evening |
 | Club pod challenge | Saturday or normal pod day |
 | Academy assessment | Saturday morning or Sunday afternoon |
 | Community open swim | Saturday |
@@ -562,6 +612,44 @@ Activities can hold any day of the week, but the default should be:
 | Corporate demo | Weekday lunch, Friday afternoon, or Saturday morning |
 
 Do not force all activities into Saturday. Saturday is valuable but crowded. Use Thursday online sessions to build momentum into the weekend.
+
+## Academy Intake And Assessment Rule
+
+Operate three major Academy cohorts for now:
+
+| Cohort | Teaching window | Primary acquisition assessment window | Final placement |
+|---|---|---|---|
+| Cohort 1 | January-March | Late November and mid-December of the previous year | First Sunday in January, only for acquired learners |
+| Cohort 2 | May-July | Mid-April | Confirm before the May start |
+| Cohort 3 | September-December | Mid-August | Confirm before the September start |
+
+The 3 January assessment is not a realistic January acquisition engine. It is
+a final placement and confidence check for learners already acquired through
+29 November and 13 December 2026 clinics. The final event dates can move by
+location, but the lead-time rule should remain: acquisition assessment about
+4-6 weeks before the cohort, then final placement shortly before teaching.
+
+An assessment is a diagnostic, not a free lesson. Its output is a prescribed
+Academy pathway, prerequisite credit where justified, cohort/location offer,
+and follow-up within 24 hours. Monthly foundation modules may still start
+between major cohorts, but the three major cohort windows remain the primary
+commercial and staffing anchors.
+
+## Reminder Profiles
+
+Calendar templates should apply email reminders by event class, with the admin
+able to change the profile before publishing:
+
+| Profile | Default offsets | Appropriate events |
+|---|---|---|
+| Online Talk | 7 days, 24 hours, 1 hour | Beyond the Pool and online town halls |
+| Standard | 72 hours, 24 hours | Assessments, ordinary open swims, member socials |
+| Major Event | 14 days, 7 days, 24 hours | Quarter-end meets, excursions, Wrapped |
+| None | No email reminder | Internal content/operations tasks |
+
+Send reminders only to eligible registrants or invited members, respect the
+event's visibility, and keep an idempotency log so one offset is not sent
+twice. In-app and email delivery can use the same event reminder occurrence.
 
 ---
 
@@ -690,7 +778,7 @@ The website calendar and its publishing workflow were expanded in July 2026:
   Sessions and Events records. It does not create a third calendar source of
   truth.
 - admins create and publish training records from `/admin/sessions`;
-- admins create and publish talks, open swims, assessments, social events,
+- admins create and publish Online Talks, open swims, assessments, social events,
   public Club listings, quarterly meets, and Wrapped from
   `/admin/community/events`;
 - admins manage recurring event templates and controlled workbook imports from
@@ -701,7 +789,8 @@ The website calendar and its publishing workflow were expanded in July 2026:
   selective import; external keys prevent repeat uploads from duplicating
   events;
 - generated and imported Events always start as drafts. An admin must confirm
-  venue/link, price, capacity, visibility, and access before publishing;
+  venue/link, pricing treatment, capacity, visibility, access, and reminder
+  profile before publishing;
 - draft records stay out of the public calendar;
 - `/calendar` shows all public Community, Club, and Academy audience records,
   not only Community records;
@@ -722,6 +811,11 @@ The website calendar and its publishing workflow were expanded in July 2026:
   Public, Members-only, and Invite-only;
 - Calendar records retain the activity timezone so globally distributed
   Academy cohorts can be represented without assuming Lagos time.
+- Event and template pricing supports Free, Included, Fixed, and Cost-plus
+  treatments. Cost-plus uses the pool/area rate quote as a suggestion while an
+  admin retains control of the final selling price.
+- Event reminder profiles are persisted on templates/events and delivered to
+  eligible attendees through the notifications service.
 
 Still to add:
 
@@ -956,7 +1050,7 @@ Every quarter:
 
 These should be decided before product implementation:
 
-1. Should public Water Room talks require registration, or can anyone join directly?
+1. Should public Beyond the Pool talks require registration, or can anyone join directly?
 2. Which Club pod types should exist first: public location pods, elite pods, executive pods, women-only pods, alumni pods?
 3. Should private pod events show as anonymized aggregate activity on the public calendar?
 4. Should Academy assessments be free, paid, or both depending on location?

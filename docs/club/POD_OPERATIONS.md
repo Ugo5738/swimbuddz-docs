@@ -296,6 +296,7 @@ Follow the standard backend checklist in [CLAUDE.md](../../CLAUDE.md#3-making-ch
 ## Related documentation
 
 - [Pod Lead Guide](./POD_LEAD_GUIDE.md) — what a Pod Lead actually does
+- [Pod Roster Design](./POD_ROSTER_DESIGN.md) — roster fields, privacy, history, capacity, and quarterly review workflow
 - [WhatsApp Playbook](../community/WHATSAPP_PLAYBOOK.md) — pod chat structure, descriptions, kickoff message
 - [Pricing Strategy](./PRICING_STRATEGY.md) — Club membership fees, transition bridges, Pod Lead perks
 - [Tier Boundary Policy](../community/TIER_BOUNDARY_POLICY.md) — what happens when non-Club members show up to a pod's session

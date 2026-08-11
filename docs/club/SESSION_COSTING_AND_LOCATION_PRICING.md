@@ -1,8 +1,8 @@
 # Session Costing and Location Pricing
 
-_Status: phase 1, quote engine, and session snapshots implemented; reconciliation pending_
+_Status: canonical geography, quote engine, and session/event pricing workflows implemented; reconciliation pending_
 
-_Last updated: July 2026_
+_Last updated: August 2026_
 
 ## Purpose
 
@@ -62,6 +62,7 @@ An operating area should carry:
 
 - name and slug;
 - optional parent area;
+- area type: `country`, `market`, `commercial_band`, or `locality`;
 - country code;
 - timezone;
 - currency;
@@ -80,13 +81,31 @@ time, differ by supplier, and can use different charging units.
 | `name` | Victoria Island, Yaba, Lagos |
 | `slug` | URL/reporting key |
 | `parent_id` | Geographic hierarchy |
+| `area_type` | `country`, `market`, `commercial_band`, or `locality` |
 | `country_code` | `NG`, later other countries |
 | `timezone` | `Africa/Lagos`, later cohort-local zones |
 | `currency` | `NGN`, later other currencies |
 | `is_active` | Operational availability |
 
-`pools.operating_area_id` points to this table. The current free-text
-`location_area` remains as a transition/display field until data is migrated.
+`pools.operating_area_id` points to this table. `location_area` is a
+denormalized display snapshot: while a pool is linked, the API derives it from
+the operating area's name rather than accepting a contradictory free-text
+value. Unlinked legacy pools may still use free text during migration.
+
+The current Lagos example is therefore represented explicitly rather than as
+labels inferred from an address:
+
+```text
+Nigeria (country)
+└── Lagos (market)
+    └── Mainland (commercial_band)
+        └── Yaba (locality)
+            └── Rowe Park Pool (pool venue)
+```
+
+The Pool Registry owns the venue name and exact address. The central Areas and
+Costing page owns the hierarchy. Transport and events reference those same
+records; they must not create their own copies of Yaba, Mainland, or Lagos.
 
 ### `pool_rates`
 
@@ -339,19 +358,51 @@ The July 2026 implementation provides:
   charging basis;
 - an admin catalogue at `/admin/pools/pricing`;
 - operating-area selection in the Pool Registry;
+- an exact venue address on each pool;
+- automatic event venue and `location_area` snapshots when a registered pool
+  is selected, with those fields locked until the pool is cleared;
+- ride-share areas linked to the same `operating_areas` records, while pickup
+  points remain transport-specific;
+- ride routes linked to destination pools by `pool_id` rather than a second
+  destination-name taxonomy;
+- one location-operations navigation group for the Pool Registry, areas and
+  costing, and ride share;
 - an editable quote workflow in the session create/edit form;
 - session-owned cost-line snapshots, expected attendance, margin method,
   margin value, estimated cost, and booking price.
+- event and recurring-template pricing treatments: `free`, `included`,
+  `fixed`, and `cost_plus`;
+- event cost-plus quotes using the same activity-scoped rate engine, with an
+  editable margin and admin-controlled final attendee price;
+- event reminder profiles that can be inherited from recurring templates.
 
 The same pool and start time can produce different quotes for Community, Club,
 and Academy because every rate has an `activity_scope`. Rates with `all` apply
 as fallbacks; activity-specific rates win when both match.
 
-The current session snapshot is stored on the session record as structured cost
-lines rather than separate snapshot and line tables. This is sufficient for the
-first admin workflow and preserves history when catalogue rates change. Formal
-snapshot versioning, event costing, actual expenses, and ledger reconciliation
-remain later phases.
+The current session and event snapshots are stored on their owning record as
+structured cost lines rather than separate snapshot and line tables. This is
+sufficient for the first admin workflow and preserves history when catalogue
+rates change. Formal snapshot versioning, actual expenses, and ledger
+reconciliation remain later phases.
+
+### Event price is a treatment, not one universal amount
+
+Selecting a pool can fill geography and produce a cost quote, but it must not
+silently decide what every attendee owes. The admin chooses a pricing
+treatment:
+
+| Pricing mode | Member-facing treatment | Example |
+|---|---|---|
+| Free | No payment | Academy acquisition assessment |
+| Included | Covered by an existing entitlement | Counted Club session or cohort lesson |
+| Fixed | Admin publishes a one-off price | Community open swim or excursion |
+| Cost plus | Quote supplies direct cost and margin suggestion; admin may override | Quarter meet at a variable-cost venue |
+
+This is necessary because Community, Club, and Academy can use the same pool
+at the same time while carrying different cost lines, subsidies, entitlements,
+and target margins. `activity_scope` selects the right input rates; pricing mode
+determines how those costs become a customer-facing charge.
 
 ### Phase 1: geography and rate catalogue
 
