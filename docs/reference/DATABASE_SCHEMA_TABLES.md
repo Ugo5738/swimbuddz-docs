@@ -2173,6 +2173,8 @@ _Constraints:_ `positive_stock` (CheckConstraint), `valid_reserved` (CheckConstr
 | `qr_checkin_enabled` | BOOLEAN | NOT NULL |  | false |
 | `title_override` | VARCHAR(200) |  |  |  |
 | `description_override` | TEXT |  |  |  |
+| `start_time_override` | TIME |  |  |  |
+| `end_time_override` | TIME |  |  |  |
 | `cancellation_deadline_hours` | INTEGER | NOT NULL |  |  |
 | `is_active` | BOOLEAN | NOT NULL |  | true |
 | `created_at` | DATETIME | NOT NULL |  |  |
