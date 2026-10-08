@@ -42,6 +42,15 @@ Branch `codex/pool-access-platform` has advanced beyond the initial scaffolding.
 **Live configuration:** A securely generated `POOL_ACCESS_QR_SECRET` of at least 32 characters must be configured in the pool service only. Do not store this value in GitHub. Operators are granted individually in the admin API and restricted by pool. Never publish slots for a pool whose entry, lifeguard and admission inventory rights are not confirmed.
 
 
+## Recovery, cancellation and external settlement implementation update
+
+- A Pool Access reservation now supplies the stable payment idempotency key. Uncertain Paystack initialization is retained for a same-reference resume rather than starting a second charge.
+- Resuming a pending checkout revalidates the reservation hold with Pools. Once a payment checkout has been claimed, members cannot directly cancel the hold because money may still arrive.
+- A member can directly cancel an unpaid, never-claimed hold. Confirmed paid bookings support a distinct cancellation review request; it does not revoke admission or claim that a refund occurred.
+- Finance can see cancellation requests and must separately confirm refund/dispute action. Automatic refund execution and proven refund-to-entitlement revocation are **not yet implemented**.
+- Pools records verified partner liability from actual admissions. An admin may record a confirmed external bank payment with unique reference, evidence note, and amount not exceeding the remaining liability; this records bank payment evidence but never initiates a transfer.
+- Provider-initiated partner payouts, bank reconciliation ingestion, negative adjustments, account journal synchronization, and public unauthenticated checkout remain pending. No public rollout should imply those features exist.
+
 ## Release gate
 Do not deploy Pool Access for customer bookings until payment fulfillment, QR redemption, partner permissioning, reconciliation and end-to-end tests are complete. The first slice deliberately provides no paid status mutation or QR issue endpoint. After approval, pilot with one partner location and a few controlled admissions.
 
