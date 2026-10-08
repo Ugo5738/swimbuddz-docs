@@ -34,3 +34,12 @@ One ₦100,000 bank transfer should be recorded as one external receipt with two
 - End-to-end test: no-payment switch, Paystack pending, bank transfer initiated/proof pending, paid installment, progress, full cohort and rapid concurrent requests.
 - Add admin resolution for reviewed changes and shared deposit allocation before turning this on for a member who has already transferred money.
 - Verify both repos' CI, OpenAPI/types regeneration and no regressions in pending billing.
+
+## Review visibility (initial foundation)
+
+- Admin portal: **Academy Transfers** → `/admin/academy/enrollment-changes`, an admin-only, read-only review queue.
+- Member portal: **Manage Academy** → `/account/academy/manage`, showing programme history and allowing a request for another cohort.
+- When payments service is unavailable the change request fails closed with HTTP 503.
+- Pending bank-transfer references, paid installments, and progress are reasons to preserve the source placement for review.
+- The current review queue is **not** permission to waive balances, migrate paid installments, or finalize a transfer. Those functions remain release-blocking.
+- Unit tests cover failed payment lookup and a pending-review payment reference.
