@@ -37,7 +37,7 @@
 - The existing Members `/internal/members/joined-tier` reporting contract exposes an optional `content_source` and internal member auth ID. Only Reporting consumes these fields for attribution.
 - Reporting refreshes its own `content_acquisition_snapshots` through the existing Reporting → Members and Reporting → Payments internal reporting paths, using its ARQ worker. Payments supplies only settled, NGN, purpose-grouped statistics for bounded member batches. There are no payment-initiated callbacks, cross-service FKs, or direct domain-table reads.
 - Admin displays the Reporting-owned confirmed registration snapshot and Communications-owned anonymous engagement aggregate as separate datasets.
-- This measures **persisted registrations and paid payment records** for the same content-sourced registration cohorts, not proof of causality or settled accounting revenue. The purpose filter excludes wallet top-ups and store orders. Session-type bookings are currently grouped with session payments; do not claim that all of them are public events.
+- This measures **persisted registrations and paid payment records** for the same content-sourced registration cohorts, not proof of causality or settled accounting revenue. The purpose filter excludes wallet top-ups and store orders. The breakdown retains each canonical Payments purpose (academy_cohort, club, club_bundle, session_booking, guest_pass, etc.) rather than mislabeling ambiguous session bookings as events. Session-type bookings are currently grouped with session payments; do not claim that all of them are public events.
 - A failed Members query must not silently clear existing attribution data. Snapshot counts are recomputed for the selected period, not cumulatively inflated.
 
 ## Analytics: what counts and what does not
@@ -50,7 +50,7 @@
 1. Open Admin > Community > Content; create Episode 1, **Is It Too Late to Learn Swimming as an Adult?** (August 18, 2026). Shared playlist URL contains `DDqH3JDcl_Y`; verify final trimmed video URL.
 2. Create Episode 2, **How Busy Professionals Learned to Swim** (September 3, 2026). Shared live URL: https://www.youtube.com/live/g_4oasxw46M ; verify the final replay.
 3. Add episode summaries, guest names, key takeaways and the final approved thumbnails. Set category `beyond_the_pool`, audience `community`, episode numbers 1 and 2; publish when satisfied.
-4. For swimmer stories, obtain and verify separate publication permission covering the swimmer and anyone identifiable, then approve in Admin > Academy > Evidence. Withdrawal must remove the video immediately from the public listing.
+4. For swimmer stories, obtain and verify separate publication permission covering the swimmer and anyone identifiable, then approve in Admin > Academy > Evidence. Withdrawal removes the video immediately from the public listing and stops new signed video links; previously issued private S3 links remain valid until their five-minute expiry. Avoid copying published video files into public storage.
 5. Review editorial analytics after traffic is present. Low or zero counts do not imply the feature has failed.
 
 ## Release gates
