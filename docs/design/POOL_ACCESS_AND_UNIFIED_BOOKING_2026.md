@@ -51,6 +51,18 @@ Branch `codex/pool-access-platform` has advanced beyond the initial scaffolding.
 - Pools records verified partner liability from actual admissions. An admin may record a confirmed external bank payment with unique reference, evidence note, and amount not exceeding the remaining liability; this records bank payment evidence but never initiates a transfer.
 - Provider-initiated partner payouts, bank reconciliation ingestion, negative adjustments, account journal synchronization, and public unauthenticated checkout remain pending. No public rollout should imply those features exist.
 
+## Academy post-payment safety enforcement
+
+Academy learners may select a cohort and pay before completing their full swimming profile. Before they can be recorded PRESENT or LATE at an Academy cohort class, the Attendance service now queries a private Members service clearance result. This response contains only readiness flags and missing-field names (contact phone, swimming background, emergency contact), not private medical data. Member sign-in, coach/admin member attendance and bulk coach marking all use the same check. Non-Academy activity and non-present Academy attendance are not gated.
+
+This gate should be tested against historical/on-going cohorts before any deployment, and administrators should contact students missing emergency information before their next class. Bypass through participant/guest Academy attendance must be reviewed before release; no silent safety override should be added.
+
+Pool Access likewise requires explicit acceptance of published pool entry rules, cancellation policies, and the absence of coaching. Acceptance time and the actual contract wording are snapshotted on the booking. Bookings without recorded acceptance cannot obtain or redeem a QR credential.
+
+## Visitor access
+
+An email-verified, lightweight Pool Access login now supports people who have not joined SwimBuddz membership programmes. It uses the existing Supabase identity and Payments service, with a public-facing QR wallet. A visitor does not need the annual Community membership to buy an independent admission. Actual unauthenticated/OTP-only checkout without creating a login remains outside this implementation.
+
 ## Release gate
 Do not deploy Pool Access for customer bookings until payment fulfillment, QR redemption, partner permissioning, reconciliation and end-to-end tests are complete. The first slice deliberately provides no paid status mutation or QR issue endpoint. After approval, pilot with one partner location and a few controlled admissions.
 
