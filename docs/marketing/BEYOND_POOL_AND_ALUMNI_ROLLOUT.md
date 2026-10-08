@@ -29,11 +29,22 @@
 - Use the existing ContentPost editor (Admin > Community > Content), category `beyond_the_pool`, plus episode number, guest names and verified YouTube URL. Published posts only are visible anonymously.
 - Existing `/tips`, `/guides`, `/gallery` routes are retained. Avoid advertising partner pools as standalone destinations.
 
+
+## Content-attributed registration, using existing service boundaries
+
+- The episode CTA carries a validated first-party `content_id` into the existing member registration page.
+- Members persists the content origin as `MemberPreferences.discovery_source` when registration completes, alongside the existing independent acquisition channel.
+- The existing Members `/internal/members/joined-tier` reporting contract exposes an optional `content_source`. Reporting is the only service consuming this for attribution; Academy, Communications, Events and Payments are not called by the content workflow.
+- Reporting refreshes its own `content_acquisition_snapshots` through the existing Reporting → Members query path and ARQ worker. There are no new service-to-service callbacks, cross-service FKs, or direct domain-table reads.
+- Admin displays the Reporting-owned confirmed registration snapshot and Communications-owned anonymous engagement aggregate as separate datasets.
+- This measures **persisted registrations**, not verified paid bookings, Academy payments, or content-influenced sales. Payment-source correlation must remain in canonical Reporting semantics and must not be inferred from CTA clicks.
+- A failed Members query must not silently clear existing attribution data. Snapshot counts are recomputed for the selected period, not cumulatively inflated.
+
 ## Analytics: what counts and what does not
 - Anonymous aggregate-only counts: page views, player loads and clicks to Academy/assessment (and supported future CTAs).
 - Admin report: `/admin/community/content/analytics`, API `/content/admin/engagement`.
 - No viewer identity, IP or device fingerprints stored in engagement counters.
-- Counts are **NOT** confirmed registrations, enrollments, payments or revenue. Do not label CTA clicks as conversions. Identity-aware attribution requires separate cross-service identity and booking/payment reconciliation work and a privacy review.
+- Anonymous clicks are **NOT** confirmed registrations or paid enrollments. The separately labeled Reporting snapshots do measure completed registrations; neither dataset measures confirmed paid bookings or payment revenue.
 
 ## Your manual admin tasks after backend migrations + verified release
 1. Open Admin > Community > Content; create Episode 1, **Is It Too Late to Learn Swimming as an Adult?** (August 18, 2026). Shared playlist URL contains `DDqH3JDcl_Y`; verify final trimmed video URL.
