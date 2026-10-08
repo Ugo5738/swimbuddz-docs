@@ -31,6 +31,17 @@ Frontend Pool Access discovery + draft booking UX, admin draft offer form, navig
 8. Build flexible scheduling for published pods, additional practices and academy make-ups without letting members create unsupervised coached sessions.
 9. Add partner amenities verification, safe swimmer eligibility and per-facility rules before public marketing.
 
+## Implementation update — 8 October 2026
+
+Branch `codex/pool-access-platform` has advanced beyond the initial scaffolding.
+
+**Added:** Authenticated per-swimmer reservation with 15-minute capacity hold; one claimed Paystack attempt per reservation; server-authoritative quoted selling subtotal; verified-paid evidence checks in pools service; signed QR tickets only for confirmed payments; pool-scoped partner operators with grant/revoke; one-time check-in and checked-in-by audit; per-person or per-group contractual settlement snapshots after visiting; admin inventory and settlement screens; public Find a Swim; member My Bookings and QR wallet; Academy registration redirected to cohort selection before full post-payment onboarding; Finance landing page.
+
+**Not ready for production:** The guest booking flow still requires an ordinary account login (no anonymous paid checkout), transactional cancellation/refunds and resuming lost Paystack checkout attempts need hardened recovery, no actual partner bank payout or ledger liability posting is integrated, partner lifeguard policy and public profile must be checked operationally, full Academy safety checks before first class are not yet enforced as a backend gate, and self-service Club scheduling/make-up transfer policy is not implemented as a new cross-program scheduler. Tests and CI are required before merging.
+
+**Live configuration:** A securely generated `POOL_ACCESS_QR_SECRET` of at least 32 characters must be configured in the pool service only. Do not store this value in GitHub. Operators are granted individually in the admin API and restricted by pool. Never publish slots for a pool whose entry, lifeguard and admission inventory rights are not confirmed.
+
+
 ## Release gate
 Do not deploy Pool Access for customer bookings until payment fulfillment, QR redemption, partner permissioning, reconciliation and end-to-end tests are complete. The first slice deliberately provides no paid status mutation or QR issue endpoint. After approval, pilot with one partner location and a few controlled admissions.
 
