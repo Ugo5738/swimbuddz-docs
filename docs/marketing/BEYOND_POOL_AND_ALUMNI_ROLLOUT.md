@@ -1,47 +1,54 @@
-# Alumni Evidence and Beyond the Pool rollout
+# SwimBuddz Alumni Evidence, Beyond the Pool, Stories and Learn: Rollout
 
-## Product intent
-A closed cohort is an immutable historical teaching/assessment record. An active or graduated learner may continue uploading additional milestone videos as evidence, without resetting verified progress. Videos stay private by default. Consent to be contacted is not publication permission.
+## Product contract
+- Academy, Club, Community are ways to swim with us, not membership tiers.
+- An alumni member can keep their Academy history and add supplementary milestone videos even after the cohort closes or the member's Community membership expires. Suspended accounts cannot upload.
+- Supplementary evidence NEVER changes the verified StudentProgress row or milestone assessment audit trail.
+- Coaching on supplementary uploads is optional, never an implied paid coaching commitment.
+- An uploaded video is private. Asking to be contacted for a feature is not publication consent.
+- Consent for each video is explicit, revocable and separate from an admin editorial approval. The swimmer can use a chosen public display name or remain anonymous.
+- Media belonging to another account cannot be attached to an enrollment. Private media is excluded from anonymous media listings/URL resolution.
 
-## Academy implementation
-- Academy service: `GET/POST /academy/enrollments/{enrollment_id}/evidence`.
-- Payload: milestone_id, video_media_id, kind (cohort_archive or continued_progress), optional caption/recorded_on, consent_to_share.
-- Ownership and enrollment checks happen on the server, not just in the React UI.
-- Additional evidence rows never alter StudentProgress or MilestoneReviewEvent.
-- Migrate Academy schema before deploying the frontend.
-- **Pre-release hardening**: validate each video_media_id with Media Service for existence, video MIME type, uploader/owner and privacy; add integration tests covering forged media references, access denial and public publishing. Keep the feature behind deployment controls until verified.
-- Coach feedback on supplementary videos and editorial public approval remain distinct future endpoints. Do not treat upload as coaching or marketing approval.
+## Implementation: Academy and media
+- `GET/POST /academy/enrollments/{enrollment_id}/evidence`: member-owned archive and progress videos.
+- `PATCH /academy/enrollments/{enrollment_id}/evidence/{evidence_id}/publication-consent`: opt in, display name or withdraw consent; changing consent revokes prior approval.
+- `GET /academy/coach/evidence`: assigned coach's cohort videos.
+- `POST /academy/evidence/{evidence_id}/coach-review`: optional feedback; milestone grades remain unchanged.
+- `GET /academy/admin/evidence`: admin review queue.
+- `POST /academy/admin/evidence/{evidence_id}/showcase`: approve or revoke only with verified separate publication release.
+- `GET /academy/public/showcase`: public, approved, consented story metadata only.
+- `GET /academy/public/showcase/{evidence_id}/play`: checks current consent/approval on each request and issues a short-lived redirected private video URL through Media Service.
+- `GET /academy/evidence/{evidence_id}/play`: authenticated, role- and cohort-checked playback for owners/coaches/admins.
+- Media Service supplies an internal service-role-only ownership check and short-lived playback signer. **Public showcase playback requires STORAGE_BACKEND=s3 and a configured private bucket**; never move restricted clips to a public gallery bucket just to make playback work.
 
-## Beyond the Pool
-- Public `/learn`, `/beyond-the-pool`, `/beyond-the-pool/[id]`.
-- Content posts with category `beyond_the_pool` use the existing admin content editor, with video_url, episode_number and guest_names.
-- Only published posts appear publicly; YouTube URLs are allowlisted for embeds.
-- Migrate communications schema before writing episode metadata.
-- In Admin > Community > Content, create these two episodes, both with category beyond_the_pool and tier_access community:
-  - Episode 1: **Is It Too Late to Learn Swimming as an Adult?** Video: https://www.youtube.com/watch?v=DDqH3JDcl_Y (confirm this is the actual episode video before publishing; the shared playlist URL references this video).
-  - Episode 2: **How Busy Professionals Learned to Swim** Video: https://www.youtube.com/live/g_4oasxw46M (confirm whether this is the final trimmed replay).
-- Add guest names, summary, detailed key takeaways and editorial thumbnails from original recordings with consent. Keep draft until validated.
-- Relevant CTAs link to Academy and swimming assessment. Add UTM campaign tracking and conversion attribution with tests before claiming funnel measurement is operational.
+## Implementation: Learn and Beyond the Pool
+- Public hub at `/learn`, episodes at `/beyond-the-pool` and `/beyond-the-pool/[id]`.
+- Member journeys at `/account/academy/enrollments/[id]`.
+- Admin evidence management at `/admin/academy/evidence`; coach review at `/coach/alumni-evidence`.
+- Public swimmer stories at `/learn/stories`; the listing displays only consented and admin-approved clips.
+- Use the existing ContentPost editor (Admin > Community > Content), category `beyond_the_pool`, plus episode number, guest names and verified YouTube URL. Published posts only are visible anonymously.
+- Existing `/tips`, `/guides`, `/gallery` routes are retained. Avoid advertising partner pools as standalone destinations.
 
-## Product navigation
-- Public navigation uses Learn to group episodes, articles, guides, highlights, and skill assessment.
-- Homepage calls Community, Club, and Academy ways to swim rather than membership tiers.
-- Existing `/tips`, `/gallery`, and `/guides` URLs remain intact.
+## Analytics: what counts and what does not
+- Anonymous aggregate-only counts: page views, player loads and clicks to Academy/assessment (and supported future CTAs).
+- Admin report: `/admin/community/content/analytics`, API `/content/admin/engagement`.
+- No viewer identity, IP or device fingerprints stored in engagement counters.
+- Counts are **NOT** confirmed registrations, enrollments, payments or revenue. Do not label CTA clicks as conversions. Identity-aware attribution requires separate cross-service identity and booking/payment reconciliation work and a privacy review.
 
-## QA gates
-1. Database migrations apply in production upgrade sequence without duplicate Alembic heads.
-2. Learner in a completed cohort can append evidence; assessment status and reviewer remain unchanged.
-3. Non-owner cannot read or write another learner's supplementary evidence.
-4. Invalid or unowned media references are rejected after media-ownership validation is integrated.
-5. Non-public evidence cannot be surfaced via public galleries, stories, or episode content.
-6. Admin can draft/edit/publish episode; anonymous visitor sees only published episode.
-7. No YouTube embed with unapproved/non-YouTube origin.
-8. Run backend unit/integration tests and frontend type-check, lint, build; inspect CI before merge to develop.
-9. Deploy backend/migrations before frontend, then publish episodes; do not publish an empty category.
-10. Track episode views, clickthroughs, registration and conversions only after explicit measurement implementation.
+## Your manual admin tasks after backend migrations + verified release
+1. Open Admin > Community > Content; create Episode 1, **Is It Too Late to Learn Swimming as an Adult?** (August 18, 2026). Shared playlist URL contains `DDqH3JDcl_Y`; verify final trimmed video URL.
+2. Create Episode 2, **How Busy Professionals Learned to Swim** (September 3, 2026). Shared live URL: https://www.youtube.com/live/g_4oasxw46M ; verify the final replay.
+3. Add episode summaries, guest names, key takeaways and the final approved thumbnails. Set category `beyond_the_pool`, audience `community`, episode numbers 1 and 2; publish when satisfied.
+4. For swimmer stories, obtain and verify separate publication permission covering the swimmer and anyone identifiable, then approve in Admin > Academy > Evidence. Withdrawal must remove the video immediately from the public listing.
+5. Review editorial analytics after traffic is present. Low or zero counts do not imply the feature has failed.
 
-## Not yet implemented
-- Public stories approval and opt-in publishing workflow
-- Full content analytics/attribution and experimental funnel reporting
-- Separate coach review for post-cohort clips
-- Public event taxonomy redesign, pool booking directory, and registration funnel overhaul
+## Release gates
+- Academy and Communications Alembic migrations have one head each and upgrade/downgrade cleanly.
+- CI fully passes: backend Ruff, migrations, unit and integration tests, OpenAPI snapshot; frontend lint, types, tests and build.
+- Test on staging: graduated alumni upload, verified milestone unchanged, private media ownership denial, coach authorization, opt-in, admin approval, anonymous playback, withdrawal revocation and anonymous search privacy.
+- Confirm S3 private bucket configuration, access lifetimes and approved-video playback. Do not mark public video playback available until verified in staging.
+- Deploy backend and migrations before frontend, then make the features discoverable; no merge straight to `main`.
+
+## Explicit follow-on/limits
+- Click counters now have initial coverage. Server-side *confirmed* registration/booking/payment attribution and a complete conversion funnel remain out of scope until cross-service linkage is implemented.
+- A standalone public event taxonomy or partner-pool booking marketplace is separate from this Learn/alumni scope.
