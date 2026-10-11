@@ -36,6 +36,7 @@ The Academy Layer provides structured swim education through cohort-based progra
 
 - **[ACADEMY_REVIEW.md](./ACADEMY_REVIEW.md)** - Complete architecture review and implementation status
 - **[MODULAR_CURRICULUM_PATHWAY.md](./MODULAR_CURRICULUM_PATHWAY.md)** - Competency-gated modules, stackable pathways, assessment credit, scheduling, pricing, and rollout
+- **[ACADEMY_GUIDED_READING.md](./ACADEMY_GUIDED_READING.md)** - **Proposed** stage-based and competency-aware reading, student dashboard resources, editorial controls, service boundaries and rollout
 
 ### Coach Operations (NEW)
 

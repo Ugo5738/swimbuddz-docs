@@ -96,6 +96,7 @@ swimbuddz/
 | **Club**      | [docs/club/README.md](./docs/club/README.md)           | Training sessions, peer leaders, pricing strategy  |
 | **Academy**   | [docs/academy/README.md](./docs/academy/README.md)     | Programs, cohorts, curriculum, coaches, milestones |
 | **Modular Academy pathways** | [docs/academy/MODULAR_CURRICULUM_PATHWAY.md](./docs/academy/MODULAR_CURRICULUM_PATHWAY.md) | Stackable foundation and stroke modules, prerequisite credit, sales model, and rollout |
+| **Academy guided reading (planned)** | [docs/academy/ACADEMY_GUIDED_READING.md](./docs/academy/ACADEMY_GUIDED_READING.md) | Stage- and milestone-aware articles, learner experience, curation, engineering boundaries and rollout |
 | **Store**     | [docs/store/README.md](./docs/store/README.md)         | E-commerce, products, orders, supplier system      |
 
 ### Company, Brand & Strategy
