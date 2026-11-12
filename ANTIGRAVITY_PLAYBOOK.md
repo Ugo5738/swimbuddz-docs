@@ -188,7 +188,8 @@ To maintain "Idempotency" (consistent success), run your day in this loop:
 
 ## 7. The Golden Rules of the Orchestrator
 
-1. **Never write code first.** Always ask for a **Plan Artifact** first.
-2. **One Agent, One Context.** Don't ask the Backend agent to fix CSS. It degrades the model's performance. Switch threads.
-3. **Trust but Verify.** Use the **QA Agent** to verify the **Builder Agent's** work. Never trust the Builder to test themselves (they hallucinate success).
-4. **Commit Frequently.** Instruct agents to commit their work to git often so you can roll back if an agent goes rogue.
+1. **Never write code first.** Always ask for a **Plan Artifact** first, and require every agent to check [`docs/DECISIONS.md`](./docs/DECISIONS.md) and [`AGENTS.md`](./AGENTS.md) before proposing changes so settled product/architectural decisions are never accidentally overridden.
+2. **Deliberate → Document → Code.** Whenever you and an AI agent think through or decide on a product rule, pricing model, onboarding flow, or technical design, the agent MUST update [`docs/DECISIONS.md`](./docs/DECISIONS.md) (and `swimbuddz-backend/docs/DECISIONS.md` + domain runbooks) in the same session so every other AI agent (ChatGPT, Claude, Gemini, Cursor, Copilot) gets the memo.
+3. **One Agent, One Context.** Don't ask the Backend agent to fix CSS. It degrades the model's performance. Switch threads.
+4. **Trust but Verify.** Use the **QA Agent** to verify the **Builder Agent's** work. Never trust the Builder to test themselves (they hallucinate success).
+5. **Commit Frequently.** Instruct agents to commit their work to git often so you can roll back if an agent goes rogue.

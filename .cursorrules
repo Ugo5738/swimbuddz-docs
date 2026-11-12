@@ -1,0 +1,12 @@
+# Cursor Rules — SwimBuddz Workspace
+
+You MUST follow the universal AI agent operating contract in `AGENTS.md` and `docs/DECISIONS.md`:
+
+1. **Read Settled Decisions First (`docs/DECISIONS.md`):**
+   - Before proposing or modifying any product rule, pricing/commercial calculation, attendance rule, Club/Academy onboarding flow, or member lifecycle behavior, read `docs/DECISIONS.md` (and `swimbuddz-backend/docs/DECISIONS.md`).
+2. **Never Silently Override Settled Decisions:**
+   - Do NOT revert or simplify away invariants documented in `docs/DECISIONS.md` (`ADR-001` through `ADR-006`). If a prompt appears to conflict with an accepted ADR, highlight the ADR and ask the user whether they want to explicitly supersede it.
+3. **Deliberate → Document → Code:**
+   - Whenever you and the user think through, discuss, or implement a product decision, pricing rule, UX flow, or architecture change, update `docs/DECISIONS.md` (plus `swimbuddz-backend/docs/DECISIONS.md` and `swimbuddz-frontend/docs/DECISIONS.md`) and the relevant domain runbook in the same session/commit.
+4. **Conventions & Architecture:**
+   - Read `CLAUDE.MD`, `swimbuddz-backend/docs/AGENT_INSTRUCTIONS.md`, and `swimbuddz-frontend/AGENT_INSTRUCTIONS.md` before editing backend or frontend code.

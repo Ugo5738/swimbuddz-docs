@@ -162,6 +162,7 @@ These enums are used within a single service.
 | `coach_bank_accounts` | Coach payout information |
 | `coach_payouts` | Payout history |
 | `pending_registrations` | Incomplete registrations |
+| `club_enrollment_reservations` | Checkout plan/pod capacity; active holds expire, protected holds remain until settlement or verified closure (constraint migration `1cbbd94c744f`) |
 | `club_challenges` | Challenge definitions |
 | `member_challenge_completions` | Challenge completion records |
 | `volunteer_roles` | Available volunteer positions |
@@ -190,7 +191,8 @@ These enums are used within a single service.
 | Table | Description |
 |-------|-------------|
 | `sessions` | Scheduled sessions |
-| `session_templates` | Recurring session templates |
+| `session_templates` | Recurring session templates; `admission_settings JSONB NOT NULL DEFAULT '{}'` holds independent guest/Community admission defaults (migration `82f070b47973`) |
+| `club_session_holds` | Exact prepaid checkout seats keyed by payment reference and session; active/protected/consumed/released states, capacity indexes, no pre-payment entitlement (migration `e30550028159`) |
 | `session_coaches` | Coach assignments to sessions |
 | `session_ride_configs` | Ride-share configuration |
 

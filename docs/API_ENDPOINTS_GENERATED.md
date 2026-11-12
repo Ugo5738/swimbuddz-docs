@@ -4,12 +4,14 @@
 
 All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*` routes are service-to-service (service-role JWT, not gateway-exposed).
 
-**962 operations across 102 tags.**
+**1056 operations across 113 tags.**
 
 ## academy
 
 | Method | Path | Summary |
 |--------|------|---------|
+| GET | `/api/v1/academy/admin/cohorts/{cohort_id}/pricing` | Get Cohort Pricing |
+| PUT | `/api/v1/academy/admin/cohorts/{cohort_id}/pricing` | Update Cohort Pricing |
 | POST | `/api/v1/academy/admin/enrollments/{enrollment_id}/dropout-action` | Admin Dropout Action |
 | POST | `/api/v1/academy/admin/enrollments/{enrollment_id}/mark-paid` | Admin Mark Enrollment Paid |
 | DELETE | `/api/v1/academy/admin/members/{member_id}` | Admin Delete Member Academy Records |
@@ -336,6 +338,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/api/v1/admin/wallet/referrals/` | List Referrals |
+| POST | `/api/v1/admin/wallet/referrals/code/{member_auth_id}` | Get Member Referral Code |
 | GET | `/api/v1/admin/wallet/referrals/leaderboard` | Get Referral Leaderboard |
 | GET | `/api/v1/admin/wallet/referrals/stats` | Get Program Stats |
 | PATCH | `/api/v1/admin/wallet/referrals/{referral_id}` | Update Referral Status |
@@ -611,6 +614,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/sessions/booking-guests/leads` | List Guest Leads |
 | GET | `/api/v1/sessions/bookings/me` | List My Bookings |
 | GET | `/api/v1/sessions/bookings/me/unpaid` | List My Unpaid Bookings |
+| POST | `/api/v1/sessions/bookings/{booking_id}/admin/reconcile-missing-cohort-fee` | Reconcile Missing Cohort Fee |
 | POST | `/api/v1/sessions/bookings/{booking_id}/cancel` | Cancel Booking |
 | POST | `/api/v1/sessions/bookings/{booking_id}/confirm` | Confirm Booking |
 | POST | `/api/v1/sessions/bookings/{booking_id}/excuse` | Excuse Booking |
@@ -675,15 +679,48 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | DELETE | `/api/v1/chat/messages/{message_id}/reactions/{emoji}` | Remove Reaction |
 | POST | `/api/v1/chat/messages/{message_id}/reports` | Report Message |
 
+## club-operations
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/sessions/club-operations/extra-practices` | Extra Practice |
+| GET | `/api/v1/sessions/club-operations/pods/{pod_id}` | Pod Sessions |
+| GET | `/api/v1/sessions/club-operations/{session_id}/operations` | Session Operations |
+| POST | `/api/v1/sessions/club-operations/{session_id}/operations/{operation_id}/retry-notifications` | Retry Notifications |
+| POST | `/api/v1/sessions/club-operations/{session_id}/reschedule` | Reschedule Practice |
+
+## club-plan-drafts
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/clubs/admin/plans/recommendations` | Create Recommendation |
+| PUT | `/api/v1/clubs/admin/plans/{plan_id}` | Update Draft |
+| PUT | `/api/v1/clubs/admin/plans/{plan_id}/community-experience` | Attach Plan Experience |
+| POST | `/api/v1/clubs/admin/plans/{plan_id}/next-quarter` | Generate Next Quarter |
+| POST | `/api/v1/clubs/admin/plans/{plan_id}/publish` | Publish Draft |
+| GET | `/api/v1/clubs/admin/plans/{plan_id}/schedule` | Plan Schedule |
+
 ## clubs
 
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/api/v1/clubs/` | List Clubs |
 | POST | `/api/v1/clubs/` | Create Club |
+| GET | `/api/v1/clubs/admin/applications` | List Club Applications For Review |
+| PUT | `/api/v1/clubs/admin/applications/{application_id}/assessment` | Complete Observed Club Assessment |
+| GET | `/api/v1/clubs/admin/plans` | List All Club Plans |
+| POST | `/api/v1/clubs/applications` | Create Club Application |
+| GET | `/api/v1/clubs/applications/me` | List My Club Applications |
+| PUT | `/api/v1/clubs/applications/{application_id}/pre-assessment` | Submit Club Pre Assessment |
+| POST | `/api/v1/clubs/internal/applications/{application_id}/activate` | Activate Club Application |
+| GET | `/api/v1/clubs/internal/applications/{application_id}/payment-context` | Get Club Application Payment Context |
+| POST | `/api/v1/clubs/internal/applications/{application_id}/reservation` | Reserve Club Application Capacity |
+| POST | `/api/v1/clubs/internal/applications/{application_id}/reservation/release` | Release Club Application Capacity |
+| GET | `/api/v1/clubs/plans` | List Club Plans |
 | GET | `/api/v1/clubs/{club_id}` | Get Club |
 | PATCH | `/api/v1/clubs/{club_id}` | Update Club |
 | DELETE | `/api/v1/clubs/{club_id}` | Delete Club |
+| POST | `/api/v1/clubs/{club_id}/plans` | Create Club Plan |
 
 ## coach-assignments
 
@@ -747,6 +784,16 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/members/coaches` | List Coaches |
 | GET | `/api/v1/members/coaches/{member_id}` | Get Coach By Id |
 
+## community-experiences
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/clubs/community-experiences` | List Community Experiences |
+| POST | `/api/v1/clubs/community-experiences` | Create Community Experience |
+| POST | `/api/v1/clubs/community-experiences/internal/{offering_id}/activate` | Activate Community Experience |
+| GET | `/api/v1/clubs/community-experiences/internal/{offering_id}/payment-context` | Internal Community Experience Payment Context |
+| GET | `/api/v1/clubs/community-experiences/{offering_id}/quote` | Quote Community Experience |
+
 ## community-reports
 
 | Method | Path | Summary |
@@ -766,6 +813,9 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | DELETE | `/api/v1/content/{post_id}` | Delete Content Post |
 | GET | `/api/v1/content/{post_id}/comments` | List Content Comments |
 | POST | `/api/v1/content/{post_id}/comments` | Create Content Comment |
+| DELETE | `/api/v1/content/{post_id}/comments/{comment_id}` | Delete Content Comment |
+| PUT | `/api/v1/content/{post_id}/comments/{comment_id}/like` | Like Content Comment |
+| DELETE | `/api/v1/content/{post_id}/comments/{comment_id}/like` | Unlike Content Comment |
 | POST | `/api/v1/content/{post_id}/email/retry-failed` | Retry Failed Content Post Emails |
 | POST | `/api/v1/content/{post_id}/publish` | Publish Content Post |
 | POST | `/api/v1/content/{post_id}/unpublish` | Unpublish Content Post |
@@ -814,6 +864,19 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/email/send-bulk` | Send Bulk Emails |
 | POST | `/api/v1/email/template` | Send Templated Email |
 
+## event-planning
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/events/planning/imports/commit` | Import Calendar Drafts |
+| POST | `/api/v1/events/planning/imports/xlsx/preview` | Preview Calendar Workbook |
+| GET | `/api/v1/events/planning/templates` | List Event Templates |
+| POST | `/api/v1/events/planning/templates` | Create Event Template |
+| PATCH | `/api/v1/events/planning/templates/{template_id}` | Update Event Template |
+| DELETE | `/api/v1/events/planning/templates/{template_id}` | Delete Event Template |
+| POST | `/api/v1/events/planning/templates/{template_id}/generate` | Generate Event Drafts |
+| POST | `/api/v1/events/planning/templates/{template_id}/preview` | Preview Event Template |
+
 ## events
 
 | Method | Path | Summary |
@@ -833,6 +896,34 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/events/{event_id}/rsvp` | Create Or Update Rsvp |
 | GET | `/api/v1/events/{event_id}/rsvps` | List Event Rsvps |
 
+## experience-admin
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/clubs/community-experiences/admin` | Admin Offerings |
+| POST | `/api/v1/clubs/community-experiences/admin/participants/{participant_id}/check-in` | Check In |
+| PUT | `/api/v1/clubs/community-experiences/admin/{offering_id}` | Update Offering |
+| GET | `/api/v1/clubs/community-experiences/admin/{offering_id}/club-sessions` | Affected Session Options |
+| GET | `/api/v1/clubs/community-experiences/admin/{offering_id}/events` | Admin Events |
+| PUT | `/api/v1/clubs/community-experiences/admin/{offering_id}/events` | Set Events |
+| GET | `/api/v1/clubs/community-experiences/admin/{offering_id}/operations` | Configuration Operations |
+| POST | `/api/v1/clubs/community-experiences/admin/{offering_id}/operations/{operation_id}/recover` | Recover Configuration |
+| GET | `/api/v1/clubs/community-experiences/admin/{offering_id}/participants` | Participants |
+
+## experience-tickets
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/clubs/community-experiences/internal/orders/{order_id}/confirm` | Confirm Order |
+| GET | `/api/v1/clubs/community-experiences/internal/{offering_id}/events/{event_id}/participants` | Event Participants |
+| POST | `/api/v1/clubs/community-experiences/orders/{order_id}/checkout` | Order Checkout |
+| POST | `/api/v1/clubs/community-experiences/orders/{order_id}/checkout-preview` | Preview Order Checkout |
+| POST | `/api/v1/clubs/community-experiences/orders/{order_id}/status` | Order Status |
+| PUT | `/api/v1/clubs/community-experiences/participants/{participant_id}/my-details` | Complete Member Details |
+| GET | `/api/v1/clubs/community-experiences/public/{offering_id}` | Public Offering |
+| POST | `/api/v1/clubs/community-experiences/{offering_id}/orders` | Create Order |
+| GET | `/api/v1/clubs/community-experiences/{offering_id}/tickets/me` | My Tickets |
+
 ## extension-requests
 
 | Method | Path | Summary |
@@ -843,6 +934,17 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/academy/extension-requests/pending` | List Pending Extension Requests |
 | POST | `/api/v1/academy/extension-requests/{request_id}/approve` | Approve Extension Request |
 | POST | `/api/v1/academy/extension-requests/{request_id}/reject` | Reject Extension Request |
+
+## guest-passes
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/guest-passes` | List Guest Passes |
+| POST | `/api/v1/admin/guest-passes/{guest_pass_id}/attendance` | Mark Guest Pass Attended |
+| GET | `/api/v1/guest-passes/{guest_pass_id}` | Get Guest Pass Status |
+| POST | `/api/v1/internal/sessions/guest-passes/{guest_pass_id}/confirm` | Confirm Guest Pass |
+| GET | `/api/v1/sessions/{session_id}/guest-pass` | Guest Pass Offer |
+| POST | `/api/v1/sessions/{session_id}/guest-passes` | Create Guest Pass |
 
 ## internal
 
@@ -869,6 +971,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/members/birthdays-today` | Get Birthdays Today |
 | POST | `/api/v1/internal/members/bulk` | Get Members Bulk |
 | GET | `/api/v1/internal/members/by-auth/{auth_id}` | Get Member By Auth Id |
+| POST | `/api/v1/internal/members/club-access/checks` | Check Club Access |
 | GET | `/api/v1/internal/members/coaches/eligible` | Get Eligible Coaches |
 | GET | `/api/v1/internal/members/coaches/{member_id}/availability` | Get Coach Availability |
 | GET | `/api/v1/internal/members/coaches/{member_id}/profile` | Get Coach Profile |
@@ -882,6 +985,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/members/{member_id}/bank-account` | Get Member Bank Account |
 | GET | `/api/v1/internal/members/{member_id}/membership` | Get Member Membership |
 | GET | `/api/v1/internal/members/{member_id}/tier-history` | Get Member Tier History |
+| POST | `/api/v1/internal/payments/checkout/preview` | Internal Preview Product Checkout |
 | POST | `/api/v1/internal/payments/discounts/validate` | Internal Validate Discount |
 | POST | `/api/v1/internal/payments/initialize` | Internal Initialize Payment |
 | POST | `/api/v1/internal/payments/makeup-obligations/{obligation_id}/complete` | Internal Complete Makeup Obligation |
@@ -910,6 +1014,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/sessions/detailed-stats` | Get Session Detailed Stats |
 | GET | `/api/v1/internal/sessions/durations` | Get Session Durations |
 | GET | `/api/v1/internal/sessions/member/{member_auth_id}/session-commitments` | List Member Session Commitments |
+| GET | `/api/v1/internal/sessions/member/{member_id}/converted-guest-hours` | Get Converted Guest Hours |
 | GET | `/api/v1/internal/sessions/range-stats` | Get Session Range Stats |
 | GET | `/api/v1/internal/sessions/scheduled` | Get Scheduled Sessions |
 | POST | `/api/v1/internal/sessions/summaries/batch` | Get Session Summaries Batch |
@@ -929,6 +1034,31 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 |--------|------|---------|
 | POST | `/api/v1/internal/chat/channels/ensure` | Ensure Channel |
 | POST | `/api/v1/internal/chat/memberships/reconcile` | Reconcile Membership |
+
+## internal-club-operations
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/internal/clubs/operations/authorize-pod` | Authorize Pod |
+| POST | `/api/v1/internal/clubs/operations/promises` | Check Promises |
+
+## internal-club-schedule
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/internal/sessions/club-schedule/generate` | Generate Quarter |
+| POST | `/api/v1/internal/sessions/club-schedule/operations/{operation_id}/undo` | Undo Replacement |
+| POST | `/api/v1/internal/sessions/club-schedule/publish` | Publish Sessions |
+| POST | `/api/v1/internal/sessions/club-schedule/query` | Query Schedule |
+| POST | `/api/v1/internal/sessions/club-schedule/replace` | Replace Sessions |
+
+## internal-experience-events
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/internal/events/experiences/bind` | Bind Events |
+| POST | `/api/v1/internal/events/experiences/query` | Query Events |
+| POST | `/api/v1/internal/events/experiences/unbind` | Unbind Events |
 
 ## internal-guardians
 
@@ -971,6 +1101,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/wallet/holds/{hold_id}/release` | Internal Release Hold |
 | GET | `/api/v1/internal/wallet/member-summary/{member_auth_id}` | Get Member Wallet Summary |
 | POST | `/api/v1/internal/wallet/pool-submission-reward` | Internal Pool Submission Reward |
+| GET | `/api/v1/internal/wallet/referral-code/resolve` | Resolve Referral Code For Attribution |
 | GET | `/api/v1/internal/wallet/referral-link/{member_auth_id}` | Get Member Referral Link |
 | POST | `/api/v1/internal/wallet/referral-qualify` | Internal Referral Qualify |
 | POST | `/api/v1/internal/wallet/scholarship-credit` | Internal Scholarship Credit |
@@ -1062,6 +1193,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | DELETE | `/api/v1/media/media/{media_id}/tags/{member_id}` | Remove Tag |
 | POST | `/api/v1/media/register-url` | Register External Url |
 | POST | `/api/v1/media/uploads` | Upload File |
+| POST | `/api/v1/media/uploads/adjusted-image` | Upload Adjusted Image |
 | POST | `/api/v1/media/urls` | Resolve Media Urls |
 
 ## media-admin
@@ -1080,6 +1212,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/media/objects/sign` | Sign Object |
 | POST | `/api/v1/internal/media/objects/upload` | Upload Object |
 | POST | `/api/v1/internal/media/objects/verify` | Verify Object |
+| POST | `/api/v1/internal/media/vaults/sync-volunteer-grants` | Sync Existing Vault Volunteer Grants |
 
 ## media-vaults
 
@@ -1087,6 +1220,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 |--------|------|---------|
 | GET | `/api/v1/media/vaults` | List Vaults |
 | POST | `/api/v1/media/vaults` | Create Vault |
+| GET | `/api/v1/media/vaults/admin/bandwidth` | Bandwidth Summary |
 | GET | `/api/v1/media/vaults/guest/{token}` | Get Guest Vault |
 | POST | `/api/v1/media/vaults/guest/{token}/batches` | Create Guest Batch |
 | POST | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/initiate` | Initiate Guest Upload |
@@ -1094,9 +1228,11 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/{item_id}/complete` | Complete Guest Upload |
 | GET | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/{item_id}/parts` | Resume Guest Parts |
 | POST | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/{item_id}/parts` | Sign Guest Parts |
+| GET | `/api/v1/media/vaults/library` | List Media Library |
+| GET | `/api/v1/media/vaults/tags` | List Media Tags |
 | GET | `/api/v1/media/vaults/{vault_id}` | Get Vault |
 | PATCH | `/api/v1/media/vaults/{vault_id}` | Update Vault |
-| GET | `/api/v1/media/vaults/{vault_id}/bandwidth` | Bandwidth Summary |
+| DELETE | `/api/v1/media/vaults/{vault_id}` | Delete Vault |
 | POST | `/api/v1/media/vaults/{vault_id}/batches` | Create Member Batch |
 | POST | `/api/v1/media/vaults/{vault_id}/batches/{batch_id}/uploads/initiate` | Initiate Member Upload |
 | DELETE | `/api/v1/media/vaults/{vault_id}/batches/{batch_id}/uploads/{item_id}` | Abort Member Upload |
@@ -1115,6 +1251,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | DELETE | `/api/v1/media/vaults/{vault_id}/guest-links/{link_id}` | Revoke Guest Link |
 | GET | `/api/v1/media/vaults/{vault_id}/items` | List Vault Items |
 | PATCH | `/api/v1/media/vaults/{vault_id}/items` | Bulk Review Items |
+| POST | `/api/v1/media/vaults/{vault_id}/items/delete` | Delete Vault Items |
 | PATCH | `/api/v1/media/vaults/{vault_id}/items/{item_id}` | Review Item |
 | POST | `/api/v1/media/vaults/{vault_id}/items/{item_id}/download` | Authorize Item Download |
 | POST | `/api/v1/media/vaults/{vault_id}/items/{item_id}/preview/generate` | Request Item Preview |
@@ -1135,6 +1272,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/members/me` | Get Current Member Profile |
 | PATCH | `/api/v1/members/me` | Update Current Member |
 | GET | `/api/v1/members/me/badges` | List My Badges |
+| GET | `/api/v1/members/me/membership-history` | Get Current Member Membership History |
 | GET | `/api/v1/members/public` | List Public Members |
 | GET | `/api/v1/members/public/{member_id}` | Get Member For Verification |
 | GET | `/api/v1/members/stats` | Get Member Stats |
@@ -1162,6 +1300,15 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/notifications/unread-count` | Get Unread Count |
 | DELETE | `/api/v1/notifications/{notification_id}` | Delete Notification |
 | POST | `/api/v1/notifications/{notification_id}/read` | Mark Notification Read |
+
+## payment-charges
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/payments/charges` | List Charge Policies |
+| POST | `/api/v1/payments/charges` | Create Charge Policy |
+| POST | `/api/v1/payments/charges/preview` | Preview Additional Charges |
+| PATCH | `/api/v1/payments/charges/{policy_id}` | Update Charge Policy |
 
 ## payments
 
@@ -1238,6 +1385,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/api/v1/pools` | List Partner Pools |
+| GET | `/api/v1/pools/operating-areas` | List Public Operating Areas |
 | GET | `/api/v1/pools/{pool_id}` | Get Partner Pool |
 
 ## preferences
@@ -1293,6 +1441,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | PATCH | `/api/v1/sessions/templates/{template_id}` | Update Template |
 | DELETE | `/api/v1/sessions/templates/{template_id}` | Delete Template |
 | POST | `/api/v1/sessions/templates/{template_id}/generate` | Generate Sessions |
+| POST | `/api/v1/sessions/templates/{template_id}/sync-volunteer-opportunities` | Sync Template Volunteer Opportunities |
 
 ## sessions
 

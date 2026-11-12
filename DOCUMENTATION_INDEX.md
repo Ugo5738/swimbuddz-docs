@@ -6,11 +6,12 @@
 
 ## 📖 Quick Start
 
-**New to SwimBuddz?** Start here:
+**New to SwimBuddz (Human or AI Agent)?** Start here:
 
-1. Read [CLAUDE.md](./CLAUDE.md) - AI assistant guide (project overview, tech stack, workflow)
-2. Review [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md) - All backend services
-3. Check [ROUTES_AND_PAGES.md](./swimbuddz-frontend/ROUTES_AND_PAGES.md) - All 103 frontend routes
+1. Read [AGENTS.md](./AGENTS.md) & [docs/DECISIONS.md](./docs/DECISIONS.md) - **Universal AI operating rules & settled product/architecture decisions (ADR-001 through ADR-006)**
+2. Read [CLAUDE.md](./CLAUDE.md) - AI assistant guide (project overview, tech stack, workflow)
+3. Review [SERVICE_REGISTRY.md](./docs/reference/SERVICE_REGISTRY.md) - All backend services
+4. Check [ROUTES_AND_PAGES.md](./swimbuddz-frontend/ROUTES_AND_PAGES.md) - All frontend routes
 
 ---
 
@@ -96,6 +97,8 @@ swimbuddz/
 | **Club**      | [docs/club/README.md](./docs/club/README.md)           | Training sessions, peer leaders, pricing strategy  |
 | **Academy**   | [docs/academy/README.md](./docs/academy/README.md)     | Programs, cohorts, curriculum, coaches, milestones |
 | **Modular Academy pathways** | [docs/academy/MODULAR_CURRICULUM_PATHWAY.md](./docs/academy/MODULAR_CURRICULUM_PATHWAY.md) | Stackable foundation and stroke modules, prerequisite credit, sales model, and rollout |
+| **Academy guided reading (planned)** | [docs/academy/ACADEMY_GUIDED_READING.md](./docs/academy/ACADEMY_GUIDED_READING.md) | Stage- and milestone-aware articles, learner experience, curation, engineering boundaries and rollout |
+| **Independent Curriculum & Drills** | [docs/design/ACADEMY_INDEPENDENT_CURRICULUM_AND_DRILLS_DESIGN.md](./docs/design/ACADEMY_INDEPENDENT_CURRICULUM_AND_DRILLS_DESIGN.md) | Independent reusable Milestones, TI Drills, Lessons, Quizzes, Cohort overlays, and Learner Competency Ledger |
 | **Store**     | [docs/store/README.md](./docs/store/README.md)         | E-commerce, products, orders, supplier system      |
 
 ### Company, Brand & Strategy
@@ -188,14 +191,31 @@ swimbuddz/
 | [swimbuddz-frontend/DEPLOYMENT.md](./swimbuddz-frontend/DEPLOYMENT.md)       | Vercel deployment guide   | Production            |
 | [docs/store/STORE_OPERATIONS.md](./docs/store/STORE_OPERATIONS.md)           | Store operations playbook | Day-to-day operations |
 
-### AI Agent Guides
+### AI Agent Guides & Decision Log
 
 | Document                                                                               | Description                | Purpose                       |
 | -------------------------------------------------------------------------------------- | -------------------------- | ----------------------------- |
+| [AGENTS.md](./AGENTS.md)                                                               | **Universal AI contract**  | Shared rules across ChatGPT/Codex, Claude, Gemini/Antigravity, Cursor, Copilot |
+| [docs/DECISIONS.md](./docs/DECISIONS.md)                                               | **Canonical Decision Log** | Settled product & architecture decisions (`ADR-001`–`ADR-006`) and why they were made |
+| [GEMINI.md](./GEMINI.md)                                                               | **Gemini / Antigravity**   | Entrypoint for Google Gemini & Antigravity agents |
 | [CLAUDE.md](./CLAUDE.md)                                                               | **Primary AI guide**       | Complete context and workflow |
-| [swimbuddz-backend/AGENT_INSTRUCTIONS.md](./swimbuddz-backend/AGENT_INSTRUCTIONS.md)   | Backend-specific guidance  | Service patterns, testing     |
-| [swimbuddz-frontend/AGENT_INSTRUCTIONS.md](./swimbuddz-frontend/AGENT_INSTRUCTIONS.md) | Frontend-specific guidance | Component patterns, routing   |
+| [swimbuddz-backend/docs/AGENT_INSTRUCTIONS.md](./swimbuddz-backend/docs/AGENT_INSTRUCTIONS.md) | Backend-specific guidance  | Service patterns, testing, decision log discipline |
+| [swimbuddz-frontend/AGENT_INSTRUCTIONS.md](./swimbuddz-frontend/AGENT_INSTRUCTIONS.md) | Frontend-specific guidance | Component patterns, routing, decision log discipline |
 | [ANTIGRAVITY_PLAYBOOK.md](./ANTIGRAVITY_PLAYBOOK.md)                                   | Overall AI workflow        | Agent collaboration           |
+
+### 2026 Operational Runbooks (`swimbuddz-backend/docs/`)
+
+| Document | Description |
+| --- | --- |
+| [swimbuddz-backend/docs/DECISIONS.md](./swimbuddz-backend/docs/DECISIONS.md) | Backend mirror of the canonical Product & Architecture Decision Log |
+| [swimbuddz-backend/docs/ACADEMY_ADMIN_COMMERCIAL_TERMS_RUNBOOK.md](./swimbuddz-backend/docs/ACADEMY_ADMIN_COMMERCIAL_TERMS_RUNBOOK.md) | Agreed fee overrides, custom installment plans, extension grants, credits, and refund obligations |
+| [swimbuddz-backend/docs/ACADEMY_BANK_RECEIPT_RECONCILIATION_RUNBOOK.md](./swimbuddz-backend/docs/ACADEMY_BANK_RECEIPT_RECONCILIATION_RUNBOOK.md) | Stage-first bank transfer receipt uploads, OCR hint verification, and pooled receipt allocations |
+| [swimbuddz-backend/docs/ACADEMY_ATTENDANCE_CLASS_ACCOUNTING_RUNBOOK.md](./swimbuddz-backend/docs/ACADEMY_ATTENDANCE_CLASS_ACCOUNTING_RUNBOOK.md) | Default-present attendance worker, ≥24h excused absence requests, and `included` vs. `paid_extra` class accounting |
+| [swimbuddz-backend/docs/ACADEMY_PAYMENT_RECOVERY_RUNBOOK.md](./swimbuddz-backend/docs/ACADEMY_PAYMENT_RECOVERY_RUNBOOK.md) | Webhook settlement recovery and duplicate reference protection |
+| [swimbuddz-backend/docs/CLUB_ONBOARDING_ACCESS_AND_OPERATIONS.md](./swimbuddz-backend/docs/CLUB_ONBOARDING_ACCESS_AND_OPERATIONS.md) | Location-first Club application, readiness assessment gate, and Club commercial overrides |
+| [swimbuddz-backend/docs/CLUB_MOBILITY_AND_TRANSFERS_RUNBOOK.md](./swimbuddz-backend/docs/CLUB_MOBILITY_AND_TRANSFERS_RUNBOOK.md) | Single-session `club_visit` vs. audited home-Club transfer (`ClubEnrollmentTransfer`) |
+| [swimbuddz-backend/docs/SESSION_SETTLEMENT_OPERATIONS_RUNBOOK.md](./swimbuddz-backend/docs/SESSION_SETTLEMENT_OPERATIONS_RUNBOOK.md) | Consolidated multi-session checkout and per-booking settlement |
+| [swimbuddz-backend/docs/ADMIN_FINANCE_RECONCILIATION_GUIDE.md](./swimbuddz-backend/docs/ADMIN_FINANCE_RECONCILIATION_GUIDE.md) | End-to-end finance reconciliation across Paystack and bank transfers |
 
 ### Task Tracking
 

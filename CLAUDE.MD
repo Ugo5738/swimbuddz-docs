@@ -4,7 +4,11 @@ This document provides essential context for AI assistants working on the SwimBu
 
 ## Quick Reference Card
 
-**Before ANY task:** Read relevant `AGENT_INSTRUCTIONS.md` → `CONVENTIONS.md` → `TODO.md`
+**Before ANY task:** Read [`AGENTS.md`](./AGENTS.md) → [`docs/DECISIONS.md`](./docs/DECISIONS.md) → relevant `AGENT_INSTRUCTIONS.md` → `CONVENTIONS.md` → `TODO.md`
+
+### 🛑 NON-NEGOTIABLE: Deliberate → Document → Code (`docs/DECISIONS.md`)
+1. **Check Settled Decisions First**: Before proposing or changing business rules, pricing/commercial flows, onboarding/enrollment flows, attendance rules, or data models, read [`docs/DECISIONS.md`](./docs/DECISIONS.md) (and [`swimbuddz-backend/docs/DECISIONS.md`](./swimbuddz-backend/docs/DECISIONS.md)). **Never silently override or revert a settled decision** that was reached after deliberation unless the user explicitly asks to supersede it.
+2. **Always Update the Docs When Thinking Through or Implementing Features**: Whenever you and the user think through, deliberate on, or implement a product/architectural decision, **update [`docs/DECISIONS.md`](./docs/DECISIONS.md)** (and the relevant domain runbook in `swimbuddz-backend/docs/` or `docs/`) in the **same session / commit** so every AI agent (Claude, ChatGPT/Codex, Gemini/Antigravity, Cursor, Copilot) stays aligned.
 
 **Common Commands:**
 ```bash
@@ -690,15 +694,23 @@ try {
 
 ## Documentation Update Workflow
 
+### Mandatory Habit: Deliberate → Document → Code
+
+**Every AI agent working on SwimBuddz must maintain [`docs/DECISIONS.md`](./docs/DECISIONS.md) (and its mirror [`swimbuddz-backend/docs/DECISIONS.md`](./swimbuddz-backend/docs/DECISIONS.md)):**
+- Before changing a business flow, check [`docs/DECISIONS.md`](./docs/DECISIONS.md) so you do not undo a settled decision (e.g., agreed commercial adjustments vs. discount codes, stage-first bank receipts with untrusted OCR hints, default-present Academy attendance with ≥24h excused absence rules, location-first Club onboarding with readiness assessment gate, independent annual membership vs. participation layers, soft vs. hard member deletion).
+- Whenever a new product, pricing, UX, or architecture decision is reached—even during a planning or brainstorming conversation—record or update an ADR in [`docs/DECISIONS.md`](./docs/DECISIONS.md) and update the corresponding operational runbook in `swimbuddz-backend/docs/`.
+
 ### When to Update Docs
 
 **Always update when:**
+- Reaching or revising a product/business/architectural decision → [`docs/DECISIONS.md`](./docs/DECISIONS.md) + [`swimbuddz-backend/docs/DECISIONS.md`](./swimbuddz-backend/docs/DECISIONS.md)
+- Changing Academy/Club commercial, reconciliation, attendance, or mobility rules → `swimbuddz-backend/docs/ACADEMY_*.md` / `CLUB_*.md`
 - Adding new API endpoints → `API_ENDPOINTS.md`
 - Changing database schema → `DATABASE_SCHEMA.md`
 - Adding new service → `SERVICE_REGISTRY.md`
 - Creating new route → `ROUTES_AND_PAGES.md`
 - Changing user flow → `UI_FLOWS.md`
-- Major architectural decision → Relevant `ARCHITECTURE.md`
+- Major architectural decision → Relevant `ARCHITECTURE.md` + `docs/DECISIONS.md`
 
 ### Documentation Standards
 
