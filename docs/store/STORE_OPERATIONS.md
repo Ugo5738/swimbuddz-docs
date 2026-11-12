@@ -53,6 +53,17 @@ stateDiagram-v2
 
 ## Daily Operations Checklist
 
+### Reviewed preorder item corrections
+
+An unsettled preorder upgraded to a higher-priced SKU keeps its original receipt
+and adds a separate payment for the price difference. Record an audited item and
+supplier snapshot correction; do not overwrite a frozen payment or post the full
+revised total as new cash. Hold order fulfillment until both receipts are verified
+and total the corrected order amount. This is currently an operator repair,
+not an Admin exchange button. See the backend
+`docs/STORE_ORDER_CORRECTION_RUNBOOK.md` for the scoped Esther correction and
+the existing receipt-verification/replay sequence.
+
 ### Morning (Opening)
 - [ ] Check new orders in admin panel (`/admin/store/orders`)
 - [ ] Review any `paid` orders that need to move to `processing`
