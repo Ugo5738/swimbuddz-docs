@@ -1,5 +1,7 @@
 # SwimBuddz Tier Boundary Policy
 
+> **Terminology update (October 2026):** SwimBuddz no longer uses a hierarchical tier as the system data model. Annual Membership, Academy, and Club are independent dated programme/entitlement states. References to "tier" below are legacy commercial shorthand only. New code and reporting must follow [Membership and Programme State Model](../reference/MEMBERSHIP_AND_PROGRAMME_STATE.md).
+
 _Last updated: April 2026_
 
 ## Purpose
