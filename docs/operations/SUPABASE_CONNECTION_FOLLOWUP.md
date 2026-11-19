@@ -1,5 +1,20 @@
 # Connection investigation — 17 November 2026
 
+## Members-only activation — 19 November 2026
+
+The owner explicitly approved activating the prepared Members API canary. Only
+Members was recreated at 03:00 UTC (04:00 Lagos), retaining its application image,
+one-connection cap and zero overflow. Its GitHub production Environment flag is
+persisted as true. Chat, media reuse and every other service remain unchanged.
+Rollback metadata and the previous image are retained privately on the server.
+
+The latest fixes were already running with both API reuse flags false. A fresh
+five-minute pre-activation sample counted 80 new connections across services,
+including 11 from Members. A successful read and one retained socket provide
+initial verification, not a full-day savings result. Compare provider egress,
+errors/latency and scheduled workloads before enabling Chat or widening scope.
+There is no schema, financial-record or billing-plan change in this activation.
+
 The deployed media retry fix is working: historical expensive lookups stopped
 increasing, terminal classification is active, and all original S3 event/byte
 evidence is retained. Remaining traffic is concentrated in persistent API
