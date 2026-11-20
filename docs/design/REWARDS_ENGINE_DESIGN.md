@@ -8,6 +8,10 @@
 
 ---
 
+## Verified swim days (19 November 2026)
+
+The attendance offer in ADR-019 supersedes the illustrative monthly and streak rates below. My Swims counts confirmed physical sessions. The wallet credits one Bubble per distinct Lagos swim day up to three per week. Corrections reduce qualifying activity and any credit already issued above entitlement offsets future swim earnings. Recognition thresholds award badges. October’s replay of the earlier proposal showed 31 explicitly defaulted records out of 53, which motivated human roster confirmation.
+
 ## 1. Overview
 
 The Rewards Engine is an event-driven system that automatically grants Bubbles to members when they perform behaviours SwimBuddz wants to incentivize. It lives within the wallet service and listens for events from all other services.
