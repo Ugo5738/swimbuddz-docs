@@ -1,5 +1,35 @@
 # Connection investigation — 17 November 2026
 
+## Chat-only activation — 22 November 2026
+
+The owner separately approved activating Chat after the Members test had
+remained enabled and passed current health checks. At 13:54 UTC (14:54 Lagos),
+only Chat was recreated with its existing image, one retained connection per
+process and zero overflow. Its GitHub production Environment flag is persisted
+as true. Members is unchanged and media reuse remains off; source defaults stay
+false. Chat authorization and moderation configuration are preserved.
+
+Health, denied anonymous/invalid-token access and an authorized read passed.
+Initial runtime checks showed one retained Chat socket and no restart,
+operational-error or queue-timeout pattern. Rollback retains Members true and
+sets only Chat false before recreating it with its saved image/configuration.
+The private server manifest and detailed evidence are recorded in the backend
+connection-canary runbook. No schema, financial record or billing plan changed.
+
+In the before sample, 33 scheduled Chat requests opened 33 connections and
+received 222,004 TCP payload bytes. After activation, 87 scheduled requests all
+returned 200 with one new connection and 193,017 received bytes, including a few
+read-only diagnostic requests. No observer drops or new Chat errors appeared;
+direct and gateway authorization checks passed through 14:00 UTC. These windows
+cover different hourly jobs and response sizes, so they establish reuse under
+load rather than a daily provider-billed savings percentage.
+
+The morning billing check showed 1.876/5 GB used; November 21 Shared Pooler
+Egress was 253.689 MB. This remains above the roughly 130 MB/day remaining
+budget. Other releases and workload changes prevent attributing the daily
+improvement to Members alone. A complete provider-usage day after Chat activation
+is still needed to establish sustainable savings.
+
 ## Members-only activation — 19 November 2026
 
 The owner explicitly approved activating the prepared Members API canary. Only
