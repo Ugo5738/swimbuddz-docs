@@ -352,6 +352,7 @@
   - `swimbuddz-frontend/src/components/swims/SwimRewards.tsx`
   - `swimbuddz-frontend/src/lib/my-swims.ts`
 
+
 ---
 
 ## Template for Adding New Decisions
