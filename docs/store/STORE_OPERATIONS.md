@@ -218,3 +218,8 @@ If webhook delayed, customer can trigger verification from billing page.
 ---
 
 *Last updated: January 2026*
+
+
+### Reviewed purchased stock correction — 24 November 2026
+
+The owner approved Stocked sourcing for eight purchased product families and five units remaining per purchased variant after Fatima’s collected items. The scoped backend runbook `docs/STORE_STOCK_RECONCILIATION_20261124.md` records count adjustments and explicit reservations, then uses normal Picked Up completion. Retain original preorder history and verified payments. Unpurchased variants are not stocked automatically. Acquisition cost stays unknown until supported independent valuation; this operation posts no new cash or invented COGS.
