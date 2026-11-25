@@ -599,3 +599,36 @@ the value is teased without the accuracy debt.
    eval-asserted that discipline can't bias the VLM into *seeing* a dead-spot.
 8. **Scrub crossover from the holistic prompt → done.** `coach/prompt.py` no longer
    lists "crossover" as visible, so holistic and `entry_reach` agree with §3.
+
+---
+
+## 13. v2 Reliability, Late-2026 Model Support & Verification Upgrade (Nov 2026)
+
+Implemented as engine version `0.4.0` to address production reliability gaps discovered in Gemini 3+ video processing, thinking-model JSON truncation, model cost telemetry, pose licensing, and runtime evidence verification:
+
+1. **Explicit Video FPS & Hybrid Key Stills (`providers/base.py`, `chunk_coach.py`):**
+   - Gemini's default static video processing samples at **1 FPS**, which misses ~0.8–1.0s arm recoveries on 4-second stroke chunks.
+   - `call_vlm` now attaches `file.format`, `file.video_metadata = {"fps": STROKELAB_COACH_VIDEO_FPS}` (default `4.0` FPS → ~16 frames per 4s chunk), and `file.detail = STROKELAB_COACH_VIDEO_DETAIL` (`medium`) for Gemini 3+ models.
+   - `ChunkCoachComponent` supports hybrid mode (`STROKELAB_COACH_CHUNK_HYBRID_STILLS=true`): sending up to 2 crisp high-resolution key frames from the chunk window alongside the 4s video clip so the VLM sees both smooth temporal arcs and sharp anatomy detail.
+2. **Thinking-Model JSON Stability (`providers/base.py`, `chunk_coach.py`, `aggregator.py`):**
+   - Gemini 2.5/3.x Flash count internal thinking tokens against `maxOutputTokens`. `call_vlm` accepts `reasoning_effort` (default `STROKELAB_COACH_REASONING_EFFORT="low"`) and enforces at least `4096` output tokens on Gemini JSON calls so internal reasoning never truncates JSON mid-object. `AIProviderResponse.parse_json()` also extracts balanced `{...}` objects cleanly if prose wraps JSON.
+3. **Fail-Safe Cost Estimation for Late-2026 Models (`providers/base.py`):**
+   - `litellm 1.82.6`'s bundled pricing table lacks newer 2026 IDs (`gemini/gemini-3.8-flash`, `gemini/gemini-3.5-flash-lite`, `gpt-5.6`). A conservative fallback rate table (anchored to standard post-promo Jan 2027 rates — e.g. `gemini-3.8-flash` `$1.50/$7.50` per 1M tokens) guarantees per-attempt (`$0.50`) and daily (`$25`) cost circuit breakers never silently track `$0.00`.
+   - Recommended late-2026 candidate shortlist (to prove via coach bake-off before swapping production defaults):
+     - **Gate:** `o4-mini` (proven) vs. `gemini/gemini-3.5-flash-lite` (fast, `$0.30/$2.50`)
+     - **Primary chunk video coach:** `gemini/gemini-3.8-flash` (4 FPS chunks + hybrid stills) vs. `gpt-4o` (baseline)
+     - **Selective adjudicator (high-res stills only):** `gpt-5.4-mini` (`$0.75/$4.50`) or `gpt-4o` (must pass zero-crossover honesty eval); reserve `gpt-5.6` (`$4.00/$20.00`) for offline eval judging.
+4. **Graded 3-Tier Gate (`coach/coach.py`, `pipeline/components/gate.py`):**
+   - `GATE_SYSTEM_PROMPT` now outputs graded `profile_quality` (`clean | partial | poor`) and `catastrophic_flags` (`non_freestyle`, `underwater`, `head_on`, `no_swimmer`, `unreadable`) while staying backwards-compatible with cached binary verdicts.
+5. **Deterministic Runtime Verifier, Cross-Stroke Consensus & Selective Adjudication (`pipeline/verify.py`, `aggregator.py`):**
+   - Enforces closed-enum verdicts, runtime ADR-013 honesty bans (no SPM/cadence/degrees, no above-water catch/pull/kick faults, no side-on crossover claims, overhead `body_line` sink suppression), and valid evidence frame bounds.
+   - Computes cross-stroke support (`support_count / total_coached_chunks`) across coached chunks so recurring issues outrank noisy single-stroke reads.
+   - Optional `STROKELAB_COACH_ADJUDICATOR_MODEL` selectively checks only uncertain/single-stroke top fixes on high-res stills and downgrades unconfirmed claims to `info`.
+6. **Deterministic Water-Safe TI Drill Bank (`analysis/drills.py`):**
+   - Maps verified `(aspect, verdict)` findings deterministically to curated TI drills (aligned with `ADR-010` / `STROKELAB_TI_COACHING_KNOWLEDGE_BANK.md`), with one primary focal point and water-safety framing, preventing hallucinated unsafe drills.
+7. **Permissively Licensed Pose Backbone (`coach/pose.py`, `pose_recovery.py`, `pyproject.toml`):**
+   - Adds Apache-2.0 `rtmlib` / `onnxruntime` (`RTMPose`) keypoint extraction (`STROKELAB_POSE_ENGINE=auto|rtmpose|yolov8`) emitting identical COCO-17 `(x, y, conf)` arrays into the validated MAD wrist-recovery counter, plus a `strokelab-apache` pip extra to remove AGPL `ultralytics` + `torch` in commercial deployments.
+8. **Zero-Cost Longitudinal Swim Comparison (`pipeline/compare.py`, `tasks/analyze.py`):**
+   - Deterministically compares each completed freestyle analysis against the swimmer's previous completed run (`improved`, `still_working`, `regressed`, `maintained`, `newly_observed`) at `$0` VLM cost and stores it under `coach_result["comparison"]` and `result.meta["comparison"]`.
+9. **Multi-Config, Multi-Repeat Coach Bake-Off Harness (`validation/bakeoff_eval.py`, `validation/COACH_EVAL_RUBRIC.md`):**
+   - Benchmarks candidate configs across `repeats=3` runs against multi-coach annotations (starting at 25–30 stratified clips, scaling to 100+), measuring coach inter-rater agreement, leading-fix agreement (target ≥80%), catastrophic refusal (target ≥95%), unsupported high-confidence rate (<5%), repeatability, latency, and Jan-2027 cost per delivered report.
