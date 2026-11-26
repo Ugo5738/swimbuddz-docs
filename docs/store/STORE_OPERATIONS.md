@@ -121,15 +121,27 @@ the existing receipt-verification/replay sequence.
 
 ---
 
-## Refund Policy
+## Cancellation, Returns, Exchanges & Refund Policy (ADR-024)
 
-**All sales are final.** However, for exceptional cases:
+SwimBuddz separates **pre-handover cancellations/modifications** from **post-handover returns/exchanges**, and distinguishes **stocked** items from **preorder/dropship** items:
 
-1. Issue **Store Credit** (not cash refund)
-2. Go to order detail → Refund button
-3. Enter amount (max = order total)
-4. Credits applied to customer's account
-5. Customer can use on next purchase
+| Situation | Policy |
+|---|---|
+| Unpaid order (`pending_payment`) | Customer may self-cancel after live payment verification (blocked if a bank-transfer proof is `pending_review`) |
+| Paid, `awaiting_preparation`, all `stocked` items | **Immediate self-cancel** (full refund to original tender; Paystack API refund auto-initiated; bank transfer queued for verified payout) |
+| Paid, `awaiting_preparation` (same-price size/color change) | **Immediate same-price variant swap** (atomic inventory swap, no payment mutation) |
+| Paid `preorder` / `dropship` / `consignment`, OR `processing` / `ready_for_pickup` | **Cancellation request** reviewed by admin (target: 1 business day) against supplier PO commitment & bag packing |
+| `shipped` (in transit) | Cancellation closed; transitions to post-delivery return/exchange once received |
+| Wrong size / change of mind after pickup or delivery (non-defective) | **7-day return/exchange window** for unused items (swimwear must be unworn with hygiene seal & tags intact). Remedy: **size/color exchange, Store Credit, or Bubbles**. Original ₦2,000 delivery fee is non-refundable; customer drops off at a pool session (free) or covers return dispatch. |
+| Defective, damaged, misdescribed, or wrong item supplied | **FCCPA statutory remedy** (overrides change-of-mind & swimwear hygiene restrictions): **full cash refund to original payment method (including delivery fee)** or **free replacement**. |
+
+### Admin Workflow
+1. **Cases Queue (`/admin/store/cases`):** Review open `cancel_request`, `return_exchange`, and `defect_claim` cases within **1 business day**. Declines require a clear reason; policy overrides require an explicit `override_reason`.
+2. **Return Receipt & Inspection:** When physical goods arrive back at a pool session or office, record inspection condition (`restockable`, `damaged`, or `hygiene_unsellable`). Only `restockable` items return to sellable stock and reverse weighted-average COGS.
+3. **Refund Execution (`/admin/payments` → Refunds):**
+   - **Paystack refunds:** Auto-initiated on self-cancel/approval or triggered via **Initiate Paystack Refund** (reconciled via `refund.processed` webhook or manual **Sync Status**; Paystack settles back to customers in 3–10 working days).
+   - **Manual bank transfer refunds:** Verify customer NUBAN account name via Paystack account lookup, transfer from Stanbic IBTC (`0079760600`) within **2 business days**, and record the verified bank transaction reference to mark completed.
+   - **Never cancel a paid order via the raw status dropdown:** Always use **Cancel & Issue Refund** on `/admin/store/orders/[id]` or approve a case so inventory, store credits, Bubbles, refunds, and ledger entries stay balanced.
 
 ---
 

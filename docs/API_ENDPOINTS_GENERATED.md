@@ -4,20 +4,47 @@
 
 All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*` routes are service-to-service (service-role JWT, not gateway-exposed).
 
-**1056 operations across 113 tags.**
+**1414 operations across 148 tags.**
+
+## (untagged)
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/internal/sessions/club-holds` | Reserve Holds |
+| POST | `/api/v1/internal/sessions/club-holds/protect` | Protect Holds |
+| POST | `/api/v1/internal/sessions/club-holds/release` | Release Holds |
+| POST | `/api/v1/internal/sessions/club-reservations` | Reserve Prepaid Swims |
+| GET | `/api/v1/sessions/bookings/me/club-quarter` | My Quarter Bookings |
+| GET | `/api/v1/sessions/bookings/{booking_id}/settlement` | My Booking Settlement |
 
 ## academy
 
 | Method | Path | Summary |
 |--------|------|---------|
+| GET | `/api/v1/academy/admin/academy/enrollment-changes` | List Academy Change Reviews |
+| POST | `/api/v1/academy/admin/academy/enrollment-changes/{change_id}/approve-reviewed` | Approve Reviewed Transfer |
+| POST | `/api/v1/academy/admin/academy/enrollment-changes/{change_id}/approve-unpaid` | Approve Unpaid Enrollment Change |
+| GET | `/api/v1/academy/admin/academy/enrollment-changes/{change_id}/finance-preview` | Preview Reviewed Transfer |
+| POST | `/api/v1/academy/admin/academy/enrollment-changes/{change_id}/reject` | Reject Enrollment Change |
 | GET | `/api/v1/academy/admin/cohorts/{cohort_id}/pricing` | Get Cohort Pricing |
 | PUT | `/api/v1/academy/admin/cohorts/{cohort_id}/pricing` | Update Cohort Pricing |
+| GET | `/api/v1/academy/admin/enrollments/{enrollment_id}` | Get Admin Enrollment |
+| GET | `/api/v1/academy/admin/enrollments/{enrollment_id}/class-entitlements` | Class Entitlements |
+| POST | `/api/v1/academy/admin/enrollments/{enrollment_id}/class-entitlements/allocations` | Reserve Class Allocation |
+| POST | `/api/v1/academy/admin/enrollments/{enrollment_id}/class-entitlements/baseline` | Configure Class Baseline |
+| GET | `/api/v1/academy/admin/enrollments/{enrollment_id}/class-entitlements/preview` | Preview Class Baseline |
+| GET | `/api/v1/academy/admin/enrollments/{enrollment_id}/commercial-terms` | Preview Commercial Terms |
+| POST | `/api/v1/academy/admin/enrollments/{enrollment_id}/commercial-terms` | Approve Commercial Terms |
+| POST | `/api/v1/academy/admin/enrollments/{enrollment_id}/delete-empty` | Delete Empty Enrollment |
+| GET | `/api/v1/academy/admin/enrollments/{enrollment_id}/deletion-preview` | Deletion Preview |
 | POST | `/api/v1/academy/admin/enrollments/{enrollment_id}/dropout-action` | Admin Dropout Action |
 | POST | `/api/v1/academy/admin/enrollments/{enrollment_id}/mark-paid` | Admin Mark Enrollment Paid |
+| GET | `/api/v1/academy/admin/finance/academy-contracts` | Academy Contract Summary |
 | DELETE | `/api/v1/academy/admin/members/{member_id}` | Admin Delete Member Academy Records |
 | POST | `/api/v1/academy/admin/progress/override` | Override Progress |
 | POST | `/api/v1/academy/admin/tasks/reconcile-chat-memberships` | Trigger Chat Reconciliation |
 | POST | `/api/v1/academy/admin/tasks/transition-cohort-statuses` | Trigger Cohort Status Transitions |
+| POST | `/api/v1/academy/coach/enrollments/{enrollment_id}/progress/{milestone_id}/record-video` | Coach Record Milestone Video |
 | GET | `/api/v1/academy/coach/me/cohorts/{cohort_id}` | Get Coach Cohort Detail |
 | GET | `/api/v1/academy/coach/me/dashboard` | Get Coach Dashboard |
 | GET | `/api/v1/academy/coach/me/earnings` | Get My Coach Earnings |
@@ -62,9 +89,13 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/academy/enrollments/{enrollment_id}/progress/{milestone_id}/claim` | Claim Milestone |
 | GET | `/api/v1/academy/enrollments/{enrollment_id}/progress/{progress_id}/events` | List Milestone Review Events |
 | POST | `/api/v1/academy/enrollments/{enrollment_id}/resume` | Admin Resume Enrollment |
+| POST | `/api/v1/academy/internal/enrollments/{enrollment_id}/class-allocations/{allocation_id}/apply` | Apply Class Allocation |
 | POST | `/api/v1/academy/milestones` | Create Milestone |
+| GET | `/api/v1/academy/my-academy-journeys` | My Academy Journeys |
+| GET | `/api/v1/academy/my-enrollment-change-requests` | My Enrollment Change Requests |
 | GET | `/api/v1/academy/my-enrollments` | Get My Enrollments |
 | GET | `/api/v1/academy/my-enrollments/{enrollment_id}` | Get My Enrollment |
+| POST | `/api/v1/academy/my-enrollments/{enrollment_id}/change-cohort` | Change My Cohort |
 | GET | `/api/v1/academy/my-enrollments/{enrollment_id}/onboarding` | Get Enrollment Onboarding |
 | POST | `/api/v1/academy/my-enrollments/{enrollment_id}/pause` | Pause My Enrollment |
 | POST | `/api/v1/academy/my-enrollments/{enrollment_id}/resume` | Resume My Enrollment |
@@ -84,6 +115,116 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/academy/scoring/calculate` | Preview Complexity Score |
 | GET | `/api/v1/academy/scoring/dimensions/{category}` | Get Scoring Dimensions |
 | GET | `/api/v1/academy/stats/public` | Get Public Academy Stats |
+
+## academy-competency-passport
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/academy/competencies/admin/assess-diagnostic` | Assess Diagnostic Competency |
+| GET | `/api/v1/academy/competencies/admin/cohorts/{cohort_id}/graduation-parity` | Get Cohort Graduation Parity |
+| GET | `/api/v1/academy/competencies/admin/legacy-candidates` | List Legacy Promotion Candidates |
+| GET | `/api/v1/academy/competencies/admin/members/{member_auth_id}` | Member Competency Passport |
+| GET | `/api/v1/academy/competencies/admin/members/{member_auth_id}/club-readiness-advisory` | Member Club Readiness Advisory |
+| GET | `/api/v1/academy/competencies/admin/verifications` | List Admin Verifications |
+| POST | `/api/v1/academy/competencies/admin/verify-legacy` | Verify Legacy Competency |
+| POST | `/api/v1/academy/competencies/admin/{verification_id}/revoke` | Revoke Verification |
+| POST | `/api/v1/academy/competencies/coach/assess-cohort` | Assess Cohort V2 Competency |
+| GET | `/api/v1/academy/competencies/enrollments/{enrollment_id}/v2-plan` | Get Enrollment V2 Learning Plan |
+| GET | `/api/v1/academy/competencies/me` | My Competency Passport |
+
+## academy-curriculum-library
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/academy/admin/curriculum-library/drills/{definition_id}/skills` | List Drill Skills |
+| POST | `/api/v1/academy/admin/curriculum-library/drills/{definition_id}/skills` | Attach Drill Skill |
+| DELETE | `/api/v1/academy/admin/curriculum-library/drills/{definition_id}/skills/{link_id}` | Remove Drill Skill |
+| GET | `/api/v1/academy/admin/curriculum-library/lessons/{lesson_version_id}/drills` | List Lesson Drills |
+| POST | `/api/v1/academy/admin/curriculum-library/lessons/{lesson_version_id}/drills` | Attach Lesson Drill |
+| DELETE | `/api/v1/academy/admin/curriculum-library/lessons/{lesson_version_id}/drills/{link_id}` | Remove Lesson Drill |
+| GET | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/remedial-drills` | List Milestone Remedial Drills |
+| POST | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/remedial-drills` | Attach Milestone Remedial Drill |
+| DELETE | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/remedial-drills/{link_id}` | Remove Milestone Remedial Drill |
+| GET | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/skills` | List Milestone Skills |
+| POST | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/skills` | Attach Milestone Skill |
+| DELETE | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/skills/{link_id}` | Remove Milestone Skill |
+| GET | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/composition` | Get Module Composition |
+| POST | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/lessons` | Attach Module Lesson |
+| DELETE | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/lessons/{link_id}` | Remove Module Lesson |
+| POST | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/quizzes` | Attach Module Quiz |
+| DELETE | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/quizzes/{link_id}` | Remove Module Quiz |
+| GET | `/api/v1/academy/admin/curriculum-library/skills` | List Catalog Skills |
+| GET | `/api/v1/academy/admin/curriculum-library/{kind}` | List Definitions |
+| POST | `/api/v1/academy/admin/curriculum-library/{kind}` | Create Definition |
+| POST | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/retire` | Retire Definition |
+| GET | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/versions` | List Versions |
+| POST | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/versions` | Create Version |
+| PATCH | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/versions/{version_id}` | Update Draft Version |
+| POST | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/versions/{version_id}/publish` | Publish Version |
+
+## academy-drill-prescriptions
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/academy/competencies/coach/drills/assign` | Assign Student Drill |
+| PATCH | `/api/v1/academy/competencies/coach/drills/{assignment_id}/status` | Update Student Drill Status |
+| GET | `/api/v1/academy/competencies/drills/published` | List Published Drills For Coaching |
+| GET | `/api/v1/academy/competencies/enrollments/{enrollment_id}/drills` | List Enrollment Drills |
+| GET | `/api/v1/academy/competencies/me/drills` | List My Assigned Drills |
+| POST | `/api/v1/academy/competencies/me/drills/{assignment_id}/practiced` | Mark My Drill Practiced |
+
+## academy-milestone-evidence
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/academy/admin/evidence` | List Admin Evidence |
+| POST | `/api/v1/academy/admin/evidence/{evidence_id}/showcase` | Review Showcase |
+| GET | `/api/v1/academy/coach/evidence` | List Coach Evidence |
+| GET | `/api/v1/academy/enrollments/{enrollment_id}/evidence` | List Milestone Evidence |
+| POST | `/api/v1/academy/enrollments/{enrollment_id}/evidence` | Create Milestone Evidence |
+| PATCH | `/api/v1/academy/enrollments/{enrollment_id}/evidence/{evidence_id}/publication-consent` | Update Publication Consent |
+| POST | `/api/v1/academy/evidence/{evidence_id}/coach-review` | Review Evidence |
+| GET | `/api/v1/academy/evidence/{evidence_id}/play` | Play Evidence For Authorized Person |
+| GET | `/api/v1/academy/evidence/{evidence_id}/playback-url` | Evidence Playback Url |
+| GET | `/api/v1/academy/public/showcase` | List Public Showcase |
+| GET | `/api/v1/academy/public/showcase/{evidence_id}/play` | Play Showcase Video |
+
+## academy-quizzes
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/academy/admin/cohorts/{cohort_id}/quizzes` | List Assignments |
+| POST | `/api/v1/academy/admin/cohorts/{cohort_id}/quizzes` | Assign Quiz |
+| GET | `/api/v1/academy/admin/programs/{program_id}/quizzes` | List Templates |
+| POST | `/api/v1/academy/admin/quizzes` | Create Quiz |
+| PUT | `/api/v1/academy/admin/quizzes/{quiz_id}` | Update Quiz |
+| GET | `/api/v1/academy/enrollments/{enrollment_id}/quizzes` | Learner Quizzes |
+| GET | `/api/v1/academy/enrollments/{enrollment_id}/quizzes/completion` | Quiz Completion |
+| POST | `/api/v1/academy/enrollments/{enrollment_id}/quizzes/{assignment_id}/attempt` | Submit Attempt |
+
+## academy-requirements
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/assignments` | List Cohort Assignments |
+| POST | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/milestones` | Assign Cohort Milestone |
+| DELETE | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/milestones/{assignment_id}` | Remove Cohort Milestone |
+| POST | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/requirements/freeze` | Freeze Cohort Requirements |
+| GET | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/requirements/frozen` | Get Frozen Cohort Requirements |
+| GET | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/requirements/preview` | Preview Cohort Requirements |
+| POST | `/api/v1/academy/admin/modules/{module_version_id}/curriculum/milestones` | Assign Module Milestone |
+| DELETE | `/api/v1/academy/admin/modules/{module_version_id}/curriculum/milestones/{assignment_id}` | Remove Module Milestone |
+| GET | `/api/v1/academy/admin/programs/{program_id}/curriculum/assignments` | List Program Assignments |
+| POST | `/api/v1/academy/admin/programs/{program_id}/curriculum/milestones` | Assign Program Milestone |
+| DELETE | `/api/v1/academy/admin/programs/{program_id}/curriculum/milestones/{assignment_id}` | Remove Program Milestone |
+| POST | `/api/v1/academy/admin/programs/{program_id}/curriculum/modules` | Assign Program Module |
+| DELETE | `/api/v1/academy/admin/programs/{program_id}/curriculum/modules/{assignment_id}` | Remove Program Module |
+
+## academy-session-participation
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/sessions/{session_id}/admin/academy-participation` | Record Academy Participation |
 
 ## admin
 
@@ -213,6 +354,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/api/v1/admin/reports/flywheel/cohorts` | Flywheel Cohorts |
+| GET | `/api/v1/admin/reports/flywheel/content-acquisition` | Content Acquisition |
 | GET | `/api/v1/admin/reports/flywheel/funnel` | Flywheel Funnel |
 | GET | `/api/v1/admin/reports/flywheel/overview` | Flywheel Overview |
 | POST | `/api/v1/admin/reports/flywheel/refresh` | Flywheel Refresh |
@@ -261,6 +403,32 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | PUT | `/api/v1/payments/admin/payouts/{payout_id}/fail` | Fail Payout |
 | POST | `/api/v1/payments/admin/payouts/{payout_id}/initiate-transfer` | Initiate Transfer |
 | PUT | `/api/v1/payments/admin/payouts/{payout_id}/recalculate` | Recalculate Payout |
+
+## admin-pool-access
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/pools/access/bookings` | Admin List Access Bookings |
+| GET | `/api/v1/admin/pools/access/cancellation-requests` | Cancellation Review Queue |
+| GET | `/api/v1/admin/pools/access/offers` | Admin List Offers |
+| POST | `/api/v1/admin/pools/access/offers` | Create Offer |
+| POST | `/api/v1/admin/pools/access/offers/{offer_id}/publish` | Publish Offer |
+
+## admin-pool-access-partners
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/pools/access/partner/{pool_id}/operators` | List Reception Operators |
+| POST | `/api/v1/admin/pools/access/partner/{pool_id}/operators` | Authorize Reception |
+| DELETE | `/api/v1/admin/pools/access/partner/{pool_id}/operators/{auth_id}` | Revoke Reception |
+
+## admin-pool-directory
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/pools/directory/reviews/pending` | Pending Reviews |
+| PATCH | `/api/v1/admin/pools/directory/reviews/{review_id}` | Moderate Review |
+| PATCH | `/api/v1/admin/pools/directory/{pool_id}/publish` | Set Published |
 
 ## admin-pool-pricing
 
@@ -343,10 +511,26 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/admin/wallet/referrals/stats` | Get Program Stats |
 | PATCH | `/api/v1/admin/wallet/referrals/{referral_id}` | Update Referral Status |
 
+## admin-refunds
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/payments/admin/refunds` | List Refunds Admin |
+| GET | `/api/v1/payments/admin/refunds/banks` | List Refund Banks |
+| GET | `/api/v1/payments/admin/refunds/{refund_id}` | Get Refund Admin |
+| POST | `/api/v1/payments/admin/refunds/{refund_id}/approve` | Approve Refund Admin |
+| POST | `/api/v1/payments/admin/refunds/{refund_id}/complete-manual` | Complete Manual Refund Admin |
+| POST | `/api/v1/payments/admin/refunds/{refund_id}/fail-or-cancel` | Fail Or Cancel Refund Admin |
+| POST | `/api/v1/payments/admin/refunds/{refund_id}/initiate-paystack` | Initiate Paystack Refund Admin |
+| POST | `/api/v1/payments/admin/refunds/{refund_id}/sync-paystack` | Sync Paystack Refund Admin |
+| POST | `/api/v1/payments/admin/refunds/{refund_id}/verify-bank-account` | Verify Refund Bank Account Admin |
+
 ## admin-reports
 
 | Method | Path | Summary |
 |--------|------|---------|
+| GET | `/api/v1/admin/reports/quarterly/available` | Admin Available Quarters |
+| GET | `/api/v1/admin/reports/quarterly/business-review` | Admin Business Review |
 | GET | `/api/v1/admin/reports/quarterly/export.csv` | Admin Export Csv |
 | POST | `/api/v1/admin/reports/quarterly/generate` | Admin Generate Report |
 | GET | `/api/v1/admin/reports/quarterly/members` | Admin List Member Reports |
@@ -436,6 +620,18 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/admin/store/reports/suppliers` | Get Supplier Performance |
 | GET | `/api/v1/admin/store/reports/top-products` | Get Top Selling Products |
 | GET | `/api/v1/admin/store/stats` | Get Dashboard Stats |
+
+## admin-store-cases
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/store/cases` | List Store Cases Admin |
+| GET | `/api/v1/admin/store/cases/open-count` | Get Open Cases Count |
+| GET | `/api/v1/admin/store/cases/{case_id}` | Get Store Case Admin |
+| POST | `/api/v1/admin/store/cases/{case_id}/receive-return` | Receive Return Admin |
+| POST | `/api/v1/admin/store/cases/{case_id}/review` | Review Store Case Admin |
+| POST | `/api/v1/admin/store/orders/{order_id}/cancel-and-refund` | Admin Cancel And Refund Order |
+| GET | `/api/v1/admin/store/orders/{order_id}/cases` | List Order Cases And Refunds Admin |
 
 ## admin-suppliers
 
@@ -587,11 +783,14 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | DELETE | `/api/v1/attendance/admin/members/{member_id}` | Admin Delete Member Attendance |
 | GET | `/api/v1/attendance/cohorts/{cohort_id}/attendance/summary` | Get Cohort Attendance Summary |
 | GET | `/api/v1/attendance/me` | Get My Attendance History |
+| GET | `/api/v1/attendance/me/ytd-summary` | Get My Ytd Attendance Summary |
 | GET | `/api/v1/attendance/sessions/{session_id}/attendance` | List Session Attendance |
 | POST | `/api/v1/attendance/sessions/{session_id}/attendance/guest` | Record Guest Attendance |
+| POST | `/api/v1/attendance/sessions/{session_id}/attendance/participant` | Record Participant Attendance |
 | POST | `/api/v1/attendance/sessions/{session_id}/attendance/public` | Public Sign In To Session |
 | GET | `/api/v1/attendance/sessions/{session_id}/booked-member-ids` | List Session Booked Member Ids |
 | POST | `/api/v1/attendance/sessions/{session_id}/coach-mark` | Coach Mark Session Attendance |
+| POST | `/api/v1/attendance/sessions/{session_id}/my-academy-attendance` | Report My Academy Attendance |
 | GET | `/api/v1/attendance/sessions/{session_id}/pool-list` | Get Pool List Csv |
 | POST | `/api/v1/attendance/sessions/{session_id}/sign-in` | Sign In To Session |
 
@@ -622,6 +821,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/sessions/bookings/{booking_id}/refund-pool-fee` | Admin Refund Pool Fee |
 | POST | `/api/v1/sessions/bookings/{booking_id}/running-late` | Set Running Late |
 | POST | `/api/v1/sessions/bookings/{booking_id}/trial-guest` | Add Trial Guest |
+| GET | `/api/v1/sessions/{session_id}/admin/member-admission/{member_id}` | Preview Admin Member Admission |
 | POST | `/api/v1/sessions/{session_id}/admin/walk-in` | Admin Walk In Booking |
 | POST | `/api/v1/sessions/{session_id}/book` | Book Session |
 | GET | `/api/v1/sessions/{session_id}/bookings` | List Session Bookings |
@@ -699,6 +899,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/clubs/admin/plans/{plan_id}/next-quarter` | Generate Next Quarter |
 | POST | `/api/v1/clubs/admin/plans/{plan_id}/publish` | Publish Draft |
 | GET | `/api/v1/clubs/admin/plans/{plan_id}/schedule` | Plan Schedule |
+| POST | `/api/v1/clubs/admin/plans/{plan_id}/sync-prepaid-reservations` | Sync Prepaid Reservations |
 
 ## clubs
 
@@ -708,19 +909,40 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/clubs/` | Create Club |
 | GET | `/api/v1/clubs/admin/applications` | List Club Applications For Review |
 | PUT | `/api/v1/clubs/admin/applications/{application_id}/assessment` | Complete Observed Club Assessment |
+| PUT | `/api/v1/clubs/admin/applications/{application_id}/first-session-verification` | Verify Club First Session |
+| PUT | `/api/v1/clubs/admin/applications/{application_id}/video-feedback` | Review Club Video Feedback |
 | GET | `/api/v1/clubs/admin/plans` | List All Club Plans |
 | POST | `/api/v1/clubs/applications` | Create Club Application |
 | GET | `/api/v1/clubs/applications/me` | List My Club Applications |
+| PUT | `/api/v1/clubs/applications/{application_id}/assessment-method` | Choose Club Assessment Method |
 | PUT | `/api/v1/clubs/applications/{application_id}/pre-assessment` | Submit Club Pre Assessment |
+| POST | `/api/v1/clubs/applications/{application_id}/video-assessment` | Submit Club Video Assessment |
 | POST | `/api/v1/clubs/internal/applications/{application_id}/activate` | Activate Club Application |
 | GET | `/api/v1/clubs/internal/applications/{application_id}/payment-context` | Get Club Application Payment Context |
 | POST | `/api/v1/clubs/internal/applications/{application_id}/reservation` | Reserve Club Application Capacity |
+| POST | `/api/v1/clubs/internal/applications/{application_id}/reservation/protect` | Protect Club Application Capacity |
 | POST | `/api/v1/clubs/internal/applications/{application_id}/reservation/release` | Release Club Application Capacity |
 | GET | `/api/v1/clubs/plans` | List Club Plans |
 | GET | `/api/v1/clubs/{club_id}` | Get Club |
 | PATCH | `/api/v1/clubs/{club_id}` | Update Club |
 | DELETE | `/api/v1/clubs/{club_id}` | Delete Club |
 | POST | `/api/v1/clubs/{club_id}/plans` | Create Club Plan |
+
+## clubs-admin-commercial-terms
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/clubs/admin/commercial-terms/report` | Club Commercial Terms Report |
+| GET | `/api/v1/clubs/admin/enrollments/{enrollment_id}/commercial-terms` | List Club Terms |
+| POST | `/api/v1/clubs/admin/enrollments/{enrollment_id}/commercial-terms` | Approve Club Terms |
+
+## clubs-admin-transfers
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/clubs/admin/enrollments/{source_enrollment_id}/location-transfer` | Transfer Club Location |
+| POST | `/api/v1/clubs/admin/enrollments/{source_enrollment_id}/location-transfer/preview` | Preview Club Location Transfer |
+| GET | `/api/v1/clubs/admin/members/{member_id}/enrollments` | List Member Club Enrollments |
 
 ## coach-assignments
 
@@ -819,6 +1041,13 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/content/{post_id}/email/retry-failed` | Retry Failed Content Post Emails |
 | POST | `/api/v1/content/{post_id}/publish` | Publish Content Post |
 | POST | `/api/v1/content/{post_id}/unpublish` | Unpublish Content Post |
+
+## content-engagement
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/content/admin/engagement` | Engagement Report |
+| POST | `/api/v1/content/{post_id}/engagement` | Record Engagement |
 
 ## corporate-me
 
@@ -935,6 +1164,25 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/academy/extension-requests/{request_id}/approve` | Approve Extension Request |
 | POST | `/api/v1/academy/extension-requests/{request_id}/reject` | Reject Extension Request |
 
+## finance-intelligence
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/finance/intelligence` | Company Finance Intelligence |
+
+## guest-booking-operations
+
+| Method | Path | Summary |
+|--------|------|---------|
+| DELETE | `/api/v1/admin/guest-booking-links/{grant_id}` | Revoke Guest Link |
+| GET | `/api/v1/admin/guest-passes/funnel` | Guest Funnel |
+| POST | `/api/v1/admin/guest-passes/{guest_pass_id}/payment-link` | Restore Guest Payment Link |
+| GET | `/api/v1/admin/sessions/guest-booking-options` | Guest Booking Options |
+| POST | `/api/v1/admin/sessions/{session_id}/guest-booking-links` | Issue Guest Link |
+| GET | `/api/v1/admin/sessions/{session_id}/guest-share-link` | Admin Guest Share Link |
+| POST | `/api/v1/sessions/{session_id}/guest-link-events` | Record Guest Link Event |
+| GET | `/api/v1/sessions/{session_id}/guest-share-link` | Guest Share Link |
+
 ## guest-passes
 
 | Method | Path | Summary |
@@ -942,6 +1190,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/admin/guest-passes` | List Guest Passes |
 | POST | `/api/v1/admin/guest-passes/{guest_pass_id}/attendance` | Mark Guest Pass Attended |
 | GET | `/api/v1/guest-passes/{guest_pass_id}` | Get Guest Pass Status |
+| POST | `/api/v1/guest-passes/{guest_pass_id}/checkout` | Retry Guest Checkout |
 | POST | `/api/v1/internal/sessions/guest-passes/{guest_pass_id}/confirm` | Confirm Guest Pass |
 | GET | `/api/v1/sessions/{session_id}/guest-pass` | Guest Pass Offer |
 | POST | `/api/v1/sessions/{session_id}/guest-passes` | Create Guest Pass |
@@ -957,14 +1206,29 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/academy/cohorts/{cohort_id}/check-enrollment/{member_id}` | Check Cohort Enrollment Internal |
 | GET | `/api/v1/internal/academy/cohorts/{cohort_id}/enrolled-students` | Get Cohort Enrolled Students Internal |
 | GET | `/api/v1/internal/academy/cohorts/{cohort_id}/enrollment-counts` | Get Cohort Enrollment Counts Internal |
+| GET | `/api/v1/internal/academy/competencies/members/{member_auth_id}/club-readiness-advisory` | Internal Member Club Readiness Advisory |
 | GET | `/api/v1/internal/academy/enrollments/{enrollment_id}` | Get Enrollment Internal |
+| GET | `/api/v1/internal/academy/enrollments/{enrollment_id}/allocation-identity` | Academy Allocation Identity |
+| GET | `/api/v1/internal/academy/enrollments/{enrollment_id}/payment-preview` | Preview Enrollment Payment |
+| POST | `/api/v1/internal/academy/enrollments/{enrollment_id}/verified-credit` | Apply Verified Academy Credit |
+| GET | `/api/v1/internal/academy/finance-summary` | Academy Finance Summary |
+| GET | `/api/v1/internal/academy/financial-obligations/{member_auth_id}` | Member Academy Financial Obligations |
 | GET | `/api/v1/internal/academy/member-cohort-enrollments/{member_auth_id}` | Get Member Cohort Enrollments Internal |
 | GET | `/api/v1/internal/academy/member-summary/{member_auth_id}` | Get Member Academy Summary |
+| GET | `/api/v1/internal/academy/quarter-summary` | Get Academy Quarter Summary Internal |
+| GET | `/api/v1/internal/academy/reporting-summary` | Get Reporting Summary |
+| GET | `/api/v1/internal/ai/reporting-summary` | Get Reporting Summary |
+| GET | `/api/v1/internal/attendance/member-milestones/{member_auth_id}` | Get Member Swim Milestones |
 | GET | `/api/v1/internal/attendance/member/{member_id}` | Get Member Attendance |
+| GET | `/api/v1/internal/attendance/session-counts` | Get Session Attendance Counts |
 | GET | `/api/v1/internal/attendance/session/{session_id}/member-ids` | Get Session Attendee Member Ids |
 | GET | `/api/v1/internal/attendance/stats/member/{member_auth_id}` | Get Member Attendance Stats |
+| GET | `/api/v1/internal/communications/reporting-summary` | Get Reporting Summary |
 | POST | `/api/v1/internal/communications/session-cancelled` | Handle Session Cancelled |
 | POST | `/api/v1/internal/communications/session-published` | Handle Session Published |
+| GET | `/api/v1/internal/media/reporting-summary` | Get Reporting Summary |
+| POST | `/api/v1/internal/members/academy-swim-clearance/batch` | Academy Clearance Batch |
+| GET | `/api/v1/internal/members/academy-swim-clearance/{member_id}` | Academy Clearance |
 | GET | `/api/v1/internal/members/active` | Get Active Members |
 | GET | `/api/v1/internal/members/admins` | Get Admin Members |
 | GET | `/api/v1/internal/members/approved-list` | Get Approved Members List |
@@ -972,6 +1236,8 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/members/bulk` | Get Members Bulk |
 | GET | `/api/v1/internal/members/by-auth/{auth_id}` | Get Member By Auth Id |
 | POST | `/api/v1/internal/members/club-access/checks` | Check Club Access |
+| GET | `/api/v1/internal/members/club-finance-summary` | Club Finance Summary |
+| GET | `/api/v1/internal/members/club-quarter-summary` | Get Club Quarter Summary |
 | GET | `/api/v1/internal/members/coaches/eligible` | Get Eligible Coaches |
 | GET | `/api/v1/internal/members/coaches/{member_id}/availability` | Get Coach Availability |
 | GET | `/api/v1/internal/members/coaches/{member_id}/profile` | Get Coach Profile |
@@ -980,13 +1246,16 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/members/pods` | List Pods Internal |
 | POST | `/api/v1/internal/members/pods/rosters/batch` | Get Pod Rosters Batch Internal |
 | GET | `/api/v1/internal/members/pods/{pod_id}` | Get Pod Internal |
+| GET | `/api/v1/internal/members/reporting-summary` | Get Reporting Summary |
 | GET | `/api/v1/internal/members/search` | Search Members |
 | GET | `/api/v1/internal/members/{member_id}` | Get Member By Id |
 | GET | `/api/v1/internal/members/{member_id}/bank-account` | Get Member Bank Account |
 | GET | `/api/v1/internal/members/{member_id}/membership` | Get Member Membership |
 | GET | `/api/v1/internal/members/{member_id}/tier-history` | Get Member Tier History |
+| GET | `/api/v1/internal/payments/academy/enrollments/{enrollment_id}/financial-state` | Academy Enrollment Financial State |
 | POST | `/api/v1/internal/payments/checkout/preview` | Internal Preview Product Checkout |
 | POST | `/api/v1/internal/payments/discounts/validate` | Internal Validate Discount |
+| GET | `/api/v1/internal/payments/finance-summary` | Payments Finance Summary |
 | POST | `/api/v1/internal/payments/initialize` | Internal Initialize Payment |
 | POST | `/api/v1/internal/payments/makeup-obligations/{obligation_id}/complete` | Internal Complete Makeup Obligation |
 | POST | `/api/v1/internal/payments/makeup-obligations/{obligation_id}/schedule` | Internal Schedule Makeup Obligation |
@@ -995,7 +1264,9 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/payments/paystack/recipients` | Internal Paystack Create Recipient |
 | POST | `/api/v1/internal/payments/paystack/resolve-account` | Internal Paystack Resolve Account |
 | GET | `/api/v1/internal/payments/paystack/verify/{reference}` | Internal Verify Paystack Reference |
+| GET | `/api/v1/internal/payments/pool-access/paid/{reference}` | Verified Pool Access Payment |
 | POST | `/api/v1/internal/payments/recurring-payouts/cohorts/{cohort_id}/extend` | Internal Extend Recurring Payouts |
+| POST | `/api/v1/internal/payments/reports/attributed-payments` | Attributed Payments Report |
 | POST | `/api/v1/internal/payments/{reference}/annotate-refund` | Annotate Refund Obligation |
 | POST | `/api/v1/internal/reporting/generate-snapshot` | Trigger Snapshot Generation |
 | POST | `/api/v1/internal/sessions/bookings/bulk` | Bulk Create Bookings |
@@ -1013,9 +1284,17 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/sessions/cohorts/{cohort_id}/sessions` | Get Sessions For Cohort Internal |
 | GET | `/api/v1/internal/sessions/detailed-stats` | Get Session Detailed Stats |
 | GET | `/api/v1/internal/sessions/durations` | Get Session Durations |
+| POST | `/api/v1/internal/sessions/events/links/batch` | Get Event Session Links Batch |
+| GET | `/api/v1/internal/sessions/events/{event_id}/links` | Get Event Session Links |
+| PATCH | `/api/v1/internal/sessions/events/{event_id}/sync` | Sync Event Sessions |
+| GET | `/api/v1/internal/sessions/financial-obligations/{member_auth_id}` | Member Session Financial Obligations |
+| POST | `/api/v1/internal/sessions/member-prices` | Member Prices |
 | GET | `/api/v1/internal/sessions/member/{member_auth_id}/session-commitments` | List Member Session Commitments |
 | GET | `/api/v1/internal/sessions/member/{member_id}/converted-guest-hours` | Get Converted Guest Hours |
+| POST | `/api/v1/internal/sessions/participants/{participant_id}/confirm-payment` | Confirm Participant Payment |
+| GET | `/api/v1/internal/sessions/participants/{participant_id}/settlement-context` | Get Participant Settlement Context |
 | GET | `/api/v1/internal/sessions/range-stats` | Get Session Range Stats |
+| GET | `/api/v1/internal/sessions/reporting-summary` | Get Reporting Summary |
 | GET | `/api/v1/internal/sessions/scheduled` | Get Scheduled Sessions |
 | POST | `/api/v1/internal/sessions/summaries/batch` | Get Session Summaries Batch |
 | GET | `/api/v1/internal/sessions/{session_id}` | Get Session By Id |
@@ -1023,10 +1302,16 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/sessions/{session_id}/bookings/by-member/{member_id}` | Get Booking For Session Member |
 | GET | `/api/v1/internal/sessions/{session_id}/coaches` | Get Session Coach Ids |
 | GET | `/api/v1/internal/sessions/{session_id}/confirmed-booking-member-ids` | Get Confirmed Booking Member Ids |
+| GET | `/api/v1/internal/store/finance-summary` | Store Finance Summary |
+| GET | `/api/v1/internal/store/financial-obligations/{member_auth_id}` | Member Store Unfinished Orders |
 | GET | `/api/v1/internal/store/member-summary/{member_auth_id}` | Get Member Store Summary |
 | GET | `/api/v1/internal/transport/member-summary/{member_auth_id}` | Get Member Transport Summary |
 | POST | `/api/v1/internal/transport/ride-quotes` | Quote Bundle Rides |
 | POST | `/api/v1/internal/transport/sessions/{session_id}/ride-configs` | Attach Ride Configs Internal |
+| PATCH | `/api/v1/internal/transport/sessions/{session_id}/schedule` | Reconcile Session Schedule Internal |
+| GET | `/api/v1/internal/wallet/reporting-summary` | Get Reporting Summary |
+| POST | `/api/v1/media/internal/payment-proof` | Upload Payment Proof |
+| GET | `/api/v1/media/internal/payment-proof/{media_id}` | Payment Proof Metadata |
 
 ## internal-chat
 
@@ -1052,6 +1337,13 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/sessions/club-schedule/query` | Query Schedule |
 | POST | `/api/v1/internal/sessions/club-schedule/replace` | Replace Sessions |
 
+## internal-events
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/internal/events/attendance/checks` | Check Attendance |
+| GET | `/api/v1/internal/events/{event_id}/session-contract` | Get Session Contract |
+
 ## internal-experience-events
 
 | Method | Path | Summary |
@@ -1066,11 +1358,27 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 |--------|------|---------|
 | GET | `/api/v1/internal/members/guardians/for-minor/{minor_member_id}` | Get Guardians For Minor |
 
+## internal-pool-access
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/internal/pools/access/bookings/{booking_id}/claim-checkout` | Claim Checkout |
+| POST | `/api/v1/internal/pools/access/bookings/{booking_id}/confirm` | Confirm |
+| GET | `/api/v1/internal/pools/access/bookings/{booking_id}/quote` | Quote |
+
 ## internal-rewards
 
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/api/v1/internal/wallet/events` | Ingest Event |
+| POST | `/api/v1/internal/wallet/verified-swims` | Sync Verified Swim |
+
+## internal-settlements
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/internal/sessions/settlements/confirm` | Confirm Settlement |
+| POST | `/api/v1/internal/sessions/settlements/quote` | Quote Settlement |
 
 ## internal-volunteer
 
@@ -1082,6 +1390,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/volunteer/member-summary/{member_auth_id}` | Get Member Volunteer Summary |
 | POST | `/api/v1/internal/volunteer/opportunities/cancel-for-context` | Cancel Opportunities For Context |
 | POST | `/api/v1/internal/volunteer/opportunities/from-session-template` | Materialise From Session Template |
+| PATCH | `/api/v1/internal/volunteer/sessions/{session_id}/schedule` | Reconcile Session Schedule |
 
 ## internal-wallet
 
@@ -1149,6 +1458,19 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/ledger/external-transactions` | Post External Transactions |
 | POST | `/api/v1/internal/ledger/invoices` | Post Invoice |
 | POST | `/api/v1/internal/ledger/journal-entries` | Post Journal Entry |
+| POST | `/api/v1/internal/ledger/organizations` | Provision Organization |
+| GET | `/api/v1/internal/ledger/reports/cash-position` | Internal Cash Position |
+| GET | `/api/v1/internal/ledger/reports/deferred-revenue` | Internal Deferred Revenue |
+| GET | `/api/v1/internal/ledger/reports/margin` | Internal Margin |
+| GET | `/api/v1/internal/ledger/reports/profit-loss` | Internal Profit Loss |
+
+## ledger-organizations
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/finance/organizations` | List My Organizations |
+| GET | `/api/v1/admin/finance/organizations/current` | Get Current Organization |
+| PATCH | `/api/v1/admin/finance/organizations/current` | Update Current Organization |
 
 ## makeups
 
@@ -1164,6 +1486,17 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/makeups/me/requests` | List My Makeups |
 | POST | `/api/v1/makeups/me/requests` | Request Makeup |
 | POST | `/api/v1/makeups/open-slot` | Create Open Slot Makeup |
+
+## manual-payments
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/payments/admin/recording` | Search Recordable Payments |
+| POST | `/api/v1/payments/admin/{reference}/offline-payment` | Record Offline Payment |
+| POST | `/api/v1/payments/admin/{reference}/receipt` | Attach Receipt |
+| POST | `/api/v1/payments/manual-transfer/{reference}/submit` | Submit Transfer |
+| POST | `/api/v1/payments/manual-transfer/{reference}/upload` | Upload Transfer Receipt |
+| POST | `/api/v1/payments/manual-transfer/{reference}/view` | View Transfer |
 
 ## media
 
@@ -1207,6 +1540,9 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 
 | Method | Path | Summary |
 |--------|------|---------|
+| GET | `/api/v1/internal/media/alumni-evidence/{media_id}` | Validate Alumni Evidence |
+| GET | `/api/v1/internal/media/alumni-evidence/{media_id}/public-playback` | Get Alumni Public Playback |
+| GET | `/api/v1/internal/media/club-assessments/{media_id}/verify` | Verify Club Assessment Video |
 | POST | `/api/v1/internal/media/direct-uploads` | Create Direct Upload |
 | POST | `/api/v1/internal/media/objects/delete` | Delete Object |
 | POST | `/api/v1/internal/media/objects/sign` | Sign Object |
@@ -1221,6 +1557,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/media/vaults` | List Vaults |
 | POST | `/api/v1/media/vaults` | Create Vault |
 | GET | `/api/v1/media/vaults/admin/bandwidth` | Bandwidth Summary |
+| POST | `/api/v1/media/vaults/grants/bulk` | Bulk Grant Vault Access |
 | GET | `/api/v1/media/vaults/guest/{token}` | Get Guest Vault |
 | POST | `/api/v1/media/vaults/guest/{token}/batches` | Create Guest Batch |
 | POST | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/initiate` | Initiate Guest Upload |
@@ -1229,10 +1566,26 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/{item_id}/parts` | Resume Guest Parts |
 | POST | `/api/v1/media/vaults/guest/{token}/batches/{batch_id}/uploads/{item_id}/parts` | Sign Guest Parts |
 | GET | `/api/v1/media/vaults/library` | List Media Library |
+| GET | `/api/v1/media/vaults/my-attended-vaults` | List My Attended Vaults |
+| GET | `/api/v1/media/vaults/my-collections` | List My Collections |
+| POST | `/api/v1/media/vaults/my-collections` | Create My Collection |
+| PATCH | `/api/v1/media/vaults/my-collections/{vault_id}` | Rename My Collection |
+| POST | `/api/v1/media/vaults/my-media/{media_item_id}/preview` | Request My Shared Preview |
+| POST | `/api/v1/media/vaults/my-media/{media_item_id}/share-community` | Share Personal Media With Community |
+| POST | `/api/v1/media/vaults/my-session-vault/{session_id}` | Get Or Create Attended Session Vault |
+| GET | `/api/v1/media/vaults/my-swim-sessions` | List My Swim Sessions |
+| GET | `/api/v1/media/vaults/my-swim-uploads` | List My Swim Uploads |
+| POST | `/api/v1/media/vaults/my-swim-vault` | Get Or Create My Swim Vault |
+| GET | `/api/v1/media/vaults/my-videos` | My Session Videos |
+| GET | `/api/v1/media/vaults/my-videos/clips/{clip_id}` | Get My Member Clip |
+| POST | `/api/v1/media/vaults/my-videos/{media_item_id}/clips` | Request Member Clip |
+| POST | `/api/v1/media/vaults/my-videos/{media_item_id}/download` | Authorize Member Video Download |
 | GET | `/api/v1/media/vaults/tags` | List Media Tags |
 | GET | `/api/v1/media/vaults/{vault_id}` | Get Vault |
 | PATCH | `/api/v1/media/vaults/{vault_id}` | Update Vault |
 | DELETE | `/api/v1/media/vaults/{vault_id}` | Delete Vault |
+| POST | `/api/v1/media/vaults/{vault_id}/attendee-access` | Change Attendee Access |
+| GET | `/api/v1/media/vaults/{vault_id}/attendee-denials` | List Attendee Denials |
 | POST | `/api/v1/media/vaults/{vault_id}/batches` | Create Member Batch |
 | POST | `/api/v1/media/vaults/{vault_id}/batches/{batch_id}/uploads/initiate` | Initiate Member Upload |
 | DELETE | `/api/v1/media/vaults/{vault_id}/batches/{batch_id}/uploads/{item_id}` | Abort Member Upload |
@@ -1251,7 +1604,10 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | DELETE | `/api/v1/media/vaults/{vault_id}/guest-links/{link_id}` | Revoke Guest Link |
 | GET | `/api/v1/media/vaults/{vault_id}/items` | List Vault Items |
 | PATCH | `/api/v1/media/vaults/{vault_id}/items` | Bulk Review Items |
+| PATCH | `/api/v1/media/vaults/{vault_id}/items/assignment` | Assign Media To Swimmers Or Session |
 | POST | `/api/v1/media/vaults/{vault_id}/items/delete` | Delete Vault Items |
+| POST | `/api/v1/media/vaults/{vault_id}/items/shares` | Share Vault Videos With Members |
+| PATCH | `/api/v1/media/vaults/{vault_id}/items/visibility` | Change Session Media Visibility |
 | PATCH | `/api/v1/media/vaults/{vault_id}/items/{item_id}` | Review Item |
 | POST | `/api/v1/media/vaults/{vault_id}/items/{item_id}/download` | Authorize Item Download |
 | POST | `/api/v1/media/vaults/{vault_id}/items/{item_id}/preview/generate` | Request Item Preview |
@@ -1259,6 +1615,12 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/media/vaults/{vault_id}/publish` | Publish Items |
 | PATCH | `/api/v1/media/vaults/{vault_id}/takedowns/{takedown_id}` | Resolve Takedown |
 | POST | `/api/v1/media/vaults/{vault_id}/transfers/{transfer_id}/complete` | Complete Transfer Measurement |
+
+## member-refunds
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/payments/me/refunds` | List My Refunds |
 
 ## members
 
@@ -1268,6 +1630,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/members/` | Create Member |
 | POST | `/api/v1/members/bulk-basic` | Get Members Bulk Basic |
 | GET | `/api/v1/members/by-auth/{auth_id}` | Get Member By Auth Id |
+| GET | `/api/v1/members/club-session-roster` | Get Club Session Roster |
 | GET | `/api/v1/members/directory` | List Directory Members |
 | GET | `/api/v1/members/me` | Get Current Member Profile |
 | PATCH | `/api/v1/members/me` | Update Current Member |
@@ -1315,8 +1678,19 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/api/v1/payments/` | List Payments Admin |
+| POST | `/api/v1/payments/admin/academy-receipts` | Verify Bank Receipt |
+| POST | `/api/v1/payments/admin/academy-receipts/adopt-settled` | Adopt Previously Settled Academy Receipt |
+| GET | `/api/v1/payments/admin/academy-receipts/by-reference/{external_reference}` | Find Verified Receipt By Bank Reference |
+| GET | `/api/v1/payments/admin/academy-receipts/{receipt_id}` | Get Verified Receipt |
+| POST | `/api/v1/payments/admin/academy-receipts/{receipt_id}/allocations` | Allocate Receipt |
+| POST | `/api/v1/payments/admin/academy-receipts/{receipt_id}/allocations/{allocation_id}/apply` | Apply Receipt Allocation |
+| POST | `/api/v1/payments/admin/academy-receipts/{receipt_id}/allocations/{allocation_id}/void` | Void Unapplied Allocation |
+| POST | `/api/v1/payments/admin/academy-receipts/{receipt_id}/reconcile-attempt` | Link Superseded Academy Checkout To Shared Receipt |
 | POST | `/api/v1/payments/admin/bookings/{booking_id}/offline-payment` | Admin Record Booking Offline Payment |
 | POST | `/api/v1/payments/admin/bookings/{booking_id}/payment-link` | Admin Generate Booking Pay Link |
+| GET | `/api/v1/payments/admin/checkout-reconciliation/bookings/{booking_id}` | Preview Booking Attempts |
+| GET | `/api/v1/payments/admin/checkout-reconciliation/{reference}` | Preview Checkout |
+| POST | `/api/v1/payments/admin/checkout-reconciliation/{reference}/close-unpaid` | Close Unpaid Checkout |
 | GET | `/api/v1/payments/admin/discounts` | List Discounts |
 | POST | `/api/v1/payments/admin/discounts` | Create Discount |
 | GET | `/api/v1/payments/admin/discounts/{discount_id}` | Get Discount |
@@ -1326,13 +1700,18 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/payments/admin/pending-reviews` | List Pending Review Payments |
 | GET | `/api/v1/payments/admin/refunds-owed` | List Refunds Owed |
 | POST | `/api/v1/payments/admin/refunds-owed/{reference}/mark-disbursed` | Mark Refund Disbursed |
+| POST | `/api/v1/payments/admin/session-participants/{participant_id}/offline-payment` | Admin Record Participant Offline Payment |
+| POST | `/api/v1/payments/admin/session-participants/{participant_id}/payment-link` | Admin Generate Participant Payment Link |
 | POST | `/api/v1/payments/admin/{reference}/approve` | Approve Manual Payment |
 | POST | `/api/v1/payments/admin/{reference}/reject` | Reject Manual Payment |
 | POST | `/api/v1/payments/admin/{reference}/replay-entitlement` | Replay Payment Entitlement |
+| GET | `/api/v1/payments/bookings/{booking_id}/open-payment` | Get Booking Open Payment |
+| POST | `/api/v1/payments/bookings/{booking_id}/open-payment/switch` | Switch Booking Open Payment Method |
 | POST | `/api/v1/payments/discounts/preview` | Preview Discount |
 | POST | `/api/v1/payments/generate-reference` | Generate Payment Reference |
 | POST | `/api/v1/payments/intents` | Create Payment Intent |
 | GET | `/api/v1/payments/me` | List My Payments |
+| GET | `/api/v1/payments/me/obligations` | My Financial Obligations |
 | POST | `/api/v1/payments/paystack/verify/{reference}` | Verify My Paystack Payment |
 | GET | `/api/v1/payments/pricing` | Get Pricing Config |
 | POST | `/api/v1/payments/webhooks/paystack` | Paystack Webhook |
@@ -1371,6 +1750,45 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/admin/members/pods/{pod_id}/members` | Admin Add Member |
 | DELETE | `/api/v1/admin/members/pods/{pod_id}/members/{member_id}` | Admin Remove Member |
 | POST | `/api/v1/admin/members/pods/{pod_id}/transfers` | Admin Transfer Member |
+
+## pool-access
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/pools/access/availability` | Published Pool Access Availability |
+| POST | `/api/v1/pools/access/bookings` | Reserve Access |
+| GET | `/api/v1/pools/access/bookings/me` | My Bookings |
+| POST | `/api/v1/pools/access/bookings/{booking_id}/cancel` | Cancel Unpaid Hold |
+| POST | `/api/v1/pools/access/bookings/{booking_id}/request-cancellation` | Request Paid Cancellation |
+| GET | `/api/v1/pools/access/offers` | Published Offers |
+
+## pool-access-partners
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/pools/access/partner/assigned-pools` | Assigned Pools |
+| POST | `/api/v1/pools/access/partner/{pool_id}/redeem` | Redeem At Partner |
+
+## pool-access-redemption
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/pools/access/bookings/{booking_id}/reconcile` | Reconcile |
+| GET | `/api/v1/pools/access/bookings/{booking_id}/tickets` | My Tickets |
+| POST | `/api/v1/pools/access/reconciliations/{reconciliation_id}/record-external-settlement` | Record External Settlement |
+| GET | `/api/v1/pools/access/reconciliations/{reconciliation_id}/settlements` | Settlement Records |
+| POST | `/api/v1/pools/access/redeem` | Redeem |
+
+## pool-directory
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/pools/directory` | List Directory |
+| POST | `/api/v1/pools/directory/suggestions` | Suggest Pool |
+| GET | `/api/v1/pools/directory/{pool_id}` | Pool Detail |
+| POST | `/api/v1/pools/directory/{pool_id}/corrections` | Suggest Correction |
+| GET | `/api/v1/pools/directory/{pool_id}/reviews` | Reviews |
+| POST | `/api/v1/pools/directory/{pool_id}/reviews` | Submit Review |
 
 ## pool-submissions
 
@@ -1430,6 +1848,27 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 |--------|------|---------|
 | GET | `/api/v1/wallet/rewards/history` | Get My Reward History |
 | GET | `/api/v1/wallet/rewards/rules` | List Active Reward Rules |
+| GET | `/api/v1/wallet/rewards/swims` | Get Swim Progress |
+
+## session-participants
+
+| Method | Path | Summary |
+|--------|------|---------|
+| PATCH | `/api/v1/admin/session-participants/{participant_id}/payment` | Reconcile Walk In Payment |
+| GET | `/api/v1/admin/sessions/{session_id}/participants` | List Session Participants |
+| POST | `/api/v1/admin/sessions/{session_id}/walk-ins` | Add Guest Walk In |
+
+## session-roster
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/sessions/{session_id}/roster` | Session Roster |
+
+## session-settlements
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/payments/admin/session-settlements` | Create Session Settlement |
 
 ## session-templates
 
@@ -1441,6 +1880,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | PATCH | `/api/v1/sessions/templates/{template_id}` | Update Template |
 | DELETE | `/api/v1/sessions/templates/{template_id}` | Delete Template |
 | POST | `/api/v1/sessions/templates/{template_id}/generate` | Generate Sessions |
+| POST | `/api/v1/sessions/templates/{template_id}/sync-operations` | Sync Template Operations |
 | POST | `/api/v1/sessions/templates/{template_id}/sync-volunteer-opportunities` | Sync Template Volunteer Opportunities |
 
 ## sessions
@@ -1451,6 +1891,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/sessions/` | Create Session |
 | DELETE | `/api/v1/sessions/by-cohort/{cohort_id}` | Delete Sessions For Cohort |
 | GET | `/api/v1/sessions/coach/me` | List My Coach Sessions |
+| GET | `/api/v1/sessions/me/next-swim` | Get Next Swim |
 | GET | `/api/v1/sessions/stats` | Get Session Stats |
 | GET | `/api/v1/sessions/{session_id}` | Get Session |
 | PATCH | `/api/v1/sessions/{session_id}` | Update Session |
@@ -1482,14 +1923,58 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/store/products` | List Products |
 | GET | `/api/v1/store/products/{slug}` | Get Product |
 
+## store-order-actions
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/store/orders/{order_number}/actions` | Get Order Actions |
+| POST | `/api/v1/store/orders/{order_number}/cancel` | Self Cancel Order |
+| GET | `/api/v1/store/orders/{order_number}/cases` | List My Order Cases |
+| POST | `/api/v1/store/orders/{order_number}/cases` | Create Order Case |
+| POST | `/api/v1/store/orders/{order_number}/cases/{case_id}/withdraw` | Withdraw Order Case |
+| POST | `/api/v1/store/orders/{order_number}/swap-variant` | Self Swap Order Variant |
+
+## store-procurement
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/store/procurement/catalogue` | Procurement Catalogue |
+| GET | `/api/v1/admin/store/procurement/fulfilled-orders` | List Fulfilled Orders For Return |
+| PUT | `/api/v1/admin/store/procurement/grants` | Upsert Procurement Grant |
+| GET | `/api/v1/admin/store/procurement/inventory-values` | Procurement Inventory Values |
+| GET | `/api/v1/admin/store/procurement/invoices/{invoice_id}/settlements` | List Supplier Invoice Settlements |
+| POST | `/api/v1/admin/store/procurement/invoices/{invoice_id}/settlements` | Settle Supplier Invoice |
+| GET | `/api/v1/admin/store/procurement/liabilities` | Supplier Liabilities |
+| GET | `/api/v1/admin/store/procurement/me` | Procurement Me |
+| GET | `/api/v1/admin/store/procurement/openings` | List Opening Reconciliations |
+| POST | `/api/v1/admin/store/procurement/openings` | Propose Opening Valuation |
+| POST | `/api/v1/admin/store/procurement/openings/{opening_id}/decision` | Approve Opening Valuation |
+| GET | `/api/v1/admin/store/procurement/orders` | List Purchase Orders |
+| POST | `/api/v1/admin/store/procurement/orders` | Create Purchase Order |
+| GET | `/api/v1/admin/store/procurement/orders/{order_id}` | Get Purchase Order |
+| POST | `/api/v1/admin/store/procurement/orders/{order_id}/decision` | Decide Purchase Order |
+| POST | `/api/v1/admin/store/procurement/orders/{order_id}/invoices` | Record Supplier Invoice |
+| POST | `/api/v1/admin/store/procurement/orders/{order_id}/receive` | Receive Goods |
+| POST | `/api/v1/admin/store/procurement/orders/{order_id}/returns` | Record Fulfilled Order Return |
+| POST | `/api/v1/admin/store/procurement/orders/{order_id}/submit` | Submit Purchase Order |
+| POST | `/api/v1/admin/store/procurement/receipts/{receipt_id}/sync-ledger` | Retry Goods Receipt Ledger Sync |
+| GET | `/api/v1/admin/store/procurement/receivables` | List Receivables |
+| POST | `/api/v1/admin/store/procurement/receivables` | Propose Trade Receivable |
+| POST | `/api/v1/admin/store/procurement/receivables/{receivable_id}/decision` | Decide Trade Receivable |
+| GET | `/api/v1/admin/store/procurement/receivables/{receivable_id}/payments` | List Receivable Payments |
+| POST | `/api/v1/admin/store/procurement/receivables/{receivable_id}/payments` | Record Receivable Payment |
+| GET | `/api/v1/admin/store/procurement/unpaid-orders` | Eligible Credit Orders |
+
 ## stroke-lab
 
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/api/v1/ai/analyze` | Upload a freestyle swim video and queue a Stroke Lab analysis |
 | GET | `/api/v1/ai/analyze/me` | List the caller's most recent Stroke Lab jobs |
+| POST | `/api/v1/ai/analyze/uploads` | Create Member Direct Upload |
 | GET | `/api/v1/ai/analyze/{job_id}` | Fetch a Stroke Lab job's status + result + signed URLs |
 | DELETE | `/api/v1/ai/analyze/{job_id}` | Delete a Stroke Lab job and its storage assets |
+| POST | `/api/v1/ai/analyze/{job_id}/complete-upload` | Complete Member Direct Upload |
 | POST | `/api/v1/ai/analyze/{job_id}/inspect` | Coach one stored instance on demand (gated; 409 until unlocked) |
 
 ## stroke-lab-admin
@@ -1525,8 +2010,23 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/ai/public/analyze/{job_id}/inspect` | Coach one stored instance on demand, guest (gated; 409 until unlocked) |
 | POST | `/api/v1/ai/public/analyze/{job_id}/retry` | Re-run a failed or partial guest analysis on its stored clip — free (guest_token) |
 | GET | `/api/v1/ai/public/credits` | Coarse analyzer credit balance for an email |
+| POST | `/api/v1/ai/public/credits/email-code/request` | Request Strokelab Email Code |
+| POST | `/api/v1/ai/public/credits/email-code/verify` | Verify Strokelab Email Code |
 | POST | `/api/v1/ai/public/credits/redeem` | Redeem a Gumroad license key for analyzer credits |
 | POST | `/api/v1/ai/public/gumroad/webhook` | Gumroad Ping — grant credits on sale, revoke on refund/dispute |
+
+## swim-plans
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/events/swim-plans` | Create Plan |
+| GET | `/api/v1/events/swim-plans/admin` | Admin Plans |
+| GET | `/api/v1/events/swim-plans/admin/policy` | Get Policy |
+| PUT | `/api/v1/events/swim-plans/admin/policy` | Set Policy |
+| POST | `/api/v1/events/swim-plans/admin/{plan_id}/publish` | Publish Open Plan |
+| PUT | `/api/v1/events/swim-plans/admin/{plan_id}/review` | Review Plan |
+| PUT | `/api/v1/events/swim-plans/admin/{plan_id}/verify-venue` | Verify Venue |
+| GET | `/api/v1/events/swim-plans/me` | My Plans |
 
 ## system
 
@@ -1567,6 +2067,39 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/transport/sessions/{session_id}/bookings/me` | Get My Booking |
 | GET | `/api/v1/transport/sessions/{session_id}/ride-configs` | Get Session Ride Configs |
 | POST | `/api/v1/transport/sessions/{session_id}/ride-configs` | Attach Ride Areas To Session |
+
+## treasury
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/finance/treasury/banks` | List Banks |
+| POST | `/api/v1/admin/finance/treasury/banks` | Create Bank |
+| PATCH | `/api/v1/admin/finance/treasury/banks/{bank_id}` | Update Bank Details |
+| POST | `/api/v1/admin/finance/treasury/banks/{bank_id}/create-ledger` | Create Bank Ledger |
+| POST | `/api/v1/admin/finance/treasury/banks/{bank_id}/create-operations-ledger` | Create Operations Ledger |
+| POST | `/api/v1/admin/finance/treasury/banks/{bank_id}/link-ledger` | Link Bank Ledger |
+| POST | `/api/v1/admin/finance/treasury/banks/{bank_id}/snapshot` | Attest Bank Snapshot |
+| POST | `/api/v1/admin/finance/treasury/banks/{bank_id}/statements` | Import Statement |
+| GET | `/api/v1/admin/finance/treasury/budgets` | List Budgets |
+| POST | `/api/v1/admin/finance/treasury/budgets` | Create Budget |
+| GET | `/api/v1/admin/finance/treasury/budgets/utilization` | Budget Utilization |
+| GET | `/api/v1/admin/finance/treasury/cash-projection` | Cash Projection |
+| GET | `/api/v1/admin/finance/treasury/expense-ledger-options` | Expense Ledger Options |
+| GET | `/api/v1/admin/finance/treasury/forecasts` | List Forecasts |
+| POST | `/api/v1/admin/finance/treasury/forecasts` | Create Forecast |
+| DELETE | `/api/v1/admin/finance/treasury/forecasts/{line_id}` | Cancel Forecast |
+| GET | `/api/v1/admin/finance/treasury/ledger-options` | Ledger Options |
+| GET | `/api/v1/admin/finance/treasury/liability-ledger-options` | Liability Ledger Options |
+| GET | `/api/v1/admin/finance/treasury/reconciliation/banks` | Reconcile Banks |
+| GET | `/api/v1/admin/finance/treasury/requests` | List Requests |
+| POST | `/api/v1/admin/finance/treasury/requests` | Create Request |
+| POST | `/api/v1/admin/finance/treasury/requests/{request_id}/confirm` | Confirm Request |
+| POST | `/api/v1/admin/finance/treasury/requests/{request_id}/decision` | Decide Request |
+| POST | `/api/v1/admin/finance/treasury/requests/{request_id}/link-existing-ledger` | Link Existing Request Ledger |
+| POST | `/api/v1/admin/finance/treasury/requests/{request_id}/post-ledger` | Post Confirmed To Ledger |
+| GET | `/api/v1/admin/finance/treasury/statements` | List Statements |
+| POST | `/api/v1/admin/finance/treasury/statements/{line_id}/match-journal` | Match Journal |
+| GET | `/api/v1/admin/finance/treasury/summary` | Summary |
 
 ## volunteers
 
