@@ -9,7 +9,7 @@ This document outlines the architecture for adding an e-commerce capability (pro
 - **Fulfillment**: Pool pickup default + home delivery (MVP)
 - **Products**: Goggles, caps, kickboards, pull buoys, fins, accessories, swimwear (with sizing)
 - **Pricing**: Public catalog, tiered member discounts (Community 5%, Club 10%, Academy 15%)
-- **Returns**: All sales final; store credit for exceptions
+- **Returns & Refunds (ADR-023)**: Full post-purchase lifecycle separating payment status, fulfillment status, `StoreOrderCase` (`cancel_request`, `variant_swap`, `return_exchange`, `defect_claim`), and shared `payments_service.refunds` (Paystack Refund API + webhooks, verified manual bank transfer, Bubbles, and Store Credit) with `2130 Refunds Payable` ledger entries.
 - **Build**: Custom `store_service` microservice
 
 > [!NOTE]
