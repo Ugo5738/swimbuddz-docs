@@ -4,7 +4,7 @@
 
 All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*` routes are service-to-service (service-role JWT, not gateway-exposed).
 
-**1358 operations across 146 tags.**
+**1414 operations across 148 tags.**
 
 ## (untagged)
 
@@ -120,20 +120,58 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 
 | Method | Path | Summary |
 |--------|------|---------|
+| POST | `/api/v1/academy/competencies/admin/assess-diagnostic` | Assess Diagnostic Competency |
+| GET | `/api/v1/academy/competencies/admin/cohorts/{cohort_id}/graduation-parity` | Get Cohort Graduation Parity |
+| GET | `/api/v1/academy/competencies/admin/legacy-candidates` | List Legacy Promotion Candidates |
 | GET | `/api/v1/academy/competencies/admin/members/{member_auth_id}` | Member Competency Passport |
+| GET | `/api/v1/academy/competencies/admin/members/{member_auth_id}/club-readiness-advisory` | Member Club Readiness Advisory |
+| GET | `/api/v1/academy/competencies/admin/verifications` | List Admin Verifications |
 | POST | `/api/v1/academy/competencies/admin/verify-legacy` | Verify Legacy Competency |
 | POST | `/api/v1/academy/competencies/admin/{verification_id}/revoke` | Revoke Verification |
+| POST | `/api/v1/academy/competencies/coach/assess-cohort` | Assess Cohort V2 Competency |
+| GET | `/api/v1/academy/competencies/enrollments/{enrollment_id}/v2-plan` | Get Enrollment V2 Learning Plan |
 | GET | `/api/v1/academy/competencies/me` | My Competency Passport |
 
 ## academy-curriculum-library
 
 | Method | Path | Summary |
 |--------|------|---------|
+| GET | `/api/v1/academy/admin/curriculum-library/drills/{definition_id}/skills` | List Drill Skills |
+| POST | `/api/v1/academy/admin/curriculum-library/drills/{definition_id}/skills` | Attach Drill Skill |
+| DELETE | `/api/v1/academy/admin/curriculum-library/drills/{definition_id}/skills/{link_id}` | Remove Drill Skill |
+| GET | `/api/v1/academy/admin/curriculum-library/lessons/{lesson_version_id}/drills` | List Lesson Drills |
+| POST | `/api/v1/academy/admin/curriculum-library/lessons/{lesson_version_id}/drills` | Attach Lesson Drill |
+| DELETE | `/api/v1/academy/admin/curriculum-library/lessons/{lesson_version_id}/drills/{link_id}` | Remove Lesson Drill |
+| GET | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/remedial-drills` | List Milestone Remedial Drills |
+| POST | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/remedial-drills` | Attach Milestone Remedial Drill |
+| DELETE | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/remedial-drills/{link_id}` | Remove Milestone Remedial Drill |
+| GET | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/skills` | List Milestone Skills |
+| POST | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/skills` | Attach Milestone Skill |
+| DELETE | `/api/v1/academy/admin/curriculum-library/milestones/{definition_id}/skills/{link_id}` | Remove Milestone Skill |
+| GET | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/composition` | Get Module Composition |
+| POST | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/lessons` | Attach Module Lesson |
+| DELETE | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/lessons/{link_id}` | Remove Module Lesson |
+| POST | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/quizzes` | Attach Module Quiz |
+| DELETE | `/api/v1/academy/admin/curriculum-library/modules/{module_version_id}/quizzes/{link_id}` | Remove Module Quiz |
+| GET | `/api/v1/academy/admin/curriculum-library/skills` | List Catalog Skills |
 | GET | `/api/v1/academy/admin/curriculum-library/{kind}` | List Definitions |
 | POST | `/api/v1/academy/admin/curriculum-library/{kind}` | Create Definition |
+| POST | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/retire` | Retire Definition |
 | GET | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/versions` | List Versions |
 | POST | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/versions` | Create Version |
+| PATCH | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/versions/{version_id}` | Update Draft Version |
 | POST | `/api/v1/academy/admin/curriculum-library/{kind}/{definition_id}/versions/{version_id}/publish` | Publish Version |
+
+## academy-drill-prescriptions
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/api/v1/academy/competencies/coach/drills/assign` | Assign Student Drill |
+| PATCH | `/api/v1/academy/competencies/coach/drills/{assignment_id}/status` | Update Student Drill Status |
+| GET | `/api/v1/academy/competencies/drills/published` | List Published Drills For Coaching |
+| GET | `/api/v1/academy/competencies/enrollments/{enrollment_id}/drills` | List Enrollment Drills |
+| GET | `/api/v1/academy/competencies/me/drills` | List My Assigned Drills |
+| POST | `/api/v1/academy/competencies/me/drills/{assignment_id}/practiced` | Mark My Drill Practiced |
 
 ## academy-milestone-evidence
 
@@ -168,13 +206,19 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 
 | Method | Path | Summary |
 |--------|------|---------|
+| GET | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/assignments` | List Cohort Assignments |
 | POST | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/milestones` | Assign Cohort Milestone |
+| DELETE | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/milestones/{assignment_id}` | Remove Cohort Milestone |
 | POST | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/requirements/freeze` | Freeze Cohort Requirements |
 | GET | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/requirements/frozen` | Get Frozen Cohort Requirements |
 | GET | `/api/v1/academy/admin/cohorts/{cohort_id}/curriculum/requirements/preview` | Preview Cohort Requirements |
 | POST | `/api/v1/academy/admin/modules/{module_version_id}/curriculum/milestones` | Assign Module Milestone |
+| DELETE | `/api/v1/academy/admin/modules/{module_version_id}/curriculum/milestones/{assignment_id}` | Remove Module Milestone |
+| GET | `/api/v1/academy/admin/programs/{program_id}/curriculum/assignments` | List Program Assignments |
 | POST | `/api/v1/academy/admin/programs/{program_id}/curriculum/milestones` | Assign Program Milestone |
+| DELETE | `/api/v1/academy/admin/programs/{program_id}/curriculum/milestones/{assignment_id}` | Remove Program Milestone |
 | POST | `/api/v1/academy/admin/programs/{program_id}/curriculum/modules` | Assign Program Module |
+| DELETE | `/api/v1/academy/admin/programs/{program_id}/curriculum/modules/{assignment_id}` | Remove Program Module |
 
 ## academy-session-participation
 
@@ -1162,10 +1206,12 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/academy/cohorts/{cohort_id}/check-enrollment/{member_id}` | Check Cohort Enrollment Internal |
 | GET | `/api/v1/internal/academy/cohorts/{cohort_id}/enrolled-students` | Get Cohort Enrolled Students Internal |
 | GET | `/api/v1/internal/academy/cohorts/{cohort_id}/enrollment-counts` | Get Cohort Enrollment Counts Internal |
+| GET | `/api/v1/internal/academy/competencies/members/{member_auth_id}/club-readiness-advisory` | Internal Member Club Readiness Advisory |
 | GET | `/api/v1/internal/academy/enrollments/{enrollment_id}` | Get Enrollment Internal |
 | GET | `/api/v1/internal/academy/enrollments/{enrollment_id}/allocation-identity` | Academy Allocation Identity |
 | GET | `/api/v1/internal/academy/enrollments/{enrollment_id}/payment-preview` | Preview Enrollment Payment |
 | POST | `/api/v1/internal/academy/enrollments/{enrollment_id}/verified-credit` | Apply Verified Academy Credit |
+| GET | `/api/v1/internal/academy/finance-summary` | Academy Finance Summary |
 | GET | `/api/v1/internal/academy/financial-obligations/{member_auth_id}` | Member Academy Financial Obligations |
 | GET | `/api/v1/internal/academy/member-cohort-enrollments/{member_auth_id}` | Get Member Cohort Enrollments Internal |
 | GET | `/api/v1/internal/academy/member-summary/{member_auth_id}` | Get Member Academy Summary |
@@ -1190,6 +1236,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/members/bulk` | Get Members Bulk |
 | GET | `/api/v1/internal/members/by-auth/{auth_id}` | Get Member By Auth Id |
 | POST | `/api/v1/internal/members/club-access/checks` | Check Club Access |
+| GET | `/api/v1/internal/members/club-finance-summary` | Club Finance Summary |
 | GET | `/api/v1/internal/members/club-quarter-summary` | Get Club Quarter Summary |
 | GET | `/api/v1/internal/members/coaches/eligible` | Get Eligible Coaches |
 | GET | `/api/v1/internal/members/coaches/{member_id}/availability` | Get Coach Availability |
@@ -1208,6 +1255,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/payments/academy/enrollments/{enrollment_id}/financial-state` | Academy Enrollment Financial State |
 | POST | `/api/v1/internal/payments/checkout/preview` | Internal Preview Product Checkout |
 | POST | `/api/v1/internal/payments/discounts/validate` | Internal Validate Discount |
+| GET | `/api/v1/internal/payments/finance-summary` | Payments Finance Summary |
 | POST | `/api/v1/internal/payments/initialize` | Internal Initialize Payment |
 | POST | `/api/v1/internal/payments/makeup-obligations/{obligation_id}/complete` | Internal Complete Makeup Obligation |
 | POST | `/api/v1/internal/payments/makeup-obligations/{obligation_id}/schedule` | Internal Schedule Makeup Obligation |
@@ -1254,6 +1302,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | GET | `/api/v1/internal/sessions/{session_id}/bookings/by-member/{member_id}` | Get Booking For Session Member |
 | GET | `/api/v1/internal/sessions/{session_id}/coaches` | Get Session Coach Ids |
 | GET | `/api/v1/internal/sessions/{session_id}/confirmed-booking-member-ids` | Get Confirmed Booking Member Ids |
+| GET | `/api/v1/internal/store/finance-summary` | Store Finance Summary |
 | GET | `/api/v1/internal/store/financial-obligations/{member_auth_id}` | Member Store Unfinished Orders |
 | GET | `/api/v1/internal/store/member-summary/{member_auth_id}` | Get Member Store Summary |
 | GET | `/api/v1/internal/transport/member-summary/{member_auth_id}` | Get Member Transport Summary |
@@ -1409,10 +1458,19 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/internal/ledger/external-transactions` | Post External Transactions |
 | POST | `/api/v1/internal/ledger/invoices` | Post Invoice |
 | POST | `/api/v1/internal/ledger/journal-entries` | Post Journal Entry |
+| POST | `/api/v1/internal/ledger/organizations` | Provision Organization |
 | GET | `/api/v1/internal/ledger/reports/cash-position` | Internal Cash Position |
 | GET | `/api/v1/internal/ledger/reports/deferred-revenue` | Internal Deferred Revenue |
 | GET | `/api/v1/internal/ledger/reports/margin` | Internal Margin |
 | GET | `/api/v1/internal/ledger/reports/profit-loss` | Internal Profit Loss |
+
+## ledger-organizations
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/api/v1/admin/finance/organizations` | List My Organizations |
+| GET | `/api/v1/admin/finance/organizations/current` | Get Current Organization |
+| PATCH | `/api/v1/admin/finance/organizations/current` | Update Current Organization |
 
 ## makeups
 
@@ -1881,8 +1939,11 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/api/v1/admin/store/procurement/catalogue` | Procurement Catalogue |
+| GET | `/api/v1/admin/store/procurement/fulfilled-orders` | List Fulfilled Orders For Return |
 | PUT | `/api/v1/admin/store/procurement/grants` | Upsert Procurement Grant |
 | GET | `/api/v1/admin/store/procurement/inventory-values` | Procurement Inventory Values |
+| GET | `/api/v1/admin/store/procurement/invoices/{invoice_id}/settlements` | List Supplier Invoice Settlements |
+| POST | `/api/v1/admin/store/procurement/invoices/{invoice_id}/settlements` | Settle Supplier Invoice |
 | GET | `/api/v1/admin/store/procurement/liabilities` | Supplier Liabilities |
 | GET | `/api/v1/admin/store/procurement/me` | Procurement Me |
 | GET | `/api/v1/admin/store/procurement/openings` | List Opening Reconciliations |
@@ -1894,10 +1955,14 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/admin/store/procurement/orders/{order_id}/decision` | Decide Purchase Order |
 | POST | `/api/v1/admin/store/procurement/orders/{order_id}/invoices` | Record Supplier Invoice |
 | POST | `/api/v1/admin/store/procurement/orders/{order_id}/receive` | Receive Goods |
+| POST | `/api/v1/admin/store/procurement/orders/{order_id}/returns` | Record Fulfilled Order Return |
 | POST | `/api/v1/admin/store/procurement/orders/{order_id}/submit` | Submit Purchase Order |
+| POST | `/api/v1/admin/store/procurement/receipts/{receipt_id}/sync-ledger` | Retry Goods Receipt Ledger Sync |
 | GET | `/api/v1/admin/store/procurement/receivables` | List Receivables |
 | POST | `/api/v1/admin/store/procurement/receivables` | Propose Trade Receivable |
 | POST | `/api/v1/admin/store/procurement/receivables/{receivable_id}/decision` | Decide Trade Receivable |
+| GET | `/api/v1/admin/store/procurement/receivables/{receivable_id}/payments` | List Receivable Payments |
+| POST | `/api/v1/admin/store/procurement/receivables/{receivable_id}/payments` | Record Receivable Payment |
 | GET | `/api/v1/admin/store/procurement/unpaid-orders` | Eligible Credit Orders |
 
 ## stroke-lab
@@ -2024,6 +2089,7 @@ All paths are shown as exposed through the gateway (`/api/v1/...`). `internal/*`
 | POST | `/api/v1/admin/finance/treasury/forecasts` | Create Forecast |
 | DELETE | `/api/v1/admin/finance/treasury/forecasts/{line_id}` | Cancel Forecast |
 | GET | `/api/v1/admin/finance/treasury/ledger-options` | Ledger Options |
+| GET | `/api/v1/admin/finance/treasury/liability-ledger-options` | Liability Ledger Options |
 | GET | `/api/v1/admin/finance/treasury/reconciliation/banks` | Reconcile Banks |
 | GET | `/api/v1/admin/finance/treasury/requests` | List Requests |
 | POST | `/api/v1/admin/finance/treasury/requests` | Create Request |

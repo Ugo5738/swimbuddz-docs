@@ -121,7 +121,7 @@ the existing receipt-verification/replay sequence.
 
 ---
 
-## Cancellation, Returns, Exchanges & Refund Policy (ADR-023)
+## Cancellation, Returns, Exchanges & Refund Policy (ADR-024)
 
 SwimBuddz separates **pre-handover cancellations/modifications** from **post-handover returns/exchanges**, and distinguishes **stocked** items from **preorder/dropship** items:
 
