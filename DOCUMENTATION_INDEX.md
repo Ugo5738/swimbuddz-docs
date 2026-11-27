@@ -122,6 +122,7 @@ swimbuddz/
 | [docs/design/CHAT_SERVICE_DESIGN.md](./docs/design/CHAT_SERVICE_DESIGN.md)                     | In-app real-time chat service (cohorts, pods, events, DMs, safeguarding) | Engineer, Product |
 | [docs/design/LEDGER_SERVICE_DESIGN.md](./docs/design/LEDGER_SERVICE_DESIGN.md)                 | Multi-tenant double-entry accounting service (B2B-extractable, FIRS-ready) | Engineer, Finance |
 | [docs/design/LEDGER_IMPLEMENTATION_PLAN.md](./docs/design/LEDGER_IMPLEMENTATION_PLAN.md)       | Phase 0 + Phase 1 build plan for the ledger service (tasks, PRs, file refs)  | Engineer          |
+| [docs/design/MEMBER_SCORECARD_DESIGN.md](./docs/design/MEMBER_SCORECARD_DESIGN.md) | Member Swim Scorecard: multi-stroke skills, 3-tier trust, pool-length benchmarks & privacy | Engineer, Product |
 | [docs/design/REWARDS_ENGINE_DESIGN.md](./docs/design/REWARDS_ENGINE_DESIGN.md)                 | Event-driven Bubbles rewards engine                                      | Engineer, Product |
 | [docs/design/WALLET_SERVICE_DESIGN.md](./docs/design/WALLET_SERVICE_DESIGN.md)                 | Backend design for Bubbles closed-loop wallet                            | Engineer          |
 | [docs/design/WALLET_FRONTEND_PLAN.md](./docs/design/WALLET_FRONTEND_PLAN.md)                   | Frontend specs for Bubbles wallet UI                                     | Engineer          |
