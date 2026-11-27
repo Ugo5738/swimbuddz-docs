@@ -114,10 +114,10 @@ the existing receipt-verification/replay sequence.
 4. Add notes for record keeping
 
 ### Stock Movements Tracked Automatically
-- `reservation`: Stocked customer checkout reserves stock (`quantity_reserved += qty`, reducing Available without dropping physical On-Hand yet). Preorder/dropship checkouts do not reserve stock upfront.
-- `sale`: Physical stock (`quantity_on_hand`) is deducted **once on handover** (`picked_up` or `delivered`) along with moving weighted-average COGS (or an explicit `sale_unvalued` cost event if unvalued). For historical preorder-era orders whose product has since been converted to `stocked`, handover deducts from unreserved available stock (`quantity_on_hand - quantity_reserved`) without disturbing reservations held by other stocked orders.
-- `release`: Unfulfilled order cancellation releases its reservation back to Available.
-- `restock` / `return`: Admin goods receipt or `restockable` return inspection adds stock back to `quantity_on_hand`.
+- `reservation`: Stocked customer checkout reserves stock immediately (`quantity_reserved += qty`, reducing Available without dropping physical On-Hand yet). Paid `preorder` orders do not reserve at checkout, but automatically claim arriving stock **FIFO** (oldest paid preorder first) as soon as a PO Goods Receipt, Admin Restock, restockable return, or cancelled reservation adds available stock.
+- `sale`: Physical stock (`quantity_on_hand`) is deducted **once on handover** (`picked_up` or `delivered`) along with moving weighted-average COGS (or an explicit `sale_unvalued` cost event if unvalued). Both `stocked` and `preorder` items strictly require received stock on hand before handover (`409` otherwise); supplier-direct `dropship` items skip warehouse counts and log an explicit `sale_unvalued` cost event for Finance.
+- `release`: Unfulfilled order cancellation releases its reservation back to Available and immediately reallocates FIFO to the next waiting paid preorder if any exists.
+- `restock` / `return`: Admin goods receipt, manual restock, or `restockable` return inspection adds stock to `quantity_on_hand` and runs FIFO preorder allocation.
 - `adjustment`: Audited manual stock-count correction.
 
 ---
