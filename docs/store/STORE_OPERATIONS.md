@@ -120,6 +120,10 @@ the existing receipt-verification/replay sequence.
 - `restock` / `return`: Admin goods receipt, manual restock, or `restockable` return inspection adds stock to `quantity_on_hand` and runs FIFO preorder allocation.
 - `adjustment`: Audited manual stock-count correction.
 
+### Per-Variant "Continue Selling When Out of Stock" (Backorders)
+- On any `stocked` product, admins can enable **Continue selling when out of stock (pre-order)** per variant (or for all active variants at once) under **Admin → Store → Products → Edit → Variants**.
+- Variants with stock `> 0` sell immediately as **In stock**; variants with stock `0` and backorder **enabled** show as **Pre-order** (amber indicator + `Pre-order Now` CTA) and automatically join the FIFO preorder queue when stock arrives; variants with stock `0` and backorder **disabled** remain viewable with an out-of-stock slash/strikethrough and disabled purchase buttons.
+
 ---
 
 ## Cancellation, Returns, Exchanges & Refund Policy (ADR-024)
