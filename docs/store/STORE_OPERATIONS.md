@@ -114,10 +114,11 @@ the existing receipt-verification/replay sequence.
 4. Add notes for record keeping
 
 ### Stock Movements Tracked Automatically
-- `reservation`: Customer checkout reserves stock
-- `sale`: Order completed
-- `restock`: Admin adds inventory
-- `adjustment`: Manual correction
+- `reservation`: Stocked customer checkout reserves stock (`quantity_reserved += qty`, reducing Available without dropping physical On-Hand yet). Preorder/dropship checkouts do not reserve stock upfront.
+- `sale`: Physical stock (`quantity_on_hand`) is deducted **once on handover** (`picked_up` or `delivered`) along with moving weighted-average COGS (or an explicit `sale_unvalued` cost event if unvalued). For historical preorder-era orders whose product has since been converted to `stocked`, handover deducts from unreserved available stock (`quantity_on_hand - quantity_reserved`) without disturbing reservations held by other stocked orders.
+- `release`: Unfulfilled order cancellation releases its reservation back to Available.
+- `restock` / `return`: Admin goods receipt or `restockable` return inspection adds stock back to `quantity_on_hand`.
+- `adjustment`: Audited manual stock-count correction.
 
 ---
 
